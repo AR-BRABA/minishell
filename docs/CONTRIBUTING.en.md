@@ -119,11 +119,11 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 #### Branch structure
 
-| Name             | Purpose                                                  | Merge                                                              | Naming Convention        |
-| ---------------- | -------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------ |
-| Main             | Contains stable code ready for submission (production)   | Only from `develop`when the project version is stable and complete | `main`                   |
-| Develop          | Main branch for continous development                    | From feature branches when functionalities are complete            | `develop`                |
-| Feature Branches | Temporary branches for developing specif functionalities | Into `develop`once the feature is complete and tested              | `feature/<feature-name>` |
+| Name             | Purpose                                                                         | Merge                                                              | Naming Convention        |
+| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------ |
+| Main             | Contains stable code ready for submission (production)                          | Only from `develop`when the project version is stable and complete | `main`                   |
+| Develop          | Main branch for continous development                                           | From feature branches when functionalities are complete            | `develop`                |
+| Feature Branches | Temporary branches for developing specific features | Into `develop`once the feature is complete and tested              | `feature/<feature-name>` |
 
 
 
