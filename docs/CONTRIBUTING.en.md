@@ -32,7 +32,7 @@ Each sprint will last two weeks and will include the following ceremonies:
 
 3. **Weekly** (Wednesday, Day 10):
    
-   * **Objective**: Code review, asses the progress of the sprint, discuss any blockers, and adjust the plan if necessary.
+   * **Objective**: Asses the progress of the sprint, discuss any blockers, and adjust the plan if necessary.
    
    * **Output**: Updated sprint plans and resolution for any impediments.
      
@@ -59,9 +59,9 @@ Each sprint will last two weeks and will include the following ceremonies:
 | Day    | Ceremony                      | Description                                                                              |
 | ------ | ----------------------------- | ---------------------------------------------------------------------------------------- |
 | Day 1  | Planning + Backlog Refinement | Define and refine tasks, generate backlog                                                |
-| Day 6  | Weekly                        | Code review, asses progress, discuss blockers, adjust plans                              |
+| Day 6  | Weekly                        | Code review, asses sprint progress, discuss blockers, adjust plans                       |
 | Day 7  | Rest                          | Rest Day                                                                                 |
-| Day 10 | Weekly                        | Code review, asses progress, discuss blockers, adjust plans                              |
+| Day 10 | Weekly                        | Asses progress, discuss blockers, adjust plans                                           |
 | Day 13 | Review + Retrospective        | Review completed tasks, gather feedback.<br>Reflect on the sprint, identify improvements |
 | Day 14 | Rest                          | Rest day                                                                                 |
 
@@ -73,11 +73,11 @@ Each sprint will last two weeks and will include the following ceremonies:
 
 - Process:
   
-  - Tasks moving to PR will transition from `In Progress` to `validation`in GitHub Projects;
+  - Tasks moving to PR will transition from `In Progress` to `Validation` in **minishell**'s' GitHub Projects;
   
   - PR validations will be conducted in meetings where each developer presents their work;
   
-  - Tests will be executed and validated by the other team memberto approve the PR.
+  - Tests will be executed and validated by the other team member to approve the PR.
     
     
     
@@ -91,45 +91,31 @@ A dedicated section in the README will link to our study documentation, providin
 
 
 
-## Workflow
-
-
+## Simplified Gitflow-TBD Approach
 
 #### Introduction
 
- As our project is small and there are few feature to develop, we created an hybrid between Gitflow and TBD (Trunk-Based Development) workflow, a pragmatic approach that blends the best of both worlds: the clear organization of Gitflow and the streamlined simplicity of TBD. 
+Our project's small scale and limited functionality initially led us to consider adopting Trunk-Based Development (TBD). However, concerns about code instability and the challenge of identifying issues raised red flags. Additionally, frequent commits - while essencial - can be dauting, especially for those less accustomed to them.
 
 
 
-Our choice is justified by the need for clear and organized structure to manage project development. The Hybrid Gitflow-TBD Workflow offers ptreciselt that, without the excessive complexity of traditional Gitflow. It allows efficient control over features and fixes while maintaining project stability. The simplified merge and release process further enhances productivity.
+#### The Hybrid Approach
 
+To strike a balance, we adopted a hybrid model that combines the best of both worlds: Gitflow and TBD. Here's why it makes sense:
 
+1. **Organized structure**: Gitflow provides clear organization. We'll have `main` (for stable code) and `develop` (for continuous development), ensuring stability while avoiding excessive branches.
 
-By adopting this model, we strike a balance between organizational structure and simplicity. It empowers our team to focus on development and learning without the burden of managing overly complex branches.
+2. **Simplicity**: TBD's continuous integration and simpler implementation align with our goals. Frequent merges into `develop` keep us agile.
+   
+   
 
+#### Benefits
 
+- **Efficiency**: We'll avoid Gitflow's branch complexity while benefiting from continuous integration.
 
-> RESUME GITFLOW and TBD here and why addopting hybrid workflow management
-> 
-> 
-> 
-> **modelo simplificado de Gitflow**. Essa escolha é justificada pela necessidade de uma estrutura clara e organizada para gerenciar o desenvolvimento do projeto, especialmente considerando que os desenvolvedores podem ainda não estar completamente confortáveis com a complexidade de integração contínua exigida pelo Trunk-Based Development.
-> 
-> /** oferece uma estrutura clara e organizada sem a complexidade excessiva do Gitflow tradicional. Ele facilita a gestão de desenvolvimento, permite um controle eficiente das funcionalidades e correções, e mantém a estabilidade do projeto ao mesmo tempo que simplifica o processo de merge e release. **/
-> 
-> 
-> 
-> Esse modelo balanceia a necessidade de uma estrutura organizada e a simplicidade, permitindo que a dupla se concentre no desenvolvimento e aprendizado sem a sobrecarga de gerenciar uma complexidade excessiva de branches.
-
-   As our project is small and there are few feature to develop, it initially seemed appropriated to adopt TBD, but the point about the increased risk of unstable code
-
-
-
-
-
-Following these guidelines will help us to mantain a clear and efficient workflow, ensuring high-quality contributions and a successful project
-
-
+- **Learning focus**: The hybrid approach let us concentrate on development and learning without overwhelming branch management.
+  
+  
 
 #### Branch structure
 
@@ -198,10 +184,12 @@ Following these guidelines will help us to mantain a clear and efficient workflo
    - Follow "**Merging `develop` into `main`**" (#4) steps.
      
      
-     
-     
-     
-     
+
+#### Conclusion
+
+By blending Gitflow's structure with TDB's simplicity, we can achieve stability, agility, and a strong focus on learning and development.
+
+
 
     **Resources list**:
 
