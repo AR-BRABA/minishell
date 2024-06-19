@@ -91,7 +91,7 @@ A dedicated section in the README will link to our study documentation, providin
 
 
 
-## Simplified Gitflow-TBD Approach
+## Workflow: Hybrid Gitflow-TBD Approach
 
 #### Introduction
 
@@ -105,7 +105,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 1. **Organized structure**: Gitflow provides clear organization. We'll have `main` (for stable code) and `develop` (for continuous development), ensuring stability while avoiding excessive branches.
 
-2. **Simplicity**: TBD's continuous integration and simpler implementation align with our goals. Frequent merges into `develop` keep us agile.
+2. **Simplicity**: TBD's continuous integration and simpler implementation align withn our goals. Frequent merges into `develop` keep us agile.
    
    
 
