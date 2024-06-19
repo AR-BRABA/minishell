@@ -91,11 +91,43 @@ A dedicated section in the README will link to our study documentation, providin
 
 
 
-## Hybrid Gitflow-TBD Workflow
+## Workflow
+
+
+
+#### Introduction
+
+ As our project is small and there are few feature to develop, we created an hybrid between Gitflow and TBD (Trunk-Based Development) workflow, a pragmatic approach that blends the best of both worlds: the clear organization of Gitflow and the streamlined simplicity of TBD. 
+
+
+
+Our choice is justified by the need for clear and organized structure to manage project development. The Hybrid Gitflow-TBD Workflow offers ptreciselt that, without the excessive complexity of traditional Gitflow. It allows efficient control over features and fixes while maintaining project stability. The simplified merge and release process further enhances productivity.
+
+
+
+By adopting this model, we strike a balance between organizational structure and simplicity. It empowers our team to focus on development and learning without the burden of managing overly complex branches.
+
+
 
 > RESUME GITFLOW and TBD here and why addopting hybrid workflow management
+> 
+> 
+> 
+> **modelo simplificado de Gitflow**. Essa escolha é justificada pela necessidade de uma estrutura clara e organizada para gerenciar o desenvolvimento do projeto, especialmente considerando que os desenvolvedores podem ainda não estar completamente confortáveis com a complexidade de integração contínua exigida pelo Trunk-Based Development.
+> 
+> /** oferece uma estrutura clara e organizada sem a complexidade excessiva do Gitflow tradicional. Ele facilita a gestão de desenvolvimento, permite um controle eficiente das funcionalidades e correções, e mantém a estabilidade do projeto ao mesmo tempo que simplifica o processo de merge e release. **/
+> 
+> 
+> 
+> Esse modelo balanceia a necessidade de uma estrutura organizada e a simplicidade, permitindo que a dupla se concentre no desenvolvimento e aprendizado sem a sobrecarga de gerenciar uma complexidade excessiva de branches.
 
    As our project is small and there are few feature to develop, it initially seemed appropriated to adopt TBD, but the point about the increased risk of unstable code
+
+
+
+
+
+Following these guidelines will help us to mantain a clear and efficient workflow, ensuring high-quality contributions and a successful project
 
 
 
@@ -103,8 +135,8 @@ A dedicated section in the README will link to our study documentation, providin
 
 | Name             | Purpose                                                  | Merge                                                              | Naming Convention        |
 | ---------------- | -------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------ |
-| Main             | Contains stable code ready for submission (production)   | Only from `develop`when the project version is stable and complete | -------                  |
-| Develop          | Main branch for continous development                    | From feature branches when functionalities are complete            | -------                  |
+| Main             | Contains stable code ready for submission (production)   | Only from `develop`when the project version is stable and complete | `main`                   |
+| Develop          | Main branch for continous development                    | From feature branches when functionalities are complete            | `develop`                |
 | Feature Branches | Temporary branches for developing specif functionalities | Into `develop`once the feature is complete and tested              | `feature/<feature-name>` |
 
 
