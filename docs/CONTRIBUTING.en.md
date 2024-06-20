@@ -1,18 +1,18 @@
 # Contributing Rules
 
-
+<br>
 
 ## Introduction
 
 This document outlines the rules and procedures for contributing to the minishell project. Our aim is to maintain a clear, organized, and efficient workflow to ensure high-quality code and a smooth develop process. We are adopting some Scrum ceremonies and a hybrid Gitflow-TBD (Trunk-Based Development) workflow to manage our development tasks.
 
-
+<br>
 
 ## Scrum Ceremonies
 
 Each sprint will last two weeks and will include the following ceremonies:
 
-
+<br>
 
 1. **Planning + Backlog Refinement** (Monday, Day 1):
    
@@ -20,7 +20,7 @@ Each sprint will last two weeks and will include the following ceremonies:
    
    * **Output**: A detailed backlog of tasks for the new sprint.
      
-     
+     <br>
 
 2. **Weekly** (Saturday, Day 6): 
    
@@ -28,7 +28,7 @@ Each sprint will last two weeks and will include the following ceremonies:
    
    * **Output**: Updated sprint plans and resolution for any impediments.
      
-     
+     <br>
 
 3. **Weekly** (Wednesday, Day 10):
    
@@ -36,23 +36,23 @@ Each sprint will last two weeks and will include the following ceremonies:
    
    * **Output**: Updated sprint plans and resolution for any impediments.
      
-     
+     <br>
 
-3. **Review** (Saturday, Day 13):
+4. **Review** (Saturday, Day 13):
    
-   * **Objective**: Review the completed tasks, demonstrate the new features and gather feedback. 
+   * **Objective**: Review the completed tasks, demonstrate the new features and gather feedback.
    
    * **Output**: Approved features and feedback for future improvements.
-     
-     
+   
+   <br>
 
-4. **Retrospective** (Saturday, Day 13):
+5. **Retrospective** (Saturday, Day 13):
    
    * **Objective**: Reflect on the sprint, identify what went well, what didn't, and plan for improvements.
    
    * **Output**: Actionable insights for process improvements.
      
-     
+     <br>
 
 ### Ceremony Schedule
 
@@ -65,9 +65,7 @@ Each sprint will last two weeks and will include the following ceremonies:
 | Day 13 | Review + Retrospective        | Review completed tasks, gather feedback.<br>Reflect on the sprint, identify improvements |
 | Day 14 | Rest                          | Rest day                                                                                 |
 
-
-
-
+<br><br>
 
 ## Pull Request (PR) Validation
 
@@ -78,26 +76,21 @@ Each sprint will last two weeks and will include the following ceremonies:
   - PR validations will be conducted in meetings where each developer presents their work;
   
   - Tests will be executed and validated by the other team member to approve the PR.
-    
-    
-    
-    
+    <br><br>
 
 ## Documentation
 
 A dedicated section in the README will link to our study documentation, providing resources and inghts relevant to our development process.
 
-
-
-
+<br><br>
 
 ## Workflow: Hybrid Gitflow-TBD Approach
 
 #### Introduction
 
-Our project's small scale and limited functionality initially led us to consider adopting Trunk-Based Development (TBD). However, concerns about code instability and the challenge of identifying issues raised red flags. Additionally, frequent commits - while essencial - can be dauting, especially for those less accustomed to them.
+Our project's small scale and few features led us to consider adopting Trunk-Based Development (TBD). However, concerns about code instability and the challenge of identifying issues raised red flags. Additionally, frequent commits - while essencial - can be dauting, especially for those less accustomed to them.
 
-
+<br>
 
 #### The Hybrid Approach
 
@@ -107,23 +100,23 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 2. **Simplicity**: TBD's continuous integration and simpler implementation align withn our goals. Frequent merges into `develop` keep us agile.
    
-   
+   <br>
 
 #### Benefits
 
-- **Efficiency**: We'll avoid Gitflow's branch complexity while benefiting from continuous integration.
+- **Efficiency**: We'll avoid Gitflow's branch complexity while benefiting from TBD's continuous integration.
 
 - **Learning focus**: The hybrid approach let us concentrate on development and learning without overwhelming branch management.
   
-  
+  <br>
 
 #### Branch structure
 
-| Name             | Purpose                                                                         | Merge                                                              | Naming Convention        |
-| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------ |
-| Main             | Contains stable code ready for submission (production)                          | Only from `develop`when the project version is stable and complete | `main`                   |
-| Develop          | Main branch for continous development                                           | From feature branches when functionalities are complete            | `develop`                |
-| Feature Branches | Temporary branches for developing specific features | Into `develop`once the feature is complete and tested              | `feature/<feature-name>` |
+| Name             | Purpose                                                | Merge                                                              | Naming Convention        |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------ |
+| Main             | Contains stable code ready for submission (production) | Only from `develop`when the project version is stable and complete | `main`                   |
+| Develop          | Main branch for continous development                  | From feature branches when features are complete                   | `develop`                |
+| Feature Branches | Temporary branches for developing specific features    | Into `develop`once the feature is complete and tested              | `feature/<feature-name>` |
 
 
 
@@ -137,7 +130,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - Create a new branch using  the naming convention `feature/<feature-name>`.
      
-     
+     <br>
 
 2. **Development and Testing**:
    
@@ -145,7 +138,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - Perform thorough testing  to ensure quality.
      
-     
+     <br>
 
 3. **Merging into `develop`**:
    
@@ -155,7 +148,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - Merge the temporary feature branch into `develop`.
      
-     
+     <br>
 
 4. **Merging `develop`into `main`**:
    
@@ -167,9 +160,9 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - The approval must make sure  that `main` branch is up to date (`git pull`command);
    
-   - Merge the `develop` .
+   - Merge the `develop` branch into `main`.
      
-     
+     <br>
 
 5. **Bug Fixes**:
    
@@ -181,17 +174,19 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - Merge the temporary feature branch into `develop`;
    
-   - Follow "**Merging `develop` into `main`**" (#4) steps.
+   - Follow section *#4* steps (**Merging `develop` into `main`**).
      
-     
+     <br>
 
 #### Conclusion
 
-By blending Gitflow's structure with TDB's simplicity, we can achieve stability, agility, and a strong focus on learning and development.
+By blending Gitflow's structure with TDB's simplicity, we can achieve stability, agility, and focus on learning and development.
+
+<br><br>
 
 
 
-    **Resources list**:
+#### Resources list:
 
 - [Markdown® Avançado: Sintaxe, Uso &amp; Exemplos [Passo a Passo]](https://markdown.net.br/sintaxe-estendida/);
 - [markdown-guide/_basic-syntax/line-breaks.md at master · mattcone/markdown-guide · GitHub](https://github.com/mattcone/markdown-guide/blob/master/_basic-syntax/line-breaks.md);
@@ -207,3 +202,5 @@ By blending Gitflow's structure with TDB's simplicity, we can achieve stability,
 - [Four agile ceremonies, demystified | Atlassian](https://www.atlassian.com/agile/scrum/ceremonies);
 - [The 5 Scrum Ceremonies Explained for Remote Teams | Parabol](https://www.parabol.co/blog/scrum-ceremonies-for-remote-teams/);
 - [What is a Code Review &amp; How It Can Save Time | Atlassian](https://www.atlassian.com/agile/software-development/code-reviews).
+
+
