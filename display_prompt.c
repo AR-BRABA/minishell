@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:50:52 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/20 09:22:47 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/06/21 10:36:39 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,3 +17,10 @@
  * @param char* prompt
  * @return char *line_read
  */
+
+void	read_input(char **user_input)
+{
+	*user_input = readline("minishell$ ");
+	if (**user_input && *user_input)
+		add_history(*user_input);
+}
