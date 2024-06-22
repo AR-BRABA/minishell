@@ -2,7 +2,7 @@ NAME		= minishell
 
 CC		= cc
 CFLAGS		= -Wall -Wextra -Werror -g
-SRCS		= display_prompt.c init.c
+SRCS		= display_prompt.c init_minishell.c validate_input.c
 OBJS		= $(SRCS:.c=.o)
 RM		= rm -rf
 
