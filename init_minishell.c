@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_minishell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/22 01:00:44 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
  * @return 0 on successful execution
  */
 
-int	main(int argc, char **argv)
+int	main(void)
 {
+	char *user_input;
+
 	while (1)
 	{
-		read_input(argv);
-		if (!argv)
+		user_input = read_input(user_input);
+		if (!user_input)
 			break ;
-		if (validate_input(*argv))
-			printf("Valid input: %s\n", *argv);
+		if (validate_input(user_input))
+			printf("Valid input: %s\n", user_input);
 	}
-	(void)argc;
 	return (0);
 }
