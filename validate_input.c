@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 00:15:09 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/22 03:00:13 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/06/24 21:28:26 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,18 @@ bool	check_unclosed_quotes(char *input)
 {
 	bool	single_quote_open;
 	bool	double_quote_open;
-	int	total_quotes;
 
 	single_quote_open = false;
 	double_quote_open = false;
-	total_quotes = 0;
 	while (*input)
 	{
 		if (*input == '\'' && !double_quote_open)
 			single_quote_open = !single_quote_open;
 		else if (*input == '\"' && !single_quote_open)
 			double_quote_open = !double_quote_open;
-		if (*input == '\'' || *input == '\"')
-			total_quotes++;
 		input++;
 	}
-	return (single_quote_open || double_quote_open || total_quotes % 2 != 0);
+	return (single_quote_open || double_quote_open);
 }
 
 /**
