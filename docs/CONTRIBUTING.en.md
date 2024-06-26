@@ -121,6 +121,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 
 #### Workflow steps
+
 1. **Creating a Feature Branch**:
    
    - Make sure to be in the *develop* branch:<br>
