@@ -121,7 +121,6 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 
 #### Workflow steps
-
 1. **Creating a Feature Branch**:
    
    - Make sure to be in the *develop* branch:<br>
@@ -163,6 +162,7 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    - Delete the feature branch when the merge is finished:<br>
     `git branch -d <branch-name>`     
      <br>
+     <br>
 
 
 4. **Merging `develop`into `main`**:
@@ -183,17 +183,17 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    
    - Merge the *develop* branch into *main*:<br>
     `git merge develop`
-     
+     <br>
      <br>
 
 5. **Bug Fixes**:
    
    - Follow section *#1* steps using the branch name convention `fix/<describe-bug-concisely>`;
    
-   - Merge the temporary bug fix branch into *develop* by following section *#3* steps:<br>
+   - Merge the temporary bug fix branch into *develop* by following steps described in sections *#2* and *#3* steps;<br>
    
-   - Follow steps described in sections *#2*, *#3*, and *#4*.
-     
+   - Follow steps described in section *#4*.
+     <br>
      <br>
 
 #### Conclusion
