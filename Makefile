@@ -1,22 +1,39 @@
-NAME		= minishell
+NAME			= minishell
 
-CC		= cc
-CFLAGS		= -Wall -Wextra -Werror -g
-SRCS		= display_prompt.c init_minishell.c validate_input.c
-OBJS		= $(SRCS:.c=.o)
-RM		= rm -rf
+CC			= cc
+CFLAGS			= -Wall -Wextra -Werror -g
+RM			= rm -rf
+LIBFT_PATH		= includes/libft
 
-all		= $(NAME)
+SRC_DIR			= srcs
+INCLUDE_DIR		= includes
+OBJ_DIR			= objs
 
-$(NAME):	$(OBJS)
-		$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+SRC_FILES		= srcs/display_prompt.c srcs/init_minishell.c srcs/validate_input.c
+OBJS			= $(SRC_FILES:.c=.o)
+
+LIBFT			= $(LIBFT_PATH)/libft.a
+
+all			= $(NAME)
+
+$(NAME):		$(OBJS) $(LIBFT)
+			@$(CC) $(CFLAGS) -o $@ $^ -L$(LIBFT_PATH) -lft -lreadline
+
+$(OBJ_DIR)/%.o: 	$(SRC_DIR/%.c)
+			mkdir -p $(OBJ_DIR)
+			@$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(LIBFT_PATH) -c -o $@
+
+$(LIBFT):
+			@$(MAKE) -C $(LIBFT_PATH)
 
 clean:
-		$(RM) $(OBJS)
+			@$(MAKE) -C $(LIBFT_PATH) clean
+			$(RM) $(OBJS)
 
-fclean:		clean
-		$(RM) $(NAME)
+fclean:			clean
+			@$(MAKE) -C $(LIBFT_PATH) fclean
+			$(RM) $(NAME)
 
-re:		fclean all
+re:			fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:	all clean fclean re

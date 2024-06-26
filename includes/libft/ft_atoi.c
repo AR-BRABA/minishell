@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/23 16:57:11 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:37:37 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+int	ft_atoi(const char *nptr)
 {
-	char *user_input;
+	int		i;
+	int		convnum;
+	int		sign;
 
-	while (1)
+	i = 0;
+	convnum = 0;
+	sign = 1;
+	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		if (nptr[i] == '-')
+			sign = -1;
+		i++;
 	}
-	return (0);
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		convnum = convnum * 10 + (nptr[i] - 48);
+		i++;
+	}
+	return (convnum * sign);
 }

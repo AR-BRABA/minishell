@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/22 17:03:00 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:42:14 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	char *user_input;
+	char		*tempdest;
+	const char	*tempsrc;
 
-	while (1)
+	tempdest = (char *)dest;
+	tempsrc = (char *)src;
+	if (dest > src)
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		while (n--)
+			tempdest[n] = tempsrc[n];
 	}
-	return (0);
+	else
+		ft_memcpy(dest, src, n);
+	return ((void *)dest);
 }

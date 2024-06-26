@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/27 15:29:45 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:38:18 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char *user_input;
+	size_t	totalsz;
+	void	*ptr_arr;
 
-	while (1)
+	if (nmemb == 0 || size == 0)
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		nmemb = 1;
+		size = 1;
 	}
-	return (0);
+	totalsz = nmemb * size;
+	if (totalsz == 0)
+		totalsz = 1;
+	if (totalsz / nmemb != size)
+		return (NULL);
+	ptr_arr = (void *)malloc(totalsz);
+	if (!ptr_arr)
+		return (NULL);
+	ft_memset(ptr_arr, 0, totalsz);
+	return (ptr_arr);
 }

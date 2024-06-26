@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/28 17:27:51 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:43:12 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+void	ft_putchar_fd(char c, int fd)
 {
-	char *user_input;
-
-	while (1)
-	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
-	}
-	return (0);
+	write(fd, &c, 1);
 }

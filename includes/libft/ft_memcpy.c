@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/22 19:47:48 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:41:36 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	char *user_input;
+	unsigned char	*tempdest;
+	unsigned char	*tempsrc;
+	size_t			i;
 
-	while (1)
+	tempdest = (unsigned char *)dest;
+	tempsrc = (unsigned char *)src;
+	i = 0;
+	if (!dest && !src)
+		return (NULL);
+	if (dest == src || n == 0)
+		return (dest);
+	while (i < n)
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		tempdest[i] = tempsrc[i];
+		i++;
 	}
-	return (0);
+	return ((void *)dest);
 }

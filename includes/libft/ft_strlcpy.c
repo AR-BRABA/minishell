@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/27 16:03:18 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:46:34 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	char *user_input;
+	size_t			i;
+	size_t			src_len;
+	unsigned char	*source;
 
-	while (1)
+	i = 0;
+	src_len = ft_strlen(src);
+	source = (unsigned char *)src;
+	if (size == 0)
+		return (src_len);
+	while (source[i] && i < (size - 1))
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		dst[i] = source[i];
+		i++;
 	}
-	return (0);
+	dst[i] = '\0';
+	return (src_len);
 }

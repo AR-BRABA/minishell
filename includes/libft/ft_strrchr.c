@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Created: 2023/10/19 05:25:03 by tsoares-          #+#    #+#             */
+/*   Updated: 2024/06/22 07:48:29 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-/**
- * Main function that reads the user input in a loop and validates the input
- * @return 0 on successful execution
- */
-
-int	main(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	char *user_input;
+	size_t	length;
+	char	*str;
 
-	while (1)
+	length = ft_strlen(s);
+	str = (char *)s;
+	if (!str)
+		return (NULL);
+	if (str[length] == (unsigned char)c)
+		return ((char *)(s + length));
+	while (length != 0)
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		if (s[length - 1] == (unsigned char)c)
+			return ((char *)(s + (length - 1)));
+		length--;
 	}
-	return (0);
+	return (NULL);
 }
