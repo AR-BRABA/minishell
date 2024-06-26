@@ -11,7 +11,7 @@ This document outlines the rules and procedures for contributing to the minishel
 ## Scrum Ceremonies
 
 Each sprint will last two weeks and will include the following ceremonies:
-
+ (**Merging `develop` into `main`**)
 <br>
 
 1. **Planning + Backlog Refinement** (Monday, Day 1):
@@ -124,12 +124,18 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
 
 1. **Creating a Feature Branch**:
    
-   - Start from the `develop`branch;
+   - Make sure to be in the *develop* branch:<br>
+    `git branch`
+
+   -  If you're not in the *develop* branch, switch for it:<br>
+      `git switch develop`
    
-   - Pull the latest changes (`git pull`command);
+   - Pull the latest changes:<br/>
+     `git pull`
    
-   - Create a new branch using  the naming convention `feature/<feature-name>`.
-     
+   - Create a new branch using  the naming convention `feature/<feature-name>`:<br>
+     `git checkout -b feature/<feature-name>`
+     <br>
      <br>
 
 2. **Development and Testing**:
@@ -137,44 +143,56 @@ To strike a balance, we adopted a hybrid model that combines the best of both wo
    - Develop the functionality on the specific feature branch;
    
    - Perform thorough testing  to ensure quality.
-     
+     <br>
      <br>
 
 3. **Merging into `develop`**:
    
-   - Make sure to be in the `develop`branch;
+   - Make sure to be in the *develop* branch:<br>
+    `git branch`
+
+   -  If you're not in the *develop* branch, switch to it:<br>
+      `git switch develop`
+
+   - Ensure the *develop* branch is up to date:<br/>
+     `git pull`
    
-   - Ensure the `develop`branch is up to date (`git pull`command);
-   
-   - Merge the temporary feature branch into `develop`.
-     
+   - Merge the temporary feature branch into *develop*:<br/>
+    `git merge <branch-name>`
+
+   - Delete the feature branch when the merge is finished:<br>
+    `git branch -d <branch-name>`     
      <br>
+
 
 4. **Merging `develop`into `main`**:
    
    - Create a pull request (PR);
+  
+   - Move the task card from `In progress` to `Validation` in **minishell**'s Github Projects;
    
    - The PR must be reviewed, tested and approved by the other team member;
    
-   - The approval must ensure to be in `main`branch;
+   - The approval must ensure to be in *main* branch:<br>
+  `git branch`
+   - If the approval is not in the *main* branch, switch to it:<br>
+      `git switch main`
    
-   - The approval must make sure  that `main` branch is up to date (`git pull`command);
+   - The approval must make sure  that `main` branch is up to date:<br>
+    `git pull`
    
-   - Merge the `develop` branch into `main`.
+   - Merge the *develop* branch into *main*:<br>
+    `git merge develop`
      
      <br>
 
 5. **Bug Fixes**:
    
-   - Ensure your local repository is up to date (`git pull` command);
+   - Follow section *#1* steps using the branch name convention `fix/<describe-bug-concisely>`;
    
-   - Start from the `develop`branch;
+   - Merge the temporary bug fix branch into *develop* by following section *#3* steps:<br>
    
-   - Create a new branch using the name convention `fix/<describe-bug-concisely>`;
-   
-   - Merge the temporary feature branch into `develop`;
-   
-   - Follow section *#4* steps (**Merging `develop` into `main`**).
+   - Follow steps described in sections *#2*, *#3*, and *#4*.
      
      <br>
 
