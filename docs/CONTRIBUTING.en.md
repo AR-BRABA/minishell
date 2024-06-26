@@ -11,7 +11,7 @@ This document outlines the rules and procedures for contributing to the minishel
 ## Scrum Ceremonies
 
 Each sprint will last two weeks and will include the following ceremonies:
- (**Merging `develop` into `main`**)
+
 <br>
 
 1. **Planning + Backlog Refinement** (Monday, Day 1):
