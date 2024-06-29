@@ -131,6 +131,7 @@ Para encontrar um equilíbrio, adotamos um modelo híbrido que combina o melhor 
        `git pull`
 
      -  Crie uma nova branch usando a convenção de nomenclatura `feature/<nome-da-funcionalidade>`.
+     `git checkout -b feature/<feature-name>`
        <br>
        <br>
   2. **Desenvolvimento e Testes**:
