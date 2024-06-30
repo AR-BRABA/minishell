@@ -65,7 +65,7 @@ char	*trim_start(char *s1)
 	return (trim);
 }
 
-char	*ft_substr(char *s, unsigned int start, int len)
+char	*ft_substr(char *s, int len)
 {
 	int	i;
 	char	*substr;
@@ -74,11 +74,10 @@ char	*ft_substr(char *s, unsigned int start, int len)
 	substr = malloc ((len + 1) * sizeof(char));
 	if (!substr)
 		return (NULL);
-	while (start < ft_strlen(s) && i < len)
+	while (i < len)
 	{
-		substr[i] = s[start];
+		substr[i] = s[i];
 		i++;
-		start++;
 	}
 	substr[i] = '\0';
 	return (substr);
@@ -87,14 +86,47 @@ char	*ft_substr(char *s, unsigned int start, int len)
 char	**lexer(char *user_input)
 {
 	int	i = 0;
+	int	start = 0;
+	int	count = 0;
 	char	**tokens;
+	char	special[4] = {>, <, |};
 	
+	// expansao de variaveis? ver no futuro
 	user_input = ft_strtrim(user_input);
 	while (user_input && user_input[i] != '\0')
 	{
+		if ((user_input[i] == '>') || (user_input[i] == '<') || (user_input[i] == '|'))
+		{
+			if ((user_input[i + 1] == '>') || (user_input[i + 1] == '<') || (user_input[i + 1] == '|'))
+				i++;
+			tokens[count++] = ft_substr(&user_input[start], (i + 1));
+			start = i;
+		}
+		// verifica o proximo, cria token e trim
+		else if ((user_input[i] == '\'') || (user_input[i] == '\"'))
+		{
+			i++;
+			while (user_input[i] != user_input[start])
+				i++;
+			tokens[count++] = ft_substr(&user_input[start], (i + 1));
+			start = i;
+		}
+		// acha a segunda, cria token e trim
+		else if (user_input[i + 1] == todos + space)
+		{
 
+		}
+		// cria token e trim
+		if (is_space(user_input[i]))
+		{
+			while (is_space(user_input[i]))
+				i++;
+			start = i;
+		}
+		else
+			i++;
 	}
-
+	// falta malloc
 	return (tokens);
 }
 
