@@ -39,32 +39,6 @@ char	*ft_strtrim(char *s1)
 	return (trim);
 }
 
-char	*trim_start(char *s1)
-{
-	char	*trim;
-	int		start;
-	int		end;
-	int		i;
-
-	i = 0;
-	start = 0;
-	end = ft_strlen(s1) - 1;
-	while (s1[start] && s1[start] == ' ')
-		start++;
-	trim = (char *) malloc((end - start + 2) * sizeof(char));
-	if (!trim)
-		return (NULL);
-	while (start <= end)
-	{
-		trim[i] = s1[start];
-		i++;
-		start++;
-	}
-	trim[i] = '\0';
-	free(s1);
-	return (trim);
-}
-
 char	*ft_substr(char *s, int len)
 {
 	int	i;
@@ -83,48 +57,70 @@ char	*ft_substr(char *s, int len)
 	return (substr);
 }
 
+int	count_token(char *user_input)
+{
+	int	i = 0;
+	int	token = 0;
+
+	while (user_input && user_input[i] != '\0')
+	{
+		if (!(is_space(user_input[i])) || !(is_special(user_input[i])) || !(is_quote(user_input[i])))
+		{
+			i++;
+			continue ;
+		}
+		if (is_special(user_input[i]))
+		{
+			if (is_special(user_input[i + 1]))
+				i++;
+			token++;
+		}
+		else if (is_quote(user_input[i++])) // ver se funciona
+		{
+			while (user_input[i] != user_input[start])
+				i++;
+			token++;
+		}
+		if (is_space(user_input[++i]))
+		{
+			while (is_space(user_input[i]))
+				i++;
+			token++;
+		}
+		start = i;
+	}
+	
+}
+
 char	**lexer(char *user_input)
 {
 	int	i = 0;
 	int	start = 0;
 	int	count = 0;
 	char	**tokens;
-	char	special[4] = {>, <, |};
 	
 	// expansao de variaveis? ver no futuro
+	// $
+	// |<< > >>
+	tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
 	user_input = ft_strtrim(user_input);
 	while (user_input && user_input[i] != '\0')
 	{
-		if ((user_input[i] == '>') || (user_input[i] == '<') || (user_input[i] == '|'))
+		start = i;
+		if (is_special(user_input[i++]))
 		{
-			if ((user_input[i + 1] == '>') || (user_input[i + 1] == '<') || (user_input[i + 1] == '|'))
+			if (is_special(user_input[i]))
 				i++;
-			tokens[count++] = ft_substr(&user_input[start], (i + 1));
-			start = i;
-		}
-		// verifica o proximo, cria token e trim
-		else if ((user_input[i] == '\'') || (user_input[i] == '\"'))
-		{
-			i++;
+		else if (is_quote(user_input[i++])) // ver se funciona
 			while (user_input[i] != user_input[start])
 				i++;
-			tokens[count++] = ft_substr(&user_input[start], (i + 1));
-			start = i;
-		}
-		// acha a segunda, cria token e trim
-		else if (user_input[i + 1] == todos + space)
-		{
-
-		}
-		// cria token e trim
+		else if (!(is_special(user_input[i])) && !(is_quote(user_input[i])) && !(is_space(user_input[i])) && user_input[i++] != '\0')
+			while (user_input[i] != '\0' && !(is_special(user_input[i])) && !(is_quote(user_input[i])) && !(is_space(user_input[i])))
+				i++;
+		tokens[count++] = ft_substr(&user_input[start], (i - start));
 		if (is_space(user_input[i]))
-		{
 			while (is_space(user_input[i]))
 				i++;
-			start = i;
-		}
-		else
-			i++;
 	}
 	// falta malloc
 	return (tokens);
