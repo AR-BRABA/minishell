@@ -57,39 +57,19 @@ char	*ft_substr(char *s, int len)
 	return (substr);
 }
 
-int	count_token(char *user_input)
+int	is_special(char c)
 {
-	int	i = 0;
-	int	token = 0;
+	return (c == '|' || c == '<' || c == '>');
+}
 
-	while (user_input && user_input[i] != '\0')
-	{
-		if (!(is_space(user_input[i])) || !(is_special(user_input[i])) || !(is_quote(user_input[i])))
-		{
-			i++;
-			continue ;
-		}
-		if (is_special(user_input[i]))
-		{
-			if (is_special(user_input[i + 1]))
-				i++;
-			token++;
-		}
-		else if (is_quote(user_input[i++])) // ver se funciona
-		{
-			while (user_input[i] != user_input[start])
-				i++;
-			token++;
-		}
-		if (is_space(user_input[++i]))
-		{
-			while (is_space(user_input[i]))
-				i++;
-			token++;
-		}
-		start = i;
-	}
-	
+int	is_quote(char c)
+{
+	return (c == '\'' || c == '\"');
+}
+
+int	is_space(char c)
+{
+	return (c >= 7 && c <= 13);
 }
 
 char	**lexer(char *user_input)
@@ -102,7 +82,8 @@ char	**lexer(char *user_input)
 	// expansao de variaveis? ver no futuro
 	// $
 	// |<< > >>
-	tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
+	//
+	// tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
 	user_input = ft_strtrim(user_input);
 	while (user_input && user_input[i] != '\0')
 	{
@@ -111,6 +92,7 @@ char	**lexer(char *user_input)
 		{
 			if (is_special(user_input[i]))
 				i++;
+		}
 		else if (is_quote(user_input[i++])) // ver se funciona
 			while (user_input[i] != user_input[start])
 				i++;
