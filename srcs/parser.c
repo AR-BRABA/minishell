@@ -152,6 +152,7 @@ char	**tokenizer(char *user_input)
 			}
 		}
 		array[token++] = ft_substr(&input[start], (count - start));
+		printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);
 		if (is_space(input[count]))
 			while (is_space(input[count]))
 				count++;
@@ -167,8 +168,8 @@ int	main(void)
 	char	*input;
 	char	**tokens;
 	
-	input = (char *)malloc(69 * sizeof(char));
-	input = strcpy(input, "teste tokens             aqui 'e 'mais uma'aqui'         << >> |<< |");
+	input = (char *)malloc(1 * sizeof(char));
+	strcpy(input, "");
 	tokens = tokenizer(input);
 	while (tokens[i] != NULL)
 	{
