@@ -113,64 +113,70 @@ int	count_tokens(char *user_input)
 	return (token);
 }
 
-char	**lexer(char *user_input)
+void	tokenizer(char *user_input)
 {
-	int	i = 0;
-	int	start = 0;
 	int	count = 0;
-	char	**tokens;
+	int	start = 0;
+	// int	count = 0;
+	// char	**tokens;
 	
 	// expansao de variaveis? ver no futuro
 	// $
-	// |<< > >>
-	//
-	tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
-	user_input = ft_strtrim(user_input);
-	while (user_input && user_input[i] != '\0')
+	// tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
+	// user_input = ft_strtrim(user_input);
+	while (user_input && user_input[count] != '\0')
 	{
-		start = i;
-		if (is_special(user_input[i]))
+		start = count;
+		printf("%c", user_input[start]);
+		count++;
+		if (is_special(user_input[start]))
 		{
-			i++;
-			if (is_special(user_input[i]) && user_input[i] == user_input[i - 1])
+			if (is_special(user_input[count]) && user_input[count] == user_input[start])
 			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
-				i++;
+			{
+				printf("%c", user_input[count]);
+				count++;
+			}
 		}
-		else if (is_quote(user_input[i]))
+		else if (is_quote(user_input[start]))
 		{
-			i++;
-			while (user_input[i] != '\0' && user_input[i] != user_input[start])
-				i++;
+			while (user_input[count] != '\0' && user_input[count] != user_input[start])
+			{
+				printf("%c", user_input[count]);
+				count++;
+			}
+			printf("%c", user_input[count]);
+			count++;
 		}
-		else if (is_basic(user_input[i]))
+		else if (is_basic(user_input[start]))
 		{
-			i++;
-			while (user_input[i] != '\0' && is_basic(user_input[i]))
-				i++;
+			while (user_input[count] != '\0' && is_basic(user_input[count]))
+			{
+				printf("%c", user_input[count]);
+				count++;
+			}
 		}
-		tokens[count++] = ft_substr(&user_input[start], (i - start));
-		if (is_space(user_input[i]))
-			while (is_space(user_input[i]))
-				i++;
+		// tokens[count++] = ft_substr(&user_input[start], (i - start));
+		if (is_space(user_input[count]))
+			while (is_space(user_input[count]))
+				count++;
+		printf("\n");
 	}
+	// tokens[count] = NULL;
 	// falta malloc
-	return (tokens);
+	// return (tokens);
 }
 
 int	main(int argc, char **argv)
 {
-	int	i = 0;
+	// int	i = 0;
 	// char	**tokens;
-
+	
+	(void)argv;	
 	if (argc < 2)
 		return (1);
-	if (is_space(argv[1][0]))
-		printf("space!\n");
-	if (is_special(argv[1][0]))
-		printf("special!\n");
-	if (is_quote(argv[1][0]))
-		printf("quote!\n");
-	// tokens = lexer(argv[1]);
+	tokenizer("teste tokens             aqui 'e 'mais uma'aqui'     << >> |<< |");
+	// tokens = tokenizer(argv[1]);
 	// while (tokens[i] != NULL)
 	// {
 	// 	printf("%d: %s\n", i, tokens[i]);
