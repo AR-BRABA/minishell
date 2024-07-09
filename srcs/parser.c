@@ -69,7 +69,48 @@ int	is_quote(char c)
 
 int	is_space(char c)
 {
-	return (c >= 7 && c <= 13);
+	return ((c >= 9 && c <= 13) || c == 32);
+}
+
+int	is_basic(char c)
+{
+	return (!(is_special(c)) && !(is_quote(c)) && !(is_space(c)));
+}
+
+int	count_tokens(char *user_input)
+{
+	int	i = 0;
+	int	start = 0;
+	int	token = 0;
+
+	while (user_input && user_input[i] != '\0')
+	{
+		start = i;
+		if (is_special(user_input[i]))
+		{
+			i++;
+			if (is_special(user_input[i]) && user_input[i] == user_input[i - 1])
+			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
+				i++;
+		}
+		else if (is_quote(user_input[i]))
+		{
+			i++;
+			while (user_input[i] != '\0' && user_input[i] != user_input[start])
+				i++;
+		}
+		else if (is_basic(user_input[i]))
+		{
+			i++;
+			while (user_input[i] != '\0' && is_basic(user_input[i]))
+				i++;
+		}
+		token++;
+		if (is_space(user_input[i]))
+			while (is_space(user_input[i]))
+				i++;
+	}
+	return (token);
 }
 
 char	**lexer(char *user_input)
@@ -83,22 +124,30 @@ char	**lexer(char *user_input)
 	// $
 	// |<< > >>
 	//
-	// tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
+	tokens = (char **)malloc(count_tokens(user_input) * sizeof(char *));
 	user_input = ft_strtrim(user_input);
 	while (user_input && user_input[i] != '\0')
 	{
 		start = i;
-		if (is_special(user_input[i++]))
+		if (is_special(user_input[i]))
 		{
-			if (is_special(user_input[i]))
+			i++;
+			if (is_special(user_input[i]) && user_input[i] == user_input[i - 1])
+			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
 				i++;
 		}
-		else if (is_quote(user_input[i++])) // ver se funciona
-			while (user_input[i] != user_input[start])
+		else if (is_quote(user_input[i]))
+		{
+			i++;
+			while (user_input[i] != '\0' && user_input[i] != user_input[start])
 				i++;
-		else if (!(is_special(user_input[i])) && !(is_quote(user_input[i])) && !(is_space(user_input[i])) && user_input[i++] != '\0')
-			while (user_input[i] != '\0' && !(is_special(user_input[i])) && !(is_quote(user_input[i])) && !(is_space(user_input[i])))
+		}
+		else if (is_basic(user_input[i]))
+		{
+			i++;
+			while (user_input[i] != '\0' && is_basic(user_input[i]))
 				i++;
+		}
 		tokens[count++] = ft_substr(&user_input[start], (i - start));
 		if (is_space(user_input[i]))
 			while (is_space(user_input[i]))
@@ -111,15 +160,21 @@ char	**lexer(char *user_input)
 int	main(int argc, char **argv)
 {
 	int	i = 0;
-	char	**tokens;
+	// char	**tokens;
 
 	if (argc < 2)
 		return (1);
-	tokens = lexer(argv[1]);
-	while (tokens[i] != NULL)
-	{
-		printf("%d: %s\n", i, tokens[i]);
-		i++;
-	}
+	if (is_space(argv[1][0]))
+		printf("space!\n");
+	if (is_special(argv[1][0]))
+		printf("special!\n");
+	if (is_quote(argv[1][0]))
+		printf("quote!\n");
+	// tokens = lexer(argv[1]);
+	// while (tokens[i] != NULL)
+	// {
+	// 	printf("%d: %s\n", i, tokens[i]);
+	// 	i++;
+	// }
 	return (0);
 }
