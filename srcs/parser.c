@@ -122,7 +122,7 @@ char	**tokenizer(char *user_input)
 	// expansao de variaveis? ver no futuro
 	// $
 	input = ft_strtrim(user_input);
-	array = (char **)malloc(count_tokens(input) * sizeof(char *));
+	array = (char **)malloc((count_tokens(input) + 1) * sizeof(char *));
 	printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
 	while (input && input[count] != '\0')
 	{
@@ -165,17 +165,14 @@ char	**tokenizer(char *user_input)
 int	main(void)
 {
 	int	i = 0;
-	char	*input;
+	char	*input = "token 1 2 '3' << | >| >> '    50 |>'";
 	char	**tokens;
 	
-	input = (char *)malloc(1 * sizeof(char));
-	strcpy(input, "");
 	tokens = tokenizer(input);
 	while (tokens[i] != NULL)
 	{
 		printf("%d: <%s>\n", i, tokens[i]);
 		i++;
 	}
-	free(input);
 	return (0);
 }
