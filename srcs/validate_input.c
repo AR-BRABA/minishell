@@ -42,6 +42,23 @@ int	check_unclosed_quotes(char *input)
 }
 
 /**
+ * Checks if user input is an empty string or contains only spaces
+ *
+ * @param input - user input
+ * @return true - if input is empty or contains only spaces, false otherwise
+ */
+bool	check_empty_input(char *input)
+{
+	while (*input)
+	{
+		if (!ft_isspace(*input))
+			return (false);
+		input++;
+	}
+	return (true);
+}
+
+/**
  * Checks if user input starts or ends with '|', '<' or '>'
  *
  * @param input - user input
@@ -66,6 +83,11 @@ bool	check_special_chars(char *input)
  */
 bool	validate_input(char *input)
 {
+	if (check_empty_input(input))
+	{
+		fprintf(stderr, "DEVOLVER PROMPT PARA USUÁRIO.\n");
+		return (false);
+	}
 	if (check_unclosed_quotes(input) == -1)
 	{
 		fprintf(stderr, "Error: Unclosed quotes in input.\n");
