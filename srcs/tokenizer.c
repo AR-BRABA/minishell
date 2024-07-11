@@ -1,25 +1,5 @@
 #include "../includes/minishell.h"
 
-int	is_special(char c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
-int	is_quote(char c)
-{
-	return (c == '\'' || c == '\"');
-}
-
-int	is_space(char c)
-{
-	return ((c >= 9 && c <= 13) || c == 32);
-}
-
-int	is_basic(char c)
-{
-	return (!(is_special(c)) && !(is_quote(c)) && !(is_space(c)));
-}
-
 int	count_tokens(char *input)
 {
 	int	count = 0;
@@ -94,7 +74,7 @@ char	**tokenizer(char *user_input)
 				count++;
 			}
 		}
-		array[token++] = ft_substr(&input[start], (count - start));
+		array[token++] = substr_by_address(&input[start], (count - start));
 		// printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);
 		if (is_space(input[count]))
 			while (is_space(input[count]))
@@ -105,36 +85,13 @@ char	**tokenizer(char *user_input)
 	return (array);
 }
 
-void	free_split(char **array)
-{
-	int	i = 0;
-
-	while (array[i] != NULL)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-void	print_split(char **array)
-{
-	int	i = 0;
-
-	while (array[i] != NULL)
-	{
-		printf("%d: <%s>\n", i, array[i]);
-		i++;
-	}
-}
-
-int	main(void)
-{
-	int	i = 0;
-	char	*input = "token 1 2 '3' << | >| >> '    50 |>'";
-	char	**tokens;
-	
-	tokens = tokenizer(input);
-	free_split(tokens);
-	return (0);
-}
+// int	main(void)
+// {
+// 	int	i = 0;
+// 	char	*input = "token 1 2 '3' << | >| >> '    50 |>'";
+// 	char	**tokens;
+// 	
+// 	tokens = tokenizer(input);
+// 	free_split(tokens);
+// 	return (0);
+// }

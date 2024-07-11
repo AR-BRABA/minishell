@@ -27,20 +27,20 @@ char	*strtrim_space(char *s1)
 	return (trim);
 }
 
-// char	*ft_substr(char *str, int len)
-// {
-// 	int	i;
-// 	char	*substr;
-//
-// 	i = 0;
-// 	substr = malloc ((len + 1) * sizeof(char));
-// 	if (!substr)
-// 		return (NULL);
-// 	while (i < len)
-// 	{
-// 		substr[i] = str[i];
-// 		i++;
-// 	}
-// 	substr[i] = '\0';
-// 	return (substr);
-// }
+char	*substr_by_address(char *str, int len)
+{
+	int	i;
+	char	*substr;
+
+	i = 0;
+	substr = malloc ((len + 1) * sizeof(char));
+	if (!substr)
+		return (NULL);
+	while (i < len)
+	{
+		substr[i] = str[i];
+		i++;
+	}
+	substr[i] = '\0';
+	return (substr);
+}
