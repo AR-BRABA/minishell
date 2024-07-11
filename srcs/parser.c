@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h> // strcpy
 
 int	ft_strlen(char *str)
 {
@@ -39,7 +38,7 @@ char	*ft_strtrim(char *s1)
 	return (trim);
 }
 
-char	*ft_substr(char *s, int len)
+char	*ft_substr(char *str, int len)
 {
 	int	i;
 	char	*substr;
@@ -50,7 +49,7 @@ char	*ft_substr(char *s, int len)
 		return (NULL);
 	while (i < len)
 	{
-		substr[i] = s[i];
+		substr[i] = str[i];
 		i++;
 	}
 	substr[i] = '\0';
@@ -77,6 +76,9 @@ int	is_basic(char c)
 	return (!(is_special(c)) && !(is_quote(c)) && !(is_space(c)));
 }
 
+/*
+ * count the amount of tokens in an input
+ */
 int	count_tokens(char *input)
 {
 	int	count = 0;
@@ -111,6 +113,10 @@ int	count_tokens(char *input)
 	return (tokens);
 }
 
+/*
+* splits user_input into an array of tokens.
+* lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
+*/
 char	**tokenizer(char *user_input)
 {
 	int	count = 0;
@@ -123,7 +129,7 @@ char	**tokenizer(char *user_input)
 	// $
 	input = ft_strtrim(user_input);
 	array = (char **)malloc((count_tokens(input) + 1) * sizeof(char *));
-	printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
+	// printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
 	while (input && input[count] != '\0')
 	{
 		start = count;
@@ -152,7 +158,7 @@ char	**tokenizer(char *user_input)
 			}
 		}
 		array[token++] = ft_substr(&input[start], (count - start));
-		printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);
+		// printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);
 		if (is_space(input[count]))
 			while (is_space(input[count]))
 				count++;
@@ -162,6 +168,29 @@ char	**tokenizer(char *user_input)
 	return (array);
 }
 
+void	free_split(char **array)
+{
+	int	i = 0;
+
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	print_split(char **array)
+{
+	int	i = 0;
+
+	while (array[i] != NULL)
+	{
+		printf("%d: <%s>\n", i, array[i]);
+		i++;
+	}
+}
+
 int	main(void)
 {
 	int	i = 0;
@@ -169,10 +198,6 @@ int	main(void)
 	char	**tokens;
 	
 	tokens = tokenizer(input);
-	while (tokens[i] != NULL)
-	{
-		printf("%d: <%s>\n", i, tokens[i]);
-		i++;
-	}
+	free_split(tokens);
 	return (0);
 }
