@@ -9,7 +9,8 @@ SRC_DIR			= srcs
 INCLUDE_DIR		= includes
 OBJ_DIR			= objs
 
-SRC_FILES		= srcs/display_prompt.c srcs/init_minishell.c srcs/validate_input.c
+SRC_FILES		= srcs/display_prompt.c srcs/init_minishell.c srcs/validate_input.c\
+					srcs/validate_input_utils.c
 OBJS			= $(SRC_FILES:.c=.o)
 
 LIBFT			= $(LIBFT_PATH)/libft.a

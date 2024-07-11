@@ -23,5 +23,6 @@
 
 char	*read_input(char *user_input);
 bool	validate_input(char *input);
+int     check_unclosed_quotes(char *input);
 
 #endif
