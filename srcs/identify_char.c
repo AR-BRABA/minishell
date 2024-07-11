@@ -1,4 +1,4 @@
-int	is_special(char c)
+int	is_operator(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
@@ -15,5 +15,5 @@ int	is_space(char c)
 
 int	is_basic(char c)
 {
-	return (!(is_special(c)) && !(is_quote(c)) && !(is_space(c)));
+	return (!(is_operator(c)) && !(is_quote(c)) && !(is_space(c)));
 }

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/10 22:36:56 by jgils            ###   ########.fr       */
+/*   Updated: 2024/07/11 12:41:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	print_split(char **array);
 void	free_split(char **array);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
-int	is_special(char c);
+int	is_operator(char c);
 int	is_quote(char c);
 int	is_space(char c);
 int	is_basic(char c);

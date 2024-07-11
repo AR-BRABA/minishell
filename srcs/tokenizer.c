@@ -10,9 +10,9 @@ int	count_tokens(char *input)
 	{
 		start = count;
 		count++;
-		if (is_special(input[start]))
+		if (is_operator(input[start]))
 		{
-			if (is_special(input[count]) && input[count] == input[start])
+			if (is_operator(input[count]) && input[count] == input[start])
 				count++;
 		}
 		else if (is_quote(input[start]))
@@ -51,9 +51,9 @@ char	**tokenizer(char *user_input)
 	{
 		start = count;
 		count++;
-		if (is_special(input[start]))
+		if (is_operator(input[start]))
 		{
-			if (is_special(input[count]) && input[count] == input[start])
+			if (is_operator(input[count]) && input[count] == input[start])
 			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
 			{
 				count++;
