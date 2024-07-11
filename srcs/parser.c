@@ -1,60 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-
-int	ft_strlen(char *str)
-{
-	int	i;
-	i = 0;
-
-	while (str && str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strtrim(char *s1)
-{
-	char	*trim;
-	int		start;
-	int		end;
-	int		i;
-
-	i = 0;
-	start = 0;
-	end = ft_strlen(s1) - 1;
-	while (s1[start] && s1[start] == ' ')
-		start++;
-	while (end > start && s1[end] == ' ')
-		end--;
-	trim = (char *) malloc((end - start + 2) * sizeof(char));
-	if (!trim)
-		return (NULL);
-	while (start <= end)
-	{
-		trim[i] = s1[start];
-		i++;
-		start++;
-	}
-	trim[i] = '\0';
-	return (trim);
-}
-
-char	*ft_substr(char *str, int len)
-{
-	int	i;
-	char	*substr;
-
-	i = 0;
-	substr = malloc ((len + 1) * sizeof(char));
-	if (!substr)
-		return (NULL);
-	while (i < len)
-	{
-		substr[i] = str[i];
-		i++;
-	}
-	substr[i] = '\0';
-	return (substr);
-}
+#include "../includes/minishell.h"
 
 int	is_special(char c)
 {
@@ -76,9 +20,6 @@ int	is_basic(char c)
 	return (!(is_special(c)) && !(is_quote(c)) && !(is_space(c)));
 }
 
-/*
- * count the amount of tokens in an input
- */
 int	count_tokens(char *input)
 {
 	int	count = 0;
@@ -113,10 +54,6 @@ int	count_tokens(char *input)
 	return (tokens);
 }
 
-/*
-* splits user_input into an array of tokens.
-* lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
-*/
 char	**tokenizer(char *user_input)
 {
 	int	count = 0;
@@ -127,7 +64,7 @@ char	**tokenizer(char *user_input)
 	
 	// expansao de variaveis? ver no futuro
 	// $
-	input = ft_strtrim(user_input);
+	input = strtrim_space(user_input);
 	array = (char **)malloc((count_tokens(input) + 1) * sizeof(char *));
 	// printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
 	while (input && input[count] != '\0')
