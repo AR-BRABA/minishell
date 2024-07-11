@@ -21,9 +21,9 @@ int	count_tokens(char *input)
 				count++;
 			count++;
 		}
-		else if (is_basic(input[start]))
+		else if (!is_metachar(input[start]))
 		{
-			while (input[count] != '\0' && is_basic(input[count]))
+			while (input[count] != '\0' && !is_metachar(input[count]))
 				count++;
 		}
 		tokens++;
@@ -67,9 +67,10 @@ char	**tokenizer(char *user_input)
 			}
 			count++;
 		}
-		else if (is_basic(input[start]))
+		// quote > token ou nao?
+		else if (!is_metachar(input[start]))
 		{
-			while (input[count] != '\0' && is_basic(input[count]))
+			while (input[count] != '\0' && !is_metachar(input[count]) && !is_quote(input[count]))
 			{
 				count++;
 			}
