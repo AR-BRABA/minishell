@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:34 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/07/10 23:50:01 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int	main(void)
 {
-	char *user_input;
+	char	*user_input;
 
 	while (1)
 	{

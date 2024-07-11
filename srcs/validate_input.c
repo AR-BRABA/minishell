@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 00:15:09 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/28 16:09:55 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/07/10 23:44:00 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
  * Checks for unclosed quotes in user input
  *
  * @param input - user input
- * @return -1 - if there are unclosed quotes, otherwise returns the position of the char after the quotes close
+ * @return -1 - if there are unclosed quotes, otherwise returns the position of
+ * the char after the quotes close
  */
 int	check_unclosed_quotes(char *input)
 {
