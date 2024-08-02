@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/11 13:09:55 by jgils            ###   ########.fr       */
+/*   Updated: 2024/07/23 02:32:01 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	count_tokens(char *input);
 * splits user_input into an array of tokens.
 * lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
 */
-char	**tokenizer(char *user_input);
+char	**get_tokens(char *user_input);
 
 
 // TOKENIZER_UTILS.C ----------------------------------------------------------
