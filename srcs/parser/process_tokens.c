@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 enum e_type {
 	COMMAND,
@@ -17,30 +17,54 @@ typedef struct	s_node {
 	struct s_node	*next;
 }	t_node;
 
-typedef struct	s_table {
-	char	**tokens;
-	t_node	**frases;
-}	t_table;
+typedef struct	s_list {
+	int	size;
+	t_node	*head;
+	t_node	*next;
+}	t_list;
 
-t_node	*new_node()
+// typedef struct	s_table {
+// 	char	**tokens;
+// 	t_node	**frases;
+// }	t_table;
+
+t_node	*new_token()
+{
+	t_node	*token;
+
+	token = malloc(sizeof(t_node));
+	token->value = NULL;
+	token->type = COMMAND;
+	token->next = NULL;
+	return (token);
+}
+
+t_list	*new_cmd(t_node *token)
+{
+	t_list	*cmd;
+
+	cmd = malloc(sizeof(t_list));
+	cmd->head = token;
+	cmd->next = NULL;
+	return (cmd);
+}
+
+t_list	*new_table()
 {
 	
 }
 
-t_node	*new_frase()
+t_list	*get_commands(char **tokens)
 {
-	
-}
-
-t_table	*get_cmdtable(char **tokens)
-{
-	int	tokens = 0;
+	int	count = 0;
 	int	frases = 0;
-	t_node	**frases;
-	t_table	*cmdtable;
-	
+	t_list	*cmdtable;
 	
 	
 	return (cmdtable);
 }
 
+t_table	*get_cmdtable()
+{
+
+}

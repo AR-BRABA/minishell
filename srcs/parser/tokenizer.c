@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // int	count_tokens(char *input)
 // {
@@ -116,7 +116,7 @@ char	**metachar_split(char *user_input)
 		//
 		// quote > token ou nao?
 		//
-		// TODO: VALIDATE!!!
+		//  TEST:
 		else if (!is_metachar(input[start]))
 		{
 			while (input[count] != '\0' && !is_metachar(input[count]))
@@ -130,6 +130,11 @@ char	**metachar_split(char *user_input)
 				else
 					count++;
 			}
+		}
+		else if (!is_space(input[start]))
+		{
+			while (input[count] != '\0' && !is_metachar(input[count]) && !is_quote(input[count]))
+				count++;
 		}
 		array[token++] = substr_by_address(&input[start], (count - start));
 		// printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);

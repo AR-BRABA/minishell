@@ -1,9 +1,10 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	free_split(char **array)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (array[i] != NULL)
 	{
 		free(array[i]);
