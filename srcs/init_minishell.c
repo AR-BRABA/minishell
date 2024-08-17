@@ -21,13 +21,18 @@ int	main(void)
 {
 	char	*user_input;
 
-	while (1)
+	user_input = NULL;
+	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
-		user_input = read_input(user_input);
-		if (!user_input)
-			break ;
-		if (validate_input(user_input))
-			printf("Valid input: %s\n", user_input);
+		user_input = readline("minishell$ ");
+		if (user_input && !has_only_spaces(user_input))
+		{
+			if (validate_input(user_input))
+				printf("Valid input: %s\n", user_input);
+			add_history(user_input);
+		}
+		// cal lexer to process token
+		free(user_input);
 	}
 	return (0);
 }

@@ -12,7 +12,6 @@
 
 #include "../includes/minishell.h"
 
-
 /*
 bool	check_redirection_syntax(char *input)
 {
@@ -85,22 +84,22 @@ bool	validate_input(char *input)
 {
 	if (check_empty_input(input))
 		return (false);
-	/*if (check_unclosed_quotes(input) == -1)
+	if (check_unclosed_quotes(input))
 	{
-		fprintf(stderr, "Error: Unclosed quotes in input.\n");
+		write(2, "Error: Unclosed quotes in input.\n", 33);
 		return (false);
 	}
-	if (check_border_special_chars(input))
-	{
-		fprintf(stderr, "Error: Special chars at the beginning or"
-			" end of the input.\n");
-		return (false);
-	}*/
-	if (check_unclosed_quotes(input) == -1
+	/*
+	if (check_unclosed_quotes(input)
 		|| check_border_special_chars(input))
-		{
+	{
 			write (2, "Error\n", 6);
 			return (false);
-		}
+	}*/
+	if (check_border_special_chars(input))
+	{
+		write(2, "Error: Special chars at the beginning or end of the input.\n", 59);
+		return (false);
+	}
 	return (true);
 }
