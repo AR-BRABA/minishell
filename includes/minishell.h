@@ -23,6 +23,7 @@
 
 char	*read_input(char *user_input);
 bool	validate_input(char *input);
-int     check_unclosed_quotes(char *input);
+bool    check_unclosed_quotes(char *s);
+bool    has_only_spaces(char *input);
 
 #endif
