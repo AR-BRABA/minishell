@@ -4,6 +4,11 @@ TEST_RESULTS_DIR="tests/results"
 TEST_NAME="border_special_chars"
 declare -a results=()
 
+# Table results colors
+GREEN='\033[32m'
+RED='\033[31m'
+NC='\033[0m' # reset colors
+
 # Perform a single test
 run_test() {
     local input="$1"
@@ -22,16 +27,13 @@ run_test() {
     sed -i '3d' "$result_file"
 
     # Save the expected output
-    # printf "%b\n" "$expected_output" > "$expected_file"
     echo -e "$expected_output" > "$expected_file"
 
     # Compare the actual filtered output with the expected output
     if diff "$result_file" "$expected_file" > /dev/null; then
         results+=(" $test_id  |   $input   |   PASSED")
-        # printf "Test %d: PASSED\n" "$test_id"
     else
         results+=(" $test_id  |   $input   |   FAILED")
-        # printf "Test %d: FAILED\n" "$test_id"
     fi
 }
 
