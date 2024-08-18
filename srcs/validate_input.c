@@ -69,8 +69,7 @@ bool	validate_input(char *input)
 	}
 	if (check_special_chars(input))
 	{
-		fprintf(stderr, "Error: Special chars at the beginning or "
-			"end of the input.\n");
+		write(STDERR_FILENO, "Error\n", 6);
 		return (false);
 	}
 	return (true);
