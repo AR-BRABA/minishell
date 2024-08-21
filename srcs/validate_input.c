@@ -38,54 +38,20 @@ bool	check_redirection_syntax(char *input)
  * @return true - if input starts or ends with '|', '<' or '>', false otherwise
  */
 bool	check_border_special_chars(char *input)
-/*{
-	char	*special_chars;
-
-	special_chars = "|<>";
-	while(*input && (*input != '|' || *input != '>'))
-		input++;
-	if (*input == '<' && *(input + 1) == '<') // check here-doc syntax (move to utils?)
-	{
-		input += 2;
-		while (*input && ft_isspace(*input)) // && *input != '<')
-			input++;
-		if (!*input)
-		{
-			printf("Entrei aqui!!!!");
-			return (true);
-		}
-		return (false);
-	}
-	if (ft_strchr(special_chars, input[0])
-		|| ft_strchr(special_chars, input[ft_strlen(input) - 1]))
-		return (true);
-	return (false);
-}*/
 {
 	char	*special_chars;
 
 	special_chars = "|<>";
-	int i = 0;
 	
 	while(*input && (*input != '|' && *input != '<' && *input != '>'))
-	{
-		//printf("input[%d]: %c\n", i, input[i]);
-		i++;
 		input++;
-	}
-	//printf("pos input: %d\n", i);
-	//printf("Chequei chars iniciais\n");
 	if (*input == '<' && *(input + 1) == '<') // check here-doc syntax (move to utils?)
 	{
-		//printf("Validação HERE-DOC\n");
 		input += 2;
 		while (*input && ft_isspace(*input))
 			input++;
 		if (!*input)
-		{
-			//printf("Entrei aqui!!!!\n");
 			return (true);
-		}
 		return (false);
 	}
 	else if (ft_strchr(special_chars, input[0])
