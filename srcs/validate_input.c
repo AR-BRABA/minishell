@@ -47,7 +47,7 @@ bool	check_border_special_chars(char *input)
 		input += 2;
 		while (*input && ft_isspace(*input) && *input != '<')
 			input++;
-		if (*input == '<')
+		if (*input == '<' || ft_isspace(*input) || !*input)
 			return (true);
 		return (false);
 	}
