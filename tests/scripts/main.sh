@@ -30,6 +30,7 @@ run_test_script() {
 main() {
     local test_scripts=(
         "$TEST_SCRIPTS_DIR/border_special_chars.sh"
+	"$TEST_SCRIPTS_DIR/check_here-doc_syntax.sh"
     )
 
     for test_script in "${test_scripts[@]}"; do
