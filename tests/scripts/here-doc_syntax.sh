@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEST_RESULTS_DIR="tests/results"
-TEST_NAME="border_special_chars"
+TEST_NAME="here-doc_syntax"
 declare -a results=()
 
 # Table results colors
@@ -40,37 +40,13 @@ run_test() {
 }
 
 # Test cases
-run_test '\command' 'minishell$ \\command\nError' 1
-run_test '\ command' 'minishell$ \\ command\nError' 2
-run_test 'command\' 'minishell$ command\\\nError' 3
-run_test 'command\   ' 'minishell$ command\\   \nError' 4
-run_test 'command \' 'minishell$ \\command\nError' 5
-run_test 'command \   ' 'minishell$ command \\   \nError' 6
-
-run_test '|' 'minishell$ |\nError' 7
-run_test '|   ' 'minishell$ |   \nError' 8
-run_test '|command' 'minishell$ |command\nError' 9
-run_test '| command' 'minishell$ | command\nError' 10
-run_test 'command|' 'minishell$ command|\nError' 11
-run_test 'command|   ' 'minishell$ command|   \nError' 12
-run_test 'command   |' 'minishell$ command   |\nError' 13
-run_test 'command   |   ' 'minishell$ command   |   \nError' 14
-
-run_test '<' 'minishell$ <\nError' 15
-run_test '<   ' 'minishell$ <   \nError' 16
-run_test '<command' 'minishell$ <command\nError' 17
-run_test '< command' 'minishell$ < command\nError' 18
-run_test 'command<' 'minishell$ command<\nError' 19
-run_test 'command<   ' 'minishell$ command<   \nError' 20
-run_test 'command   <' 'minishell$ command   <\nError' 21
-run_test 'command   <   ' 'minishell$ command   <   \nError' 22
-
-run_test '>command' 'minishell$ >command\nError' 23
-run_test '> command' 'minishell$ > command\nError' 24
-run_test 'command>' 'minishell$ command>\nError' 25
-run_test 'command>   ' 'minishell$ command>   \nError' 26
-run_test 'command >' 'minishell$ command>\nError' 27
-run_test 'command >   ' 'minishell$ command >   \nError' 28
+run_test '<<' 'minishell$ <<\nError' 1
+run_test '<<anything' 'minishell$ <<anything\nValid input: <<anything' 2
+run_test '<< anything' 'minishell$ << anything\nValid input: << anything' 3
+run_test 'anything<<' 'minishell$ anything<<\nError' 4
+run_test 'anything<<   ' 'minishell$ anything<<   \nError' 5
+run_test 'anything <<' 'minishell$ anything <<\nError' 6
+run_test 'anything <<   ' 'minishell$ anything <<   \nError' 7
 
 # Print results table
 printf "\nTEST: %s" "$TEST_NAME"
