@@ -6,7 +6,9 @@ int	cmdlen(char **input)
 
 	while (input[i] != NULL && input[i][0] != '|')
 		i++;
-	return(i + 1);
+	if (input[i] != NULL && input[i][0] == '|')
+		i++;
+	return(i);
 }
 
 enum e_type {
@@ -100,10 +102,10 @@ t_list	*new_list(char **input)
 	{
 		cmd = new_node(input[i]);
 		add_node(cmd, cmdlist);
-		i++;
 		cmdlist->len++;
 		if (input[i] && input[i][0] == '|')
 			break ;
+		i++;
 	}
 	return (cmdlist);
 }
@@ -169,8 +171,9 @@ t_tab	*get_cmdtable(char **input)
 	list = new_list(&input[i]);
 	cmdtable = malloc(sizeof(t_tab));
 	cmdtable->head = list;
-	cmdtable->len = 0;
+	cmdtable->len = 1;
 	list = list->next;
+	i += cmdlen(&input[i]);
 	while (input[i] != NULL)
 	{
 		list = new_list(&input[i]);
@@ -196,7 +199,7 @@ void	print_list(t_list *list)
 	node = list->head;
 	while (node != NULL)
 	{
-		printf("{value = %s | type = %i}->", node->value, node->type);
+		printf("{value = !%s! \\ type = %i}->", node->value, node->type);
 		node = node->next;
 	}
 	printf("NULL");
@@ -219,7 +222,7 @@ void	print_tab(t_tab	*table)
 		printf("Head empty!!\n");
 		return ;
 	}
-	size = 1;
+	size = 0;
 	while (list != NULL)
 	{
 		printf("\n");
@@ -258,9 +261,11 @@ int	main(int argc, char **argv)
 	print_split(input);
 	cmdtable = get_cmdtable(input);
 	print_tab(cmdtable);
+	free(input);
 	return(0);
 }
-
+//todo: void destroy_table()
+//oi oi a | grep x
 /*
 int	count_varlen(char *token)
 {
