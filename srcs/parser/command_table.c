@@ -4,7 +4,7 @@ int	cmdlen(char **input)
 {
 	int	i = 0;
 
-	while (input[i][0] != '|' && input[i] != NULL)
+	while (input[i] != NULL && input[i][0] != '|')
 		i++;
 	return(i + 1);
 }
@@ -34,34 +34,43 @@ typedef struct	s_list {
 	struct s_list	*next;
 }	t_list;
 
-void	add_node(t_node *new, t_node *list)
+typedef struct	s_tab {
+	t_list	*head;
+	int	len;
+}	t_tab;
+
+void	add_node(t_node *new, t_list *list)
 {
 	int	count = 0;
 	t_node	*node;
 	
-	node = list;
+	node = list->head;
 	if (!node)
-		node = NULL;
-	while (node != NULL && node->next != NULL)
-		node = node->next;
-	node->next = new;
-	new->prev = node;
-	new->next = NULL;
+		list->head = new;
+	else
+	{
+		while (node->next != NULL)
+			node = node->next;
+		node->next = new;
+		new->prev = node;
+	}
 }
 
-void	add_list(t_list *new, t_list *tab)
+void	add_list(t_list *new, t_tab *cmdtable)
 {
 	int	count = 0;
 	t_list	*list;
 	
-	list = tab;
+	list = cmdtable->head;
 	if (!list)
-		list = NULL;
-	while (list != NULL && list->next != NULL)
-		list = list->next;
-	list->next = new;
-	new->prev = list;
-	new->next = NULL;
+		cmdtable->head = new;
+	else
+	{
+		while (list->next != NULL)
+			list = list->next;
+		list->next = new;
+		new->prev = list;
+	}
 }
 
 t_node	*new_node(char *token)
@@ -89,7 +98,8 @@ t_list	*new_list(char **input)
 	cmdlist->next = NULL;
 	while (input[i] != NULL)
 	{
-		add_node(new_node(input[i]), cmdlist->head);
+		cmd = new_node(input[i]);
+		add_node(cmd, cmdlist);
 		i++;
 		cmdlist->len++;
 		if (input[i] && input[i][0] == '|')
@@ -120,13 +130,13 @@ void	get_type(t_node *token)
 		token->type = ARG;
 }
 
-void	identify_tokens(t_list *cmdtable)
+void	identify_tokens(t_tab *cmdtable)
 {
 	int	index = 0;
 	t_list	*cmdline;
 	t_node	*token;
 	
-	cmdline = cmdtable;
+	cmdline = cmdtable->head;
 	token = cmdline->head;
 	while (cmdline != NULL && token != NULL)
 	{
@@ -142,25 +152,113 @@ void	identify_tokens(t_list *cmdtable)
 		if (token == NULL)
 		{
 			cmdline = cmdline->next;
+			if (cmdline == NULL)
+				break ;
 			token = cmdline->head;
 		}
 	}
 }
 
-t_list	*get_cmdtable(char **input)
+t_tab	*get_cmdtable(char **input)
 {
 	int	i = 0;
 	int	cmd = 0;
-	t_list	*cmdtable;
+	t_list	*list;
+	t_tab	*cmdtable;
 
+	list = new_list(&input[i]);
+	cmdtable = malloc(sizeof(t_tab));
+	cmdtable->head = list;
+	cmdtable->len = 0;
+	list = list->next;
 	while (input[i] != NULL)
 	{
-		add_list(new_list(&input[i]), cmdtable);
+		list = new_list(&input[i]);
+		add_list(list, cmdtable);
 		i += cmdlen(&input[i]);
+		cmdtable->len++;
 	}
 	identify_tokens(cmdtable);
 	// format(cmdtable);
 	return (cmdtable);
+}
+
+void	print_list(t_list *list)
+{
+	t_node	*node;
+
+	node = list->head;
+	if(!node)
+	{
+		printf("no list!!\n\n");
+		return ;
+	}
+	node = list->head;
+	while (node != NULL)
+	{
+		printf("{value = %s | type = %i}->", node->value, node->type);
+		node = node->next;
+	}
+	printf("NULL");
+}
+
+void	print_tab(t_tab	*table)
+{
+	t_list	*list;
+	int	size;
+	int	count;
+
+	if(!table)
+	{
+		printf("No tabLe!!\n");
+		return ;
+	}
+	list = table->head;
+	if(!list)
+	{
+		printf("Head empty!!\n");
+		return ;
+	}
+	size = 1;
+	while (list != NULL)
+	{
+		printf("\n");
+		count = 0;
+		while (count < size)
+		{
+			printf("\t");
+			count++;
+		}
+		printf("-----------------------------------\n");
+		count = 0;
+		while (count < size)
+		{
+			printf("\t");
+			count++;
+		}
+		printf("len = %i\n", list->len);
+		count = 0;
+		while (count < size)
+		{
+			printf("\t");
+			count++;
+		}
+		size++;
+		print_list(list);
+		list = list->next;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	char	**input;
+	t_tab	*cmdtable;
+
+	input = metachar_split(argv[1]);
+	print_split(input);
+	cmdtable = get_cmdtable(input);
+	print_tab(cmdtable);
+	return(0);
 }
 
 /*

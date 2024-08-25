@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/23 02:32:01 by jgils            ###   ########.fr       */
+/*   Updated: 2024/08/24 23:10:32 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ bool	validate_input(char *input);
  * count the amount of tokens in an input
  */
 int	count_tokens(char *input);
+char	**metachar_split(char *user_input);
 
 /*
 * splits user_input into an array of tokens.
@@ -60,5 +61,8 @@ int	is_operator(char c);
 int	is_quote(char c);
 int	is_space(char c);
 int	is_metachar(char c);
+
+// PR.C ------------------------------------------------------------
+
 
 #endif
