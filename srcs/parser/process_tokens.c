@@ -49,9 +49,30 @@ t_list	*new_cmd(t_node *token)
 	return (cmd);
 }
 
-t_list	*new_table()
+void	set_value
+
+t_list	*new_table(char **splitted_input)
 {
+	int	count;
+	int	count2;
+	t_node	*token;
+	t_list	*table;
+	t_list	*cmd;
 	
+	token = new_token();
+	cmd = new_cmd(token);
+	table = cmd;
+	while (splitted_input != NULL)
+	{
+		token = new_token();
+		if (!token)
+			free;
+		if (*splitted_input[0] == '|')
+		{
+			cmd = new_cmd(token);
+		}
+	}
+
 }
 
 t_list	*get_commands(char **tokens)
