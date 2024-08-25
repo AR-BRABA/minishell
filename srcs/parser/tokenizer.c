@@ -303,6 +303,8 @@ t_env	*get_env_list(char **envp)
 	t_env	*env;
 	t_envnode	*node;
 
+	if (!envp)
+		return (NULL);
 	env = malloc(sizeof(t_env));
 	env->len = 0;
 	env->head = NULL;
@@ -347,17 +349,21 @@ t_env	*get_env_list(char **envp)
 // 	free(cmdtable);
 // }
 
+// essa func eh o builtin do env, mudar a formatacao pra ficar igual ao env
 void	print_env(t_env	*env)
 {
 	t_envnode	*node;
 	
 	if (!env)
+	{
 		printf("no env!!");
+		return;
+	}
 	printf("total env = %i\n", env->len);
 	node = env->head;
 	while (node != NULL)
 	{
-		printf("key: %s ^^^^ value: %s\n", node->key, node->value);
+		printf("key: %s            value: %s\n", node->key, node->value);
 		node = node->next;
 	}
 }
@@ -385,6 +391,7 @@ int	main(int argc, char **argv, char **envp)
 }
 //todo: void destroy_table()
 //frees!
+//protect malloc
 //
 // cc -Wall -Wextra includes/libft/ft_strlen.c srcs/parser/command_table.c srcs/parser/free.c srcs/parser/identify_char.c srcs/parser/tokenizer.c srcs/parser/tokenizer_utils.c srcs/parser/print.c -ggdb3
 //oi oi a | grep x
