@@ -280,26 +280,37 @@ t_envnode	*new_envnode(char *envp)
 	return (node);
 }
 
+void	addback_env(t_envnode *new, t_env *list)
+{
+	t_envnode	*node;
+
+	node = list->head;
+	if (!node)
+	{
+		list->head = new;
+		return ;
+	}
+	while (node->next != NULL)
+		node = node->next;
+	new->prev = node;
+	node->next = new;
+	list->len++;
+}
+
 t_env	*get_env_list(char **envp)
 {
 	int	i = 0;
 	t_env	*env;
 	t_envnode	*node;
-	t_envnode	*keep;
-	
+
 	env = malloc(sizeof(t_env));
-	node = new_envnode(envp[i++]);
-	env->head = node;
-	keep = node;
-	node = node->next;
-	env->len = 1;
+	env->len = 0;
+	env->head = NULL;
+	env->tail = env->head;
 	while (envp[i] != NULL)
 	{
 		node = new_envnode(envp[i]);
-		node->prev = keep;
-		keep = node;
-		node = node->next;
-		env->len++;
+		addback_env(node, env);
 		i++;
 	}
 	env->tail = node;
