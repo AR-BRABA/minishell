@@ -12,6 +12,7 @@ This document outlines the rules and procedures for contributing to the minishel
 
 Each sprint will last one week and will include the following ceremonies:
 
+
 <br>
 
 1. **Planning + Backlog Refinement** (Monday, Day 1):
@@ -213,5 +214,3 @@ By blending Gitflow's structure with TDB's simplicity, we can achieve stability,
 - [Four agile ceremonies, demystified | Atlassian](https://www.atlassian.com/agile/scrum/ceremonies);
 - [The 5 Scrum Ceremonies Explained for Remote Teams | Parabol](https://www.parabol.co/blog/scrum-ceremonies-for-remote-teams/);
 - [What is a Code Review &amp; How It Can Save Time | Atlassian](https://www.atlassian.com/agile/software-development/code-reviews).
-
-
