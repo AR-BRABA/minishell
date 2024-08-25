@@ -1,5 +1,5 @@
 #include "../../includes/minishell.h"
-
+/*
 int	cmdlen(char **input)
 {
 	int	i = 0;
@@ -251,7 +251,7 @@ void	print_tab(t_tab	*table)
 		list = list->next;
 	}
 }
-
+*/
 typedef struct	s_envnode {
 	char	*key;
 	char	*value;
@@ -268,7 +268,6 @@ typedef struct	s_env {
 t_envnode	*new_envnode(char *envp)
 {
 	char	**split;
-	t_envnode	*keep;
 	t_envnode	*node;
 	
 	split = ft_split(envp, '=');
@@ -284,7 +283,6 @@ t_envnode	*new_envnode(char *envp)
 t_env	*get_env_list(char **envp)
 {
 	int	i = 0;
-	char	**split;
 	t_env	*env;
 	t_envnode	*node;
 	t_envnode	*keep;
@@ -308,47 +306,70 @@ t_env	*get_env_list(char **envp)
 	return (env);
 }
 
-void	destroy_table(t_tab *cmdtable)
+//TODO: test
+// void	destroy_table(t_tab *cmdtable)
+// {
+// 	int	index = 0;
+// 	t_list	*cmdline;
+// 	t_list	*keepline;
+// 	t_node	*token;
+// 	t_node	*keeptoken;
+// 	
+// 	cmdline = cmdtable->head;
+// 	token = cmdline->head;
+// 	while (cmdline != NULL && token != NULL)
+// 	{
+// 		keeptoken = token->next;
+// 		free(token);
+// 		if (keeptoken == NULL)
+// 		{
+// 			keepline = cmdline->next;
+// 			free(cmdline);
+// 			if (keepline == NULL)
+// 				break ;
+// 			cmdline = keepline;
+// 			token = keepline->head;
+// 		}
+// 		else
+// 			token = keeptoken;
+// 	}
+// 	free(cmdtable);
+// }
+
+void	print_env(t_env	*env)
 {
-	int	index = 0;
-	t_list	*cmdline;
-	t_list	*keepline;
-	t_node	*token;
-	t_node	*keeptoken;
+	t_envnode	*node;
 	
-	cmdline = cmdtable->head;
-	token = cmdline->head;
-	while (cmdline != NULL && token != NULL)
+	if (!env)
+		printf("no env!!");
+	printf("total env = %i\n", env->len);
+	node = env->head;
+	while (node != NULL)
 	{
-		keeptoken = token->next;
-		free(token);
-		if (keeptoken == NULL)
-		{
-			keepline = cmdline->next;
-			free(cmdline);
-			if (keepline == NULL)
-				break ;
-			cmdline = keepline;
-			token = keepline->head;
-		}
-		else
-			token = keeptoken;
+		printf("key: %s ^^^^ value: %s\n", node->key, node->value);
+		node = node->next;
 	}
-	free(cmdtable);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**input;
-	t_tab	*cmdtable;
+	// char	**input;
+	// t_tab	*cmdtable;
+	//
+	// print_split(envp);
+	// exit(1);
+	// input = metachar_split(argv[1]);
+	// print_split(input);
+	// cmdtable = get_cmdtable(input);
+	// print_tab(cmdtable);
+	// free(input);
+	//
+	(void)argc;
+	(void)argv;
+	t_env	*env;
 
-	print_split(envp);
-	exit(1);
-	input = metachar_split(argv[1]);
-	print_split(input);
-	cmdtable = get_cmdtable(input);
-	print_tab(cmdtable);
-	free(input);
+	env = get_env_list(envp);
+	print_env(env);
 	return(0);
 }
 //todo: void destroy_table()
