@@ -12,7 +12,6 @@ int	cmdlen(char **input)
 enum e_type {
 	COMMAND,
 	ARG,
-	FD,
 	PIPE,
 	REDIRECT_IN,
 	REDIRECT_OUT,
@@ -70,7 +69,7 @@ t_node	*new_node(char *token)
 	t_node	*cmd;
 
 	cmd = malloc(sizeof(t_node));
-	cmd->value = token;
+	cmd->value = token; //dup??
 	cmd->type = -1;
 	cmd->prev = NULL;
 	cmd->next = NULL;
@@ -86,6 +85,8 @@ t_list	*new_list(char **input)
 
 	cmdlist = malloc(sizeof(t_list));
 	cmdlist->len = 0;
+	cmdlist->prev = NULL;
+	cmdlist->next = NULL;
 	while (input[i] != NULL)
 	{
 		add_node(new_node(input[i]), cmdlist->head);
@@ -97,7 +98,56 @@ t_list	*new_list(char **input)
 	return (cmdlist);
 }
 
-t_list	*new_cmdtable(char **input)
+void	get_type(t_node *token)
+{
+	if (token->prev == NULL || token->prev->value[0] == '|')
+		token->type = COMMAND;
+	else if (token->value[0] == '|')
+		token->type = PIPE;
+	else if (token->value[0] == '<' || token->value[0] == '>')
+	{
+		if (token->value[0] == '<' && token->value[1] == '<')
+			token->type = HEREDOC; //delimitador!!
+		else if (token->value[0] == '>' && token->value[1] == '>')
+			token->type = APPEND;
+		else if (token->value[0] == '<' && token->value[1] == '\0')
+			token->type = REDIRECT_IN;
+		else if (token->value[0] == '>' && token->value[1] == '\0')
+			token->type = REDIRECT_OUT;
+		token->next->type = REDIRECT_FILE;
+	}
+	else
+		token->type = ARG;
+}
+
+void	identify_tokens(t_list *cmdtable)
+{
+	int	index = 0;
+	t_list	*cmdline;
+	t_node	*token;
+	
+	cmdline = cmdtable;
+	token = cmdline->head;
+	while (cmdline != NULL && token != NULL)
+	{
+		if (token->type == -1)
+			get_type(token);
+		// if (token->type <= FD)
+		// {
+		// 	expand_var(token->value);
+		// 	remove_quote(token->value);
+		// }
+		// em outra func
+		token = token->next;
+		if (token == NULL)
+		{
+			cmdline = cmdline->next;
+			token = cmdline->head;
+		}
+	}
+}
+
+t_list	*get_cmdtable(char **input)
 {
 	int	i = 0;
 	int	cmd = 0;
@@ -108,14 +158,12 @@ t_list	*new_cmdtable(char **input)
 		add_list(new_list(&input[i]), cmdtable);
 		i += cmdlen(&input[i]);
 	}
+	identify_tokens(cmdtable);
+	// format(cmdtable);
 	return (cmdtable);
 }
 
-int	get_type(char *token)
-{
-
-}
-
+/*
 int	count_varlen(char *token)
 {
 
@@ -123,7 +171,16 @@ int	count_varlen(char *token)
 
 char	*get_key(char *token)
 {
+	int	i = 0;
 
+	while (token[i] != '\0')
+	{
+		if (token[i] == '$')
+		{
+			i++;
+			
+		}
+	}
 }
 
 char	*get_key_value(char *token)
@@ -188,35 +245,4 @@ void	remove_quote(t_node *token)
 	while ()
 
 }
-
-void	identify_tokens(t_list *cmdtable)
-{
-	int	index = 0;
-	t_list	*cmdline;
-	t_node	*token;
-	
-	cmdline = cmdtable;
-	token = cmdline->head;
-	while (cmdline != NULL && token != NULL)
-	{
-		if (token->type == -1)
-			token->type = get_type(token->value);
-		if (token->type <= FD)
-		{
-			expand_var(token->value);
-			remove_quote(token->value);
-		}
-		token = token->next;
-		index++;
-		if (token == NULL)
-		{
-			cmdline = cmdline->next;
-			token = cmdline->head;
-			index = 0;
-		}
-	}
-}
-
-
-
-
+*/
