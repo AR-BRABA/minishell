@@ -252,6 +252,62 @@ void	print_tab(t_tab	*table)
 	}
 }
 
+typedef struct	s_envnode {
+	char	*key;
+	char	*value;
+	struct s_envnode	*prev;
+	struct s_envnode	*next;
+} t_envnode;
+
+typedef struct	s_env {
+	int	len;
+	t_envnode	*head;
+	t_envnode	*tail;
+} t_env;
+
+t_envnode	*new_envnode(char *envp)
+{
+	char	**split;
+	t_envnode	*keep;
+	t_envnode	*node;
+	
+	split = ft_split(envp, '=');
+	node = malloc(sizeof(t_envnode));
+	node->key = split[0];
+	node->value = split[1];
+	node->prev = NULL;
+	node->next = NULL;
+	free(split);
+	return (node);
+}
+
+t_env	*get_env_list(char **envp)
+{
+	int	i = 0;
+	char	**split;
+	t_env	*env;
+	t_envnode	*node;
+	t_envnode	*keep;
+	
+	env = malloc(sizeof(t_env));
+	node = new_envnode(envp[i++]);
+	env->head = node;
+	keep = node;
+	node = node->next;
+	env->len = 1;
+	while (envp[i] != NULL)
+	{
+		node = new_envnode(envp[i]);
+		node->prev = keep;
+		keep = node;
+		node = node->next;
+		env->len++;
+		i++;
+	}
+	env->tail = node;
+	return (env);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**input;
