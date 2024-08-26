@@ -252,73 +252,6 @@ void	print_tab(t_tab	*table)
 	}
 }
 */
-typedef struct	s_envnode {
-	char	*key;
-	char	*value;
-	struct s_envnode	*prev;
-	struct s_envnode	*next;
-} t_envnode;
-
-typedef struct	s_env {
-	int	len;
-	t_envnode	*head;
-	t_envnode	*tail;
-} t_env;
-
-t_envnode	*new_envnode(char *envp)
-{
-	char	**split;
-	t_envnode	*node;
-	
-	split = ft_split(envp, '=');
-	node = malloc(sizeof(t_envnode));
-	node->key = split[0];
-	node->value = split[1];
-	node->prev = NULL;
-	node->next = NULL;
-	free(split);
-	return (node);
-}
-
-void	addback_env(t_envnode *new, t_env *list)
-{
-	t_envnode	*node;
-
-	node = list->head;
-	if (!node)
-	{
-		list->head = new;
-		return ;
-	}
-	while (node->next != NULL)
-		node = node->next;
-	new->prev = node;
-	node->next = new;
-	list->len++;
-}
-
-t_env	*get_env_list(char **envp)
-{
-	int	i = 0;
-	t_env	*env;
-	t_envnode	*node;
-
-	if (!envp)
-		return (NULL);
-	env = malloc(sizeof(t_env));
-	env->len = 0;
-	env->head = NULL;
-	env->tail = env->head;
-	while (envp[i] != NULL)
-	{
-		node = new_envnode(envp[i]);
-		addback_env(node, env);
-		i++;
-	}
-	env->tail = node;
-	return (env);
-}
-
 //TODO: test
 // void	destroy_table(t_tab *cmdtable)
 // {
@@ -349,26 +282,92 @@ t_env	*get_env_list(char **envp)
 // 	free(cmdtable);
 // }
 
-// essa func eh o builtin do env, mudar a formatacao pra ficar igual ao env
-void	print_env(t_env	*env)
+//todo: void destroy_table()
+//frees!
+//protect malloc
+//
+//
+char	*get_key(char *token)
 {
-	t_envnode	*node;
-	
-	if (!env)
-	{
-		printf("no env!!");
-		return;
-	}
-	printf("total env = %i\n", env->len);
-	node = env->head;
-	while (node != NULL)
-	{
-		printf("key: %s            value: %s\n", node->key, node->value);
-		node = node->next;
-	}
+	int	i = 1;
+	char	*key;
+
+	// if (token[i] >= 0 && token[i] <= 9)
+	while (token[i] != '\0' && !is_metachar(token[i]))
+		i++;
+	key = ft_strndup(&token[0], i); // com $
+	return (key);
 }
 
-int	main(int argc, char **argv, char **envp)
+char	*get_key_value(char *key)
+{
+	
+
+}
+
+int	expanded_strlen(char *token, t_env *env)
+{
+	int	squote = 2;
+	int	varlen = 0;
+	int	keylen = 0;
+	int	i = 0;
+	char	*key;
+	// char	*value;
+
+	while (token[i] != '\0')
+	{
+		if (token[i] == '\'')
+			squote++;
+		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
+		{
+			key = get_key(&token[i]);
+			keylen += ft_strlen(key);
+			vallen += count_key_value(&key[1], env);
+			i += ft_strlen(key);
+			free(key);
+		}
+		i++;
+	}
+	return (varlen + (i - keylen));
+}
+
+void	expand_var(char *token)
+{
+	int	squote = 2;
+	int	i = 0;
+	int	count;
+	char	*key;
+	char	*newtok;
+
+	newtok = malloc((expanded_strlen(token) + 1) * sizeof(char));
+	while (token[i] != '\0')
+	{
+		if (token[i] == '\'')
+			squote++;
+		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
+		{
+			key = get_key(&token[i]);
+			ft_strcat(newtok, get_key_value(&key[1]));
+			count += count_key_val(&key[1]);
+			i += ft_strlen(key);
+			free(key);
+		}
+		newtok[count++] = token[i++];
+	}
+	free(token);
+}
+
+void	remove_quote(t_node *token)
+{
+	int	i = 0;
+	int	squote = 0;
+	int	dquote = 0;
+
+	while ()
+
+}
+
+int	main(int argc, char **argv)
 {
 	// char	**input;
 	// t_tab	*cmdtable;
@@ -383,100 +382,5 @@ int	main(int argc, char **argv, char **envp)
 	//
 	(void)argc;
 	(void)argv;
-	t_env	*env;
-
-	env = get_env_list(envp);
-	print_env(env);
 	return(0);
 }
-//todo: void destroy_table()
-//frees!
-//protect malloc
-//
-// cc -Wall -Wextra includes/libft/ft_strlen.c srcs/parser/command_table.c srcs/parser/free.c srcs/parser/identify_char.c srcs/parser/tokenizer.c srcs/parser/tokenizer_utils.c srcs/parser/print.c -ggdb3
-//oi oi a | grep x
-//
-//fazer env antes de ampliar var
-/*
-int	count_varlen(char *token)
-{
-
-}
-
-char	*get_key(char *token)
-{
-	int	i = 0;
-
-	while (token[i] != '\0')
-	{
-		if (token[i] == '$')
-		{
-			i++;
-			
-		}
-	}
-}
-
-char	*get_key_value(char *token)
-{
-
-}
-
-int	expanded_strlen(char *token)
-{
-	int	squote = 2;
-	int	varlen = 0;
-	int	i = 0;
-
-	while (token[i] != '\0')
-	{
-		if (token[i] == '\'')
-			squote++;
-		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
-		{
-			//pegar key pra achar var (usar a outra func de molde)
-			varlen += count_varlen(&token[i]);
-			while (token[i] && token[i] != ' ') //enquanto for key -eh key ate o final ou espaco?
-				i++;
-		}
-		i++;
-	}
-	return (varlen + i);
-}
-
-void	expand_var(char *token)
-{
-	int	squote = 2;
-	int	i = 0;
-	int	count;
-	char	*key;
-	char	*newval;
-
-	newval = malloc((expanded_strlen(token) + 1) * sizeof(char));
-	while (token[i] != '\0')
-	{
-		if (token[i] == '\'')
-			squote++;
-		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
-		{
-			key = get_key(&token[i]);
-			ft_strcat(newval[count], get_key_value(key));
-			while (*key++)
-				i++;
-		}
-		newval[count++] = token[i++];
-	}
-	free(token); //tem q dar o free no char ** -- mudar isso, fazer 1 dup
-	token = newval;
-}
-
-void	remove_quote(t_node *token)
-{
-	int	i = 0;
-	int	squote = 0;
-	int	dquote = 0;
-
-	while ()
-
-}
-*/
