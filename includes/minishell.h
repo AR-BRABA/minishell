@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/06/28 15:40:17 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:07:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,28 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
+typedef struct	s_envnode {
+	char	*key;
+	char	*value;
+	struct s_envnode	*prev;
+	struct s_envnode	*next;
+} t_envnode;
+
+typedef struct	s_env {
+	int	len;
+	t_envnode	*head;
+	t_envnode	*tail;
+} t_env;
+
 char	*read_input(char *user_input);
 bool	validate_input(char *input);
 bool    check_unclosed_quotes(char *s);
 bool    has_only_spaces(char *input);
+
+// ENV.C
+t_envnode	*new_envnode(char *envp);
+void	addback_env(t_envnode *newnode, t_env *list);
+t_env	*get_env_list(char **envp);
+void	print_env(t_env	*env);
 
 #endif
