@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/08/25 01:43:44 by jgils            ###   ########.fr       */
+/*   Updated: 2024/08/26 16:49:14 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,36 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+
+enum e_type {
+	COMMAND,
+	ARG,
+	PIPE,
+	REDIRECT_IN,
+	REDIRECT_OUT,
+	REDIRECT_FILE,
+	APPEND,
+	HEREDOC,
+};
+
+typedef struct	s_node {
+	char	*value;
+	int	type;
+	struct s_node	*prev;
+	struct s_node	*next;
+}	t_node;
+
+typedef struct	s_list {
+	int	len;
+	t_node	*head;
+	struct s_list	*prev;
+	struct s_list	*next;
+}	t_list;
+
+typedef struct	s_tab {
+	t_list	*head;
+	int	len;
+}	t_tab;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char	*read_input(char *user_input);
@@ -52,6 +82,8 @@ char	*substr_by_address(char *str, int len);
 
 // PRINT.C --------------------------------------------------------------------
 void	print_split(char **array);
+void	print_list(t_list *list);
+void	print_tab(t_tab	*table);
 
 // FREE.C ---------------------------------------------------------------------
 void	free_split(char **array);
