@@ -1,81 +1,4 @@
 #include "../../includes/minishell.h"
-int	cmdlen(char **input)
-{
-	int	i = 0;
-
-	while (input[i] != NULL && input[i][0] != '|')
-		i++;
-	if (input[i] != NULL && input[i][0] == '|')
-		i++;
-	return(i);
-}
-
-void	add_node(t_node *new, t_list *list)
-{
-	t_node	*node;
-	
-	node = list->head;
-	if (!node)
-		list->head = new;
-	else
-	{
-		while (node->next != NULL)
-			node = node->next;
-		node->next = new;
-		new->prev = node;
-	}
-}
-
-void	add_list(t_list *new, t_tab *cmdtable)
-{
-	t_list	*list;
-	
-	list = cmdtable->head;
-	if (!list)
-		cmdtable->head = new;
-	else
-	{
-		while (list->next != NULL)
-			list = list->next;
-		list->next = new;
-		new->prev = list;
-	}
-}
-
-t_node	*new_node(char *token)
-{
-	t_node	*cmd;
-
-	cmd = malloc(sizeof(t_node));
-	cmd->value = token;
-	cmd->type = -1;
-	cmd->prev = NULL;
-	cmd->next = NULL;
-
-	return (cmd);
-}
-
-t_list	*new_list(char **input)
-{
-	int	i = 0;
-	t_node	*cmd;
-	t_list	*cmdlist;
-
-	cmdlist = malloc(sizeof(t_list));
-	cmdlist->len = 0;
-	cmdlist->prev = NULL;
-	cmdlist->next = NULL;
-	while (input[i] != NULL)
-	{
-		cmd = new_node(input[i]);
-		add_node(cmd, cmdlist);
-		cmdlist->len++;
-		if (input[i] && input[i][0] == '|')
-			break ;
-		i++;
-	}
-	return (cmdlist);
-}
 
 void	get_redirect_type(t_node *token)
 {
@@ -154,39 +77,7 @@ t_tab	*get_cmdtable(char **input)
 }
 
 //TODO: test
-// void	destroy_table(t_tab *cmdtable)
-// {
-// 	int	index = 0;
-// 	t_list	*cmdline;
-// 	t_list	*keepline;
-// 	t_node	*token;
-// 	t_node	*keeptoken;
-// 	
-// 	cmdline = cmdtable->head;
-// 	token = cmdline->head;
-// 	while (cmdline != NULL && token != NULL)
-// 	{
-// 		keeptoken = token->next;
-// 		free(token);
-// 		if (keeptoken == NULL)
-// 		{
-// 			keepline = cmdline->next;
-// 			free(cmdline);
-// 			if (keepline == NULL)
-// 				break ;
-// 			cmdline = keepline;
-// 			token = keepline->head;
-// 		}
-// 		else
-// 			token = keeptoken;
-// 	}
-// 	free(cmdtable);
-// }
-
-//todo: void destroy_table()
-//frees!
 //protect malloc
-//
 /*
 char	*get_key(char *token)
 {

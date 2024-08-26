@@ -1,39 +1,5 @@
 #include "../../includes/minishell.h"
 
-// int	count_tokens(char *input)
-// {
-// 	int	count = 0;
-// 	int	start = 0;
-// 	int	tokens = 0;
-//
-// 	while (input && input[count] != '\0')
-// 	{
-// 		start = count;
-// 		count++;
-// 		if (is_operator(input[start]))
-// 		{
-// 			if (is_operator(input[count]) && input[count] == input[start])
-// 				count++;
-// 		}
-// 		else if (is_quote(input[start]))
-// 		{
-// 			while (input[count] != '\0' && input[count] != input[start])
-// 				count++;
-// 			count++;
-// 		}
-// 		else if (!is_metachar(input[start]))
-// 		{
-// 			while (input[count] != '\0' && !is_metachar(input[count]))
-// 				count++;
-// 		}
-// 		tokens++;
-// 		if (is_space(input[count]))
-// 			while (is_space(input[count]))
-// 				count++;
-// 	}
-// 	return (tokens);
-// }
-
 int	count_tokens(char *user_input)
 {
 	int	count = 0;
@@ -42,10 +8,7 @@ int	count_tokens(char *user_input)
 	int	tokens = 0;
 	char	*input;
 	
-	// expansao de variaveis? ver no futuro
-	// $
 	input = strtrim_space(user_input);
-	// printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
 	while (input && input[count] != '\0')
 	{
 		start = count;
@@ -53,10 +16,8 @@ int	count_tokens(char *user_input)
 		if (is_operator(input[start]))
 		{
 			if (is_operator(input[count]) && input[count] == input[start])
-			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
 				count++;
 		}
-		// TEST:
 		else if (!is_metachar(input[start]))
 		{
 			while (input[count] != '\0' && !is_metachar(input[count]))
@@ -88,11 +49,8 @@ char	**metachar_split(char *user_input)
 	char	**array;
 	char	*input;
 	
-	// expansao de variaveis? ver no futuro
-	// $
 	input = strtrim_space(user_input);
 	array = (char **)malloc((count_tokens(input) + 1) * sizeof(char *));
-	// printf("\n\ntokens + null = %i\n\n\n", count_tokens(input));
 	while (input && input[count] != '\0')
 	{
 		start = count;
@@ -100,23 +58,8 @@ char	**metachar_split(char *user_input)
 		if (is_operator(input[start]))
 		{
 			if (is_operator(input[count]) && input[count] == input[start])
-			// se eh especial (<,|,>) e se o proximo eh igual (>>, <<)
-			{
 				count++;
-			}
 		}
-		// else if (is_quote(input[start]))
-		// {
-		// 	while (input[count] != '\0' && input[count] != input[start])
-		// 	{
-		// 		count++;
-		// 	}
-		// 	count++;
-		// }
-		//
-		// quote > token ou nao?
-		//
-		//  TEST:
 		else if (!is_metachar(input[start]))
 		{
 			while (input[count] != '\0' && !is_metachar(input[count]))
@@ -137,7 +80,6 @@ char	**metachar_split(char *user_input)
 				count++;
 		}
 		array[token++] = substr_by_address(&input[start], (count - start));
-		// printf("\ntoken%i - count: %i | start: %i\n\n", token, count, start);
 		if (is_space(input[count]))
 			while (is_space(input[count]))
 				count++;

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/08/26 16:49:14 by jgils            ###   ########.fr       */
+/*   Updated: 2024/08/26 18:18:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*read_input(char *user_input);
 bool	validate_input(char *input);
 
 
-// TOKENIZER.C ----------------------------------------------------------------
+// LEXER.C --------------------------------------------------------------------
 /*
  * count the amount of tokens in an input
  */
@@ -72,8 +72,9 @@ char	**metachar_split(char *user_input);
 char	**get_tokens(char *user_input);
 
 
-// TOKENIZER_UTILS.C ----------------------------------------------------------
+// LEXER_UTILS.C --------------------------------------------------------------
 char	*strtrim_space(char *s1);
+char	*substr_by_address(char *str, int len);
 
 /*
 * ft_substr but starting by the first index of str
@@ -87,6 +88,7 @@ void	print_tab(t_tab	*table);
 
 // FREE.C ---------------------------------------------------------------------
 void	free_split(char **array);
+void	destroy_table(t_tab *cmdtable);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
 int	is_operator(char c);
@@ -94,7 +96,17 @@ int	is_quote(char c);
 int	is_space(char c);
 int	is_metachar(char c);
 
-// COMMAND_TABLE.C ------------------------------------------------------------
+// TOKENIZER.C ----------------------------------------------------------------
+t_tab	*get_cmdtable(char **input);
+void	identify_tokens(t_tab *cmdtable);
+void	get_type(t_node *token);
+void	get_redirect_type(t_node *token);
 
+// TOKENIZER_UTILS.C ----------------------------------------------------------
+int	cmdlen(char **input);
+void	add_node(t_node *newnode, t_list *list);
+void	add_list(t_list *newnode, t_tab *cmdtable);
+t_node	*new_node(char *token);
+t_list	*new_list(char **input);
 
 #endif
