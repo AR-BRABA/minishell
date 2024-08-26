@@ -1,0 +1,85 @@
+-- quotes
+
+a "quote"
+"quote" a b c d e f
+ab"quote"cdef
+a b"quote"cdef
+"quo te"
+" quote "
+a" quote "
+" quote "a
+"                    "
+
+a "quote" "
+a "quote" """
+
+
+a 'quote'
+'quote' a b c d e f
+ab'quote'cdef
+a b'quote'cdef
+'quo te'
+' quote '
+a' quote '
+' quote 'a
+'                    '
+
+a 'quote' '
+a 'quote' '''
+
+
+-- redirects
+
+ai>aiai
+ai > aiai
+ai echo > aiai hello
+ui > uiui > aiai > oioi
+
+>aiaia
+> ai
+ai>
+aiai >
+
+
+ai<aiai
+ai < aiai
+ai echo < aiai hello
+ui < uiui < aiai < oioi
+
+<aiai
+< ai
+ai<
+aiai <
+
+
+ai<<aiai
+ai << aiai
+ai echo << aiai hello
+ui << uiui << aiai << oioi
+
+<<aiai
+<< ai
+ai<<
+aiai <<
+
+
+ai>>aiai
+ai >> aiai
+ai echo >> aiai hello
+ui >> uiui >> aiai >> oioi
+
+>>aiai
+>> ai
+ai>>
+aiai >>
+
+
+-- pipe
+
+||af
+|af
+n aguento mais|
+n aguento mais||
+
+n aguento | mais
+n aguento || mais
