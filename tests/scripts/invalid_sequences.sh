@@ -62,6 +62,24 @@ run_test 'anything < |   ' 'minishell$ anything < |   \nError' 14
 run_test '< |anything' 'minishell$ < |anything\nError' 15
 run_test '< | anything' 'minishell$ < | anything\nError' 16
 
+run_test '|<' 'minishell$ |<\nError' 17
+run_test '|<   ' 'minishell$ |<   \nError' 18
+run_test 'anything|<' 'minishell$ anything|<\nError' 19
+run_test 'anything|<   ' 'minishell$ anything|<   \nError' 20
+run_test 'anything |<' 'minishell$ anything |<\nError' 21
+run_test 'anything |<   ' 'minishell$ anything |<   \nError' 22
+run_test '|<anything' 'minishell$ |<anything\nError' 23
+run_test '|< anything' 'minishell$ |< anything\nError' 24
+
+run_test '| <' 'minishell$ | <\nError' 25
+run_test '| <   ' 'minishell$ | <   \nError' 26
+run_test 'anything| <' 'minishell$ anything| <\nError' 27
+run_test 'anything| <   ' 'minishell$ anything| <   \nError' 28
+run_test 'anything | <' 'minishell$ anything | <\nError' 29
+run_test 'anything | <   ' 'minishell$ anything | <   \nError' 30
+run_test '| <anything' 'minishell$ | <anything\nError' 31
+run_test '| < anything' 'minishell$ | < anything\nError' 32
+
 
 # Print results table
 printf "\nTEST: %s" "$TEST_NAME"
