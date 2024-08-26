@@ -1,18 +1,5 @@
 #include "../../includes/minishell.h"
 
-typedef struct	s_envnode {
-	char	*key;
-	char	*value;
-	struct s_envnode	*prev;
-	struct s_envnode	*next;
-} t_envnode;
-
-typedef struct	s_env {
-	int	len;
-	t_envnode	*head;
-	t_envnode	*tail;
-} t_env;
-
 t_envnode	*new_envnode(char *envp)
 {
 	char	**split;
@@ -28,20 +15,20 @@ t_envnode	*new_envnode(char *envp)
 	return (node);
 }
 
-void	addback_env(t_envnode *new, t_env *list)
+void	addback_env(t_envnode *newnode, t_env *list)
 {
 	t_envnode	*node;
 
 	node = list->head;
 	if (!node)
 	{
-		list->head = new;
+		list->head = newnode;
 		return ;
 	}
 	while (node->next != NULL)
 		node = node->next;
-	new->prev = node;
-	node->next = new;
+	newnode->prev = node;
+	node->next = newnode;
 	list->len++;
 }
 
