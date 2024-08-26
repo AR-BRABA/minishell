@@ -25,6 +25,8 @@ int	main(void)
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
 		user_input = readline("minishell$ ");
+		if (!user_input)
+			break; // Stop the loop if readline() returns NULL (EOF)
 		if (user_input && !has_only_spaces(user_input))
 		{
 			if (validate_input(user_input))
