@@ -88,17 +88,6 @@ void	print_env(t_env	*env)
 
 int	main(int argc, char **argv, char **envp)
 {
-	// char	**input;
-	// t_tab	*cmdtable;
-	//
-	// print_split(envp);
-	// exit(1);
-	// input = metachar_split(argv[1]);
-	// print_split(input);
-	// cmdtable = get_cmdtable(input);
-	// print_tab(cmdtable);
-	// free(input);
-	//
 	(void)argc;
 	(void)argv;
 	t_env	*env;
