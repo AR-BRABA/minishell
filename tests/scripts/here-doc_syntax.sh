@@ -4,6 +4,10 @@ TEST_RESULTS_DIR="tests/results"
 TEST_NAME="here-doc_syntax"
 declare -a results=()
 
+if [[ ! -d "$TEST_RESULTS_DIR" ]]; then
+    mkdir -p "$TEST_RESULTS_DIR"
+fi
+
 # Table results colors
 GREEN='\033[32m'
 RED='\033[31m'
