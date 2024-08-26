@@ -4,6 +4,10 @@ TEST_RESULTS_DIR="tests/results"
 TEST_NAME="border_special_chars"
 declare -a results=()
 
+if [[ ! -d "$TEST_RESULTS_DIR" ]]; then
+    mkdir -p "$TEST_RESULTS_DIR"
+fi
+
 # Table results colors
 GREEN='\033[32m'
 RED='\033[31m'
@@ -44,7 +48,7 @@ run_test '\command' 'minishell$ \\command\nError' 1
 run_test '\ command' 'minishell$ \\ command\nError' 2
 run_test 'command\' 'minishell$ command\\\nError' 3
 run_test 'command\   ' 'minishell$ command\\   \nError' 4
-run_test 'command \' 'minishell$ \\command\nError' 5
+run_test 'command \' 'minishell$ command \\\nError' 5
 run_test 'command \   ' 'minishell$ command \\   \nError' 6
 
 run_test '|' 'minishell$ |\nError' 7
@@ -69,7 +73,7 @@ run_test '>command' 'minishell$ >command\nError' 23
 run_test '> command' 'minishell$ > command\nError' 24
 run_test 'command>' 'minishell$ command>\nError' 25
 run_test 'command>   ' 'minishell$ command>   \nError' 26
-run_test 'command >' 'minishell$ command>\nError' 27
+run_test 'command >' 'minishell$ command >\nError' 27
 run_test 'command >   ' 'minishell$ command >   \nError' 28
 
 # Print results table
