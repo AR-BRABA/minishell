@@ -10,7 +10,8 @@ This document outlines the rules and procedures for contributing to the minishel
 
 ## Scrum Ceremonies
 
-Each sprint will last two weeks and will include the following ceremonies:
+Each sprint will last one week and will include the following ceremonies:
+
 
 <br>
 
@@ -22,23 +23,17 @@ Each sprint will last two weeks and will include the following ceremonies:
      
      <br>
 
-2. **Weekly** (Saturday, Day 6): 
-   
-   * **Objective**: Code review, asses the progress of the sprint, discuss any blockers, and adjust the plan if necessary.
-   
-   * **Output**: Updated sprint plans and resolution for any impediments.
-     
-     <br>
-
-3. **Weekly** (Wednesday, Day 10):
+2. **Weekly** (Saturday, Day 3): 
    
    * **Objective**: Asses the progress of the sprint, discuss any blockers, and adjust the plan if necessary.
    
    * **Output**: Updated sprint plans and resolution for any impediments.
+
+   * Weeklys status will be registered in threads at team Discord's server.
      
      <br>
 
-4. **Review** (Saturday, Day 13):
+3. **Review** (Saturday, Day 6):
    
    * **Objective**: Review the completed tasks, demonstrate the new features and gather feedback.
    
@@ -46,7 +41,7 @@ Each sprint will last two weeks and will include the following ceremonies:
    
    <br>
 
-5. **Retrospective** (Saturday, Day 13):
+4. **Retrospective** (Saturday, Day 6):
    
    * **Objective**: Reflect on the sprint, identify what went well, what didn't, and plan for improvements.
    
@@ -59,11 +54,9 @@ Each sprint will last two weeks and will include the following ceremonies:
 | Day    | Ceremony                      | Description                                                                              |
 | ------ | ----------------------------- | ---------------------------------------------------------------------------------------- |
 | Day 1  | Planning + Backlog Refinement | Define and refine tasks, generate backlog                                                |
-| Day 6  | Weekly                        | Code review, asses sprint progress, discuss blockers, adjust plans                       |
-| Day 7  | Rest                          | Rest Day                                                                                 |
-| Day 10 | Weekly                        | Asses progress, discuss blockers, adjust plans                                           |
-| Day 13 | Review + Retrospective        | Review completed tasks, gather feedback.<br>Reflect on the sprint, identify improvements |
-| Day 14 | Rest                          | Rest day                                                                                 |
+| Day 3  | Weekly                        | Asses progress, discuss blockers, adjust plans                                           |
+| Day 6  | Review + Retrospective        | Review completed tasks, gather feedback.<br>Reflect on the sprint, identify improvements |
+| Day 7  | Rest                          | Rest day                                                                                 |
 
 <br><br>
 
@@ -221,5 +214,3 @@ By blending Gitflow's structure with TDB's simplicity, we can achieve stability,
 - [Four agile ceremonies, demystified | Atlassian](https://www.atlassian.com/agile/scrum/ceremonies);
 - [The 5 Scrum Ceremonies Explained for Remote Teams | Parabol](https://www.parabol.co/blog/scrum-ceremonies-for-remote-teams/);
 - [What is a Code Review &amp; How It Can Save Time | Atlassian](https://www.atlassian.com/agile/software-development/code-reviews).
-
-

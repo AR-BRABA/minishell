@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/08/26 18:18:58 by jgils            ###   ########.fr       */
+/*   Updated: 2024/08/27 11:45:19 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,47 @@ typedef struct	s_tab {
 	int	len;
 }	t_tab;
 
+typedef struct	s_envnode {
+	char	*key;
+	char	*value;
+	struct s_envnode	*prev;
+	struct s_envnode	*next;
+} t_envnode;
+
+typedef struct	s_env {
+	int	len;
+	t_envnode	*head;
+	t_envnode	*tail;
+} t_env;
+
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char	*read_input(char *user_input);
 
 // VALIDATE_INPUT.C -----------------------------------------------------------
 bool	validate_input(char *input);
+bool    check_unclosed_quotes(char *s);
+bool    has_only_spaces(char *input);
 
+// ENV.C -----------------------------------------------------------------------
+t_envnode	*new_envnode(char *envp);
+void	addback_env(t_envnode *newnode, t_env *list);
+t_env	*get_env_list(char **envp);
+void	print_env(t_env	*env);
+
+// PRINT.C --------------------------------------------------------------------
+void	print_split(char **array);
+void	print_list(t_list *list);
+void	print_tab(t_tab	*table);
+
+// FREE.C ---------------------------------------------------------------------
+void	free_split(char **array);
+void	destroy_table(t_tab *cmdtable);
+
+// IDENTIFY_CHAR.C ------------------------------------------------------------
+int	is_operator(char c);
+int	is_quote(char c);
+int	is_space(char c);
+int	is_metachar(char c);
 
 // LEXER.C --------------------------------------------------------------------
 /*
@@ -80,21 +115,6 @@ char	*substr_by_address(char *str, int len);
 * ft_substr but starting by the first index of str
 */
 char	*substr_by_address(char *str, int len);
-
-// PRINT.C --------------------------------------------------------------------
-void	print_split(char **array);
-void	print_list(t_list *list);
-void	print_tab(t_tab	*table);
-
-// FREE.C ---------------------------------------------------------------------
-void	free_split(char **array);
-void	destroy_table(t_tab *cmdtable);
-
-// IDENTIFY_CHAR.C ------------------------------------------------------------
-int	is_operator(char c);
-int	is_quote(char c);
-int	is_space(char c);
-int	is_metachar(char c);
 
 // TOKENIZER.C ----------------------------------------------------------------
 t_tab	*get_cmdtable(char **input);
