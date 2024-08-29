@@ -73,13 +73,13 @@ void	print_env(t_env	*env)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)argv;
-	t_env	*env;
-
-	env = get_env_list(envp);
-	print_env(env);
-	return(0);
-}
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	(void)argc;
+// 	(void)argv;
+// 	t_env	*env;
+//
+// 	env = get_env_list(envp);
+// 	print_env(env);
+// 	return(0);
+// }

@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 
+/*
 void	get_redirect_type(t_node *token)
 {
 	if (token->value[0] == '<' && token->value[1] == '<')
@@ -75,19 +76,35 @@ t_tab	*get_cmdtable(char **input)
 	// format(cmdtable);
 	return (cmdtable);
 }
+*/
 
-//TODO: test
-//protect malloc
-/*
+int	is_name(char c)
+{
+	return ((c == '_') || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+int	is_number(char c)
+{
+	return (c >= '0' && c <= '9');
+}
+
 char	*get_key(char *token)
 {
 	int	i = 1;
 	char	*key;
 
-	// if (token[i] >= 0 && token[i] <= 9)
-	while (token[i] != '\0' && !is_metachar(token[i]))
+	if (!&token[1])
+		return (NULL);
+		
+	while (token[i] != '\0' && is_name(token[i]))
 		i++;
-	key = ft_strndup(&token[0], i); // com $
+	key = malloc(sizeof(char));
+	if (!key)
+	{
+		free(key);
+		return(NULL);
+	}
+	ft_strlcpy(key, token, i); // com $
 	return (key);
 }
 
@@ -110,8 +127,10 @@ int	expanded_strlen(char *token, t_env *env)
 	{
 		if (token[i] == '\'')
 			squote++;
-		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
+		else if (token[i] == '$' && token[i + 1] && squote % 2 == 0)
 		{
+			if (!is_name(token[i + 1]) || is_number(token[i + 1]))
+				continue ;
 			key = get_key(&token[i]);
 			keylen += ft_strlen(key);
 			vallen += count_key_value(&key[1], env);
@@ -136,8 +155,10 @@ void	expand_var(char *token)
 	{
 		if (token[i] == '\'')
 			squote++;
-		else if (token[i] == '$' && token[i + 1] && token[i + 1] != ' ' && squote % 2 == 0)
+		else if (token[i] == '$' && token[i + 1] && squote % 2 == 0)
 		{
+			if (!is_name(token[i + 1]) || is_number(token[i + 1]))
+				continue ;
 			key = get_key(&token[i]);
 			ft_strcat(newtok, get_key_value(&key[1]));
 			count += count_key_val(&key[1]);
