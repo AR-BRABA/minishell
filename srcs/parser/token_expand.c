@@ -68,22 +68,21 @@ int	strquote(char *str)
 	return (-1);
 }
 
-t_envnode	*find_value(char *str, t_env *env)
+t_envnode	*find_var(char *str, t_env *env)
 {
 	int	i = 1;
 	int	e = 1;
 	t_envnode	*node;
-	char	*key;
 
 	node = env->head;
 	while (str && str[i] != '\0' && is_name(str[i]) && node != NULL)
 	{
-		while (str[i] == node->key[e])
+		while (str[i] && node->key[e] && str[i] == node->key[e])
 		{
 			i++;
 			e++;
 		}
-		if (str[i] != node->key[e])
+		if (str[i] && node->key[e] && str[i] != node->key[e])
 		{
 			i = 1;
 			e = 1;
@@ -99,11 +98,13 @@ t_envnode	*find_value(char *str, t_env *env)
 void	expand(t_node *token, t_env *env, int start)
 {
 	t_envnode	*node;
+	char	*key;
 
-	node = find_value(&token->value[start], env);
+	node = find_var(&token->value[start], env);
 	if (!node)
 		//expand to nothing
 	//expand to key value
+	
 }
 
 void	format(t_tab *cmdtable, t_env *env)
