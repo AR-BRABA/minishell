@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/10 23:50:01 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:12:53 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	main(void)
 			break; // Stop the loop if readline() returns NULL (EOF)
 		if (user_input && !has_only_spaces(user_input))
 		{
-			if (validate_input(user_input))
-				printf("Valid input: %s\n", user_input);
+			//if (validate_input(user_input))
+				//printf("Valid input: %s\n", user_input);
 			add_history(user_input);
 		}
-		// cal lexer to process token
+		// call lexer to process token
 		free(user_input);
 	}
 	return (0);
