@@ -46,7 +46,7 @@ int	strvar(char *str)
 			squote++;
 		else if (str[i] == '$' && squote % 2 == 0)
 		{
-			if (str[i + 1] && is_name(str[i + 1]) && !is_number(str[i + 1]))
+			if (is_name(str[i + 1]) && !is_number(str[i + 1]))
 				return (i);
 		}
 		i++;
@@ -57,6 +57,7 @@ int	strvar(char *str)
 int	strquote(char *str)
 {
 	int	squote = 0;
+	int	dquote = 0;
 	int	i = 0;
 
 	while(str && str[i] != '\0')
@@ -68,43 +69,95 @@ int	strquote(char *str)
 	return (-1);
 }
 
-t_envnode	*find_var(char *str, t_env *env)
+void	rm_quote(char *str, int start)
+{
+	int	i;
+	int	count = 1;
+	int	quote;
+	char	*new_str;
+
+	i = start;
+	quote = start;
+	while (str[i] != '\0')
+	{
+		while (str[i] && count % 2 != 0)
+		{
+			if (str[i] == str[quote])
+				count++;
+			i++;
+		}
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			quote = i;
+			count++;
+		}
+		i++;
+	}
+	new_str = malloc((ft_strlen(str) - count + 1) * sizeof(char));
+	i = start + 1;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			start = i;
+			while (str[i] && str[i] != str[start])
+				i++;
+			ft_strlcat(new_str, &str[start + 1], i - 1);
+		}
+		while (str[i] && str[i] != '\'' && str[i] != '\"')
+			i++;
+		i++;
+	}
+}
+
+t_envnode	*get_var(char *str, t_env *env)
 {
 	int	i = 1;
 	int	e = 1;
 	t_envnode	*node;
 
 	node = env->head;
-	while (str && str[i] != '\0' && is_name(str[i]) && node != NULL)
+	while (str && is_name(str[i]) && node != NULL)
 	{
-		while (str[i] && node->key[e] && str[i] == node->key[e])
+		while (is_name(str[i]) && str[i] == node->key[e])
 		{
 			i++;
 			e++;
 		}
-		if (str[i] && node->key[e] && str[i] != node->key[e])
+		if (is_name(str[i]) && str[i] != node->key[e])
 		{
 			i = 1;
-			e = 1;
+			e = 0;
 			node = node->next;
 		}
 	}
 	if (node == NULL)
 		return (NULL);
-	else
-		return (node);
+	return (node);
 }
 
 void	expand(t_node *token, t_env *env, int start)
 {
 	t_envnode	*node;
-	char	*key;
+	int	new_len;
+	int	key_len;
+	int	val_len;
+	char	*new_val;
 
-	node = find_var(&token->value[start], env);
-	if (!node)
+	node = get_var(&token->value[start], env);
+	// if (!node)
 		//expand to nothing
-	//expand to key value
-	
+	key_len = ft_strlen(node->key) + 1;
+	val_len = ft_strlen(node->value);
+	new_len = ft_strlen(token->value) - key_len + val_len + 1;
+	new_val = malloc(new_len * sizeof(char));
+	if (start > 0)
+		ft_strlcpy(new_val, token->value, start);
+	ft_strlcat(new_val, node->value, val_len);
+	start += key_len;
+	if (&token->value[start])
+		ft_strlcat(new_val, &token->value[start], ft_strlen(&token->value[start]));
+	free(token->value);
 }
 
 void	format(t_tab *cmdtable, t_env *env)
@@ -118,21 +171,17 @@ void	format(t_tab *cmdtable, t_env *env)
 	token = cmd->head;
 	while (cmd != NULL)
 	{
+		var = strvar(&token->value[var++]);
 		while (var >= 0)
 		{
-			var = strvar(&token->value[var++]);
 			expand(token, env, var);
+			var = strvar(&token->value[var++]);
 		}
-		while (quote >= 0)
-		{
-			quote = strquote(token->value);
-			rm_quote(token, quote);
-		}
+		quote = strquote(token->value);
+		rm_quote(token, quote);
 		token = token->next;
 		if (token == NULL)
-		{
 			cmd = cmd->next;
-		}
 	}
 }
 
