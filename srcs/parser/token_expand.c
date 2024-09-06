@@ -68,6 +68,27 @@ int	strquote(char *str)
 	return (-1);
 }
 
+int	strlen_quote(char *str)
+{
+	int	i = 0;
+	int	start = 0;
+	int	quote = 0;
+
+	while (str && str[i] != '\0')
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote++;
+			start = i;
+			while (str[i] && str[i] != str[start])
+				i++;
+			quote++;
+		}
+		i++;
+	}
+	return (i - quote);
+}
+
 void	rm_quote(t_node *token, int first)
 {
 	int	i = 0;
@@ -96,6 +117,7 @@ void	rm_quote(t_node *token, int first)
 	token->value = unquoted;
 }
 
+//mudar isso aqui pra strlen_name + strndup + strcmp?
 t_envnode	*get_var(char *str, t_env *env)
 {
 	int	i = 1;
@@ -117,7 +139,8 @@ t_envnode	*get_var(char *str, t_env *env)
 			node = node->next;
 		}
 	}
-	if (node == NULL)
+	//problema: quando a key eh uma parte do str: is_name(str[i]) resolve?
+	if (node == NULL || is_name(str[i]))
 		return (NULL);
 	return (node);
 }
@@ -133,7 +156,7 @@ void	expand(t_node *token, t_env *env, int start)
 	node = get_var(&token->value[start], env);
 	if (!node)
 	{
-
+		
 	}
 	key_len = ft_strlen(node->key) + 1;
 	val_len = ft_strlen(node->value);
@@ -149,6 +172,8 @@ void	expand(t_node *token, t_env *env, int start)
 	token->value = new_val;
 }
 
+// se for heredoc nao expande!!!!!!!!!!!
+// $$ $? $1
 void	format(t_tab *cmdtable, t_env *env)
 {
 	int	var = 0;
@@ -173,6 +198,7 @@ void	format(t_tab *cmdtable, t_env *env)
 			cmd = cmd->next;
 	}
 }
+//fazer func lista -> char **
 
 // void	walk_cmtable(t_tab *cmdtable)
 // {
