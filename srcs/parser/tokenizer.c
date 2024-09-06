@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-/*
 void	get_redirect_type(t_node *token)
 {
 	if (token->value[0] == '<' && token->value[1] == '<')
@@ -76,8 +75,8 @@ t_tab	*get_cmdtable(char **input)
 	// format(cmdtable);
 	return (cmdtable);
 }
-*/
 
+/*
 int	is_name(char c)
 {
 	return ((c == '_') || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));

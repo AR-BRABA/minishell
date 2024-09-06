@@ -1,29 +1,28 @@
 #include "../../includes/minishell.h"
 
-t_tab	*get_cmdtable(char **input, t_env *env)
-{
-	int	i = 0;
-	t_list	*list;
-	t_tab	*cmdtable;
-
-	list = new_list(&input[i]);
-	cmdtable = malloc(sizeof(t_tab));
-	cmdtable->head = list;
-	cmdtable->len = 1;
-	list = list->next;
-	i += cmdlen(&input[i]);
-	while (input[i] != NULL)
-	{
-		list = new_list(&input[i]);
-		add_list(list, cmdtable);
-		i += cmdlen(&input[i]);
-		cmdtable->len++;
-	}
-	identify_tokens(cmdtable);
-	// expand(cmdtable, env);
-	// rm_quotes(cmdtable);
-	return (cmdtable);
-}
+// t_tab	*get_cmdtable(char **input, t_env *env)
+// {
+// 	int	i = 0;
+// 	t_list	*list;
+// 	t_tab	*cmdtable;
+//
+// 	list = new_list(&input[i]);
+// 	cmdtable = malloc(sizeof(t_tab));
+// 	cmdtable->head = list;
+// 	cmdtable->len = 1;
+// 	list = list->next;
+// 	i += cmdlen(&input[i]);
+// 	while (input[i] != NULL)
+// 	{
+// 		list = new_list(&input[i]);
+// 		add_list(list, cmdtable);
+// 		i += cmdlen(&input[i]);
+// 		cmdtable->len++;
+// 	}
+// 	identify_tokens(cmdtable);
+// 	format(cmdtable, env);
+// 	return (cmdtable);
+// }
 
 int	is_name(char c)
 {
@@ -69,45 +68,32 @@ int	strquote(char *str)
 	return (-1);
 }
 
-void	rm_quote(char *str, int start)
+void	rm_quote(t_node *token, int first)
 {
-	int	i;
-	int	count = 1;
-	int	quote;
-	char	*new_str;
-
-	i = start;
-	quote = start;
-	while (str[i] != '\0')
+	int	i = 0;
+	int	start = i;
+	char	*unquoted;
+	
+	// unquoted = malloc(strlen_quote(str) sizeof(char));
+	while (token->value && token->value[i] != '\0')
 	{
-		while (str[i] && count % 2 != 0)
+		if (token->value[i] == '\'' || token->value[i] == '"')
 		{
-			if (str[i] == str[quote])
-				count++;
+			if (start != i)
+				ft_strlcat(unquoted, &token->value[start], i);
 			i++;
-		}
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			quote = i;
-			count++;
-		}
-		i++;
-	}
-	new_str = malloc((ft_strlen(str) - count + 1) * sizeof(char));
-	i = start + 1;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			start = i;
-			while (str[i] && str[i] != str[start])
+			while (token->value[i] && token->value[i] != token->value[start])
 				i++;
-			ft_strlcat(new_str, &str[start + 1], i - 1);
+			if (token->value[i] == token->value[start])
+				ft_strlcat(unquoted, &token->value[start], i);
+			start = i + 1;
 		}
-		while (str[i] && str[i] != '\'' && str[i] != '\"')
-			i++;
 		i++;
 	}
+	if (i != start)
+		ft_strlcat(unquoted, &token->value[start], i);
+	free(token->value);
+	token->value = unquoted;
 }
 
 t_envnode	*get_var(char *str, t_env *env)
@@ -145,8 +131,10 @@ void	expand(t_node *token, t_env *env, int start)
 	char	*new_val;
 
 	node = get_var(&token->value[start], env);
-	// if (!node)
-		//expand to nothing
+	if (!node)
+	{
+
+	}
 	key_len = ft_strlen(node->key) + 1;
 	val_len = ft_strlen(node->value);
 	new_len = ft_strlen(token->value) - key_len + val_len + 1;
@@ -158,6 +146,7 @@ void	expand(t_node *token, t_env *env, int start)
 	if (&token->value[start])
 		ft_strlcat(new_val, &token->value[start], ft_strlen(&token->value[start]));
 	free(token->value);
+	token->value = new_val;
 }
 
 void	format(t_tab *cmdtable, t_env *env)
