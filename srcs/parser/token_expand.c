@@ -53,6 +53,16 @@ int	strvar(char *str)
 	return (-1);
 }
 
+int	strlen_var(char *str)
+{
+	int	i = 0;
+	
+	while (str && str[i] != '\0' && is_name(str[i]))
+		i++;
+
+	return (i);
+}
+
 int	strquote(char *str)
 {
 	int	squote = 0;
@@ -95,7 +105,7 @@ void	rm_quote(t_node *token, int first)
 	int	start = i;
 	char	*unquoted;
 	
-	// unquoted = malloc(strlen_quote(str) sizeof(char));
+	unquoted = malloc(strlen_quote(token->value) * sizeof(char));
 	while (token->value && token->value[i] != '\0')
 	{
 		if (token->value[i] == '\'' || token->value[i] == '"')
@@ -117,59 +127,80 @@ void	rm_quote(t_node *token, int first)
 	token->value = unquoted;
 }
 
-//mudar isso aqui pra strlen_name + strndup + strcmp?
-t_envnode	*get_var(char *str, t_env *env)
+//mudar isso aqui pra strlen_name + strncmp?
+// t_envnode	*get_var(char *str, t_env *env)
+// {
+// 	int	i = 1;
+// 	int	e = 1;
+// 	t_envnode	*node;
+//
+// 	node = env->head;
+// 	while (str && is_name(str[i]) && node != NULL)
+// 	{
+// 		while (is_name(str[i]) && str[i] == node->key[e])
+// 		{
+// 			i++;
+// 			e++;
+// 		}
+// 		if (is_name(str[i]) && str[i] != node->key[e])
+// 		{
+// 			i = 1;
+// 			e = 0;
+// 			node = node->next;
+// 		}
+// 	}
+// 	//problema: quando a key eh uma parte do str: is_name(str[i]) resolve?
+// 	if (is_name(str[i]))
+// 		return (NULL);
+// 	return (node);
+// }
+
+// testar com str dentro de node->key e node->key maior
+t_envnode	*search_key(char *str, t_env *env, int start)
 {
-	int	i = 1;
-	int	e = 1;
+	int	end = 1;
+	int	len = 0;
 	t_envnode	*node;
 
+	start++;
+	len = strlen_var(&str[start]);
 	node = env->head;
-	while (str && is_name(str[i]) && node != NULL)
+	while (ft_strncmp(&str[start], node->key, len))
 	{
-		while (is_name(str[i]) && str[i] == node->key[e])
-		{
-			i++;
-			e++;
-		}
-		if (is_name(str[i]) && str[i] != node->key[e])
-		{
-			i = 1;
-			e = 0;
-			node = node->next;
-		}
+		node = node->next;
+		start++;
 	}
-	//problema: quando a key eh uma parte do str: is_name(str[i]) resolve?
-	if (node == NULL || is_name(str[i]))
-		return (NULL);
 	return (node);
 }
+
 
 void	expand(t_node *token, t_env *env, int start)
 {
 	t_envnode	*node;
-	int	new_len;
-	int	key_len;
-	int	val_len;
-	char	*new_val;
+	int	klen;
+	int	vlen;
+	char	*expanded;
 
-	node = get_var(&token->value[start], env);
+	node = search_key(token->value, env, start);
 	if (!node)
 	{
-		
+		// expand to nothing
 	}
-	key_len = ft_strlen(node->key) + 1;
-	val_len = ft_strlen(node->value);
-	new_len = ft_strlen(token->value) - key_len + val_len + 1;
-	new_val = malloc(new_len * sizeof(char));
+	klen = ft_strlen(node->key) + 1;
+	vlen = ft_strlen(node->value);
+	expanded = malloc((ft_strlen(token->value) - klen + vlen + 1) * sizeof(char));
 	if (start > 0)
-		ft_strlcpy(new_val, token->value, start);
-	ft_strlcat(new_val, node->value, val_len);
-	start += key_len;
+	{
+		ft_strlcpy(expanded, token->value, start);
+		ft_strlcat(expanded, node->value, vlen);
+	}
+	else
+		ft_strlcpy(expanded, node->value, vlen);
+	start += klen;
 	if (&token->value[start])
-		ft_strlcat(new_val, &token->value[start], ft_strlen(&token->value[start]));
+		ft_strlcat(expanded, &token->value[start], ft_strlen(&token->value[start]));
 	free(token->value);
-	token->value = new_val;
+	token->value = expanded;
 }
 
 // se for heredoc nao expande!!!!!!!!!!!
@@ -199,7 +230,8 @@ void	format(t_tab *cmdtable, t_env *env)
 	}
 }
 //fazer func lista -> char **
-
+// testes -> separar
+//
 // void	walk_cmtable(t_tab *cmdtable)
 // {
 // 	t_list	*cmd;

@@ -91,7 +91,7 @@ char	**metachar_split(char *user_input)
 
 // int	main(void)
 // {
-// 	int	i = 0;
+// 	// int	i = 0;
 // 	char	*input = "token 1 2 '3' << | >| >> '    50 |>'";
 // 	char	**tokens;
 // 	
