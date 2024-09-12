@@ -83,7 +83,7 @@ int	strlen_quote(char *str)
 	int	i = 0;
 	int	start = 0;
 	int	quote = 0;
-
+//
 	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '"')
@@ -99,7 +99,7 @@ int	strlen_quote(char *str)
 	return (i - quote);
 }
 
-void	rm_quote(t_node *token, int first)
+void	rm_quote(t_node *token)
 {
 	int	i = 0;
 	int	start = i;
@@ -126,34 +126,6 @@ void	rm_quote(t_node *token, int first)
 	free(token->value);
 	token->value = unquoted;
 }
-
-//mudar isso aqui pra strlen_name + strncmp?
-// t_envnode	*get_var(char *str, t_env *env)
-// {
-// 	int	i = 1;
-// 	int	e = 1;
-// 	t_envnode	*node;
-//
-// 	node = env->head;
-// 	while (str && is_name(str[i]) && node != NULL)
-// 	{
-// 		while (is_name(str[i]) && str[i] == node->key[e])
-// 		{
-// 			i++;
-// 			e++;
-// 		}
-// 		if (is_name(str[i]) && str[i] != node->key[e])
-// 		{
-// 			i = 1;
-// 			e = 0;
-// 			node = node->next;
-// 		}
-// 	}
-// 	//problema: quando a key eh uma parte do str: is_name(str[i]) resolve?
-// 	if (is_name(str[i]))
-// 		return (NULL);
-// 	return (node);
-// }
 
 // testar com str dentro de node->key e node->key maior
 t_envnode	*search_key(char *str, t_env *env, int start)
@@ -184,7 +156,7 @@ void	expand(t_node *token, t_env *env, int start)
 	node = search_key(token->value, env, start);
 	if (!node)
 	{
-		// expand to nothing
+		
 	}
 	klen = ft_strlen(node->key) + 1;
 	vlen = ft_strlen(node->value);
@@ -217,18 +189,46 @@ void	format(t_tab *cmdtable, t_env *env)
 	while (cmd != NULL)
 	{
 		var = strvar(&token->value[var++]);
-		while (var >= 0)
+		while (var >= 0 && token->prev->type != HEREDOC)
 		{
 			expand(token, env, var);
 			var = strvar(&token->value[var++]);
 		}
-		quote = strquote(token->value);
-		rm_quote(token, quote);
+		rm_quote(token);
 		token = token->next;
 		if (token == NULL)
 			cmd = cmd->next;
 	}
 }
+//
+// virou search_var
+// t_envnode	*get_var(char *str, t_env *env)
+// {
+// 	int	i = 1;
+// 	int	e = 1;
+// 	t_envnode	*node;
+//
+// 	node = env->head;
+// 	while (str && is_name(str[i]) && node != NULL)
+// 	{
+// 		while (is_name(str[i]) && str[i] == node->key[e])
+// 		{
+// 			i++;
+// 			e++;
+// 		}
+// 		if (is_name(str[i]) && str[i] != node->key[e])
+// 		{
+// 			i = 1;
+// 			e = 0;
+// 			node = node->next;
+// 		}
+// 	}
+// 	//problema: quando a key eh uma parte do str: is_name(str[i]) resolve?
+// 	if (is_name(str[i]))
+// 		return (NULL);
+// 	return (node);
+// }
+//
 //fazer func lista -> char **
 // testes -> separar
 //
