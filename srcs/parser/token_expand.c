@@ -34,11 +34,11 @@ int	is_number(char c)
 	return (c >= '0' && c <= '9');
 }
 
-int	strvar(char *str)
+int	strdol(char *str)
 {
 	int	squote = 0;
 	int	i = 0;
-
+//
 	while(str && str[i] != '\0')
 	{
 		if (str[i] == '\'')
@@ -53,13 +53,12 @@ int	strvar(char *str)
 	return (-1);
 }
 
-int	strlen_var(char *str)
+int	strlen_isname(char *str)
 {
 	int	i = 0;
-	
+	//
 	while (str && str[i] != '\0' && is_name(str[i]))
 		i++;
-
 	return (i);
 }
 
@@ -68,7 +67,7 @@ int	strquote(char *str)
 	int	squote = 0;
 	int	dquote = 0;
 	int	i = 0;
-
+//
 	while(str && str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
@@ -104,7 +103,7 @@ void	rm_quote(t_node *token)
 	int	i = 0;
 	int	start = i;
 	char	*unquoted;
-	
+	//
 	unquoted = malloc(strlen_quote(token->value) * sizeof(char));
 	while (token->value && token->value[i] != '\0')
 	{
@@ -133,11 +132,11 @@ t_envnode	*search_key(char *str, t_env *env, int start)
 	int	end = 1;
 	int	len = 0;
 	t_envnode	*node;
-
+//
 	start++;
-	len = strlen_var(&str[start]);
+	len = strlen_isname(&str[start]);
 	node = env->head;
-	while (ft_strncmp(&str[start], node->key, len))
+	while (ft_strncmp(&str[start], node->key, len + 1))
 	{
 		node = node->next;
 		start++;
@@ -152,14 +151,13 @@ void	expand(t_node *token, t_env *env, int start)
 	int	klen;
 	int	vlen;
 	char	*expanded;
-
+//
 	node = search_key(token->value, env, start);
 	if (!node)
-	{
-		
-	}
-	klen = ft_strlen(node->key) + 1;
-	vlen = ft_strlen(node->value);
+		vlen = 0;
+	else
+		vlen = ft_strlen(node->value);
+	klen = strlen_isname(&token->value[start]) + 1;
 	expanded = malloc((ft_strlen(token->value) - klen + vlen + 1) * sizeof(char));
 	if (start > 0)
 	{
@@ -174,6 +172,10 @@ void	expand(t_node *token, t_env *env, int start)
 	free(token->value);
 	token->value = expanded;
 }
+void	expand(t_node *token, t_env *env, int start)
+{
+	
+}
 
 // se for heredoc nao expande!!!!!!!!!!!
 // $$ $? $1
@@ -183,16 +185,16 @@ void	format(t_tab *cmdtable, t_env *env)
 	int	quote = 0;
 	t_list	*cmd;
 	t_node	*token;
-	
+	//
 	cmd = cmdtable->head;
 	token = cmd->head;
 	while (cmd != NULL)
 	{
-		var = strvar(&token->value[var++]);
-		while (var >= 0 && token->prev->type != HEREDOC)
+		var = strdol(&token->value[var++]);
+		while (var >= 0 && token->prev->type != HEREDOC) //segfault?
 		{
 			expand(token, env, var);
-			var = strvar(&token->value[var++]);
+			var = strdol(&token->value[var++]);
 		}
 		rm_quote(token);
 		token = token->next;
@@ -200,6 +202,7 @@ void	format(t_tab *cmdtable, t_env *env)
 			cmd = cmd->next;
 	}
 }
+
 //
 // virou search_var
 // t_envnode	*get_var(char *str, t_env *env)
