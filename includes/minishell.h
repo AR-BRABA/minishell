@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/08/27 11:45:19 by jgils            ###   ########.fr       */
+/*   Updated: 2024/09/19 11:12:06 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char	*substr_by_address(char *str, int len);
 char	*substr_by_address(char *str, int len);
 
 // TOKENIZER.C ----------------------------------------------------------------
-t_tab	*get_cmdtable(char **input);
+t_tab	*get_cmdtable(char **input, t_env *env);
 void	identify_tokens(t_tab *cmdtable);
 void	get_type(t_node *token);
 void	get_redirect_type(t_node *token);
@@ -128,5 +128,10 @@ void	add_node(t_node *newnode, t_list *list);
 void	add_list(t_list *newnode, t_tab *cmdtable);
 t_node	*new_node(char *token);
 t_list	*new_list(char **input);
+
+// TOKEN_FORMAT.C ------------------------------------------------------------
+void	rm_quote(t_node *token);
+void	format(t_tab *cmdtable, t_env *env);
+t_envnode	*search_key(t_env *list, char *key);
 
 #endif

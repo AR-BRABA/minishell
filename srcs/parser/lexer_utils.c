@@ -7,6 +7,8 @@ char	*strtrim_space(char *s1)
 	int		end;
 	int		i;
 
+	if(!s1)
+		return (NULL);
 	i = 0;
 	start = 0;
 	end = ft_strlen(s1) - 1;

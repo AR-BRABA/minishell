@@ -3,8 +3,8 @@
 int	count_tokens(char *user_input)
 {
 	int	count = 0;
-	int	start = -1;
-	int	quote = -1;
+	int	start;
+	int	quote;
 	int	tokens = 0;
 	char	*input;
 	
@@ -12,9 +12,9 @@ int	count_tokens(char *user_input)
 	while (input && input[count] != '\0')
 	{
 		start = count;
-		count++;
 		if (is_operator(input[start]))
 		{
+			count++;
 			if (is_operator(input[count]) && input[count] == input[start])
 				count++;
 		}
@@ -25,11 +25,10 @@ int	count_tokens(char *user_input)
 				if (is_quote(input[count]))
 				{
 					quote = count++;
-					while (!is_quote(input[count]))
+					while (input[count] != input[quote])
 						count++;
 				}
-				else
-					count++;
+				count++;
 			}
 		}
 		tokens++;
@@ -44,8 +43,8 @@ char	**metachar_split(char *user_input)
 {
 	int	count = 0;
 	int	start = -1;
-	int	quote = -1;
 	int	token = 0;
+	int	quote;
 	char	**array;
 	char	*input;
 	
@@ -54,9 +53,9 @@ char	**metachar_split(char *user_input)
 	while (input && input[count] != '\0')
 	{
 		start = count;
-		count++;
 		if (is_operator(input[start]))
 		{
+			count++;
 			if (is_operator(input[count]) && input[count] == input[start])
 				count++;
 		}
@@ -67,11 +66,10 @@ char	**metachar_split(char *user_input)
 				if (is_quote(input[count]))
 				{
 					quote = count++;
-					while (!is_quote(input[count]))
+					while (input[count] != input[quote])
 						count++;
 				}
-				else
-					count++;
+				count++;
 			}
 		}
 		else if (!is_space(input[start]))

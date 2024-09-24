@@ -16,7 +16,6 @@ void	free_split(char **array)
 // test!
 void	destroy_table(t_tab *cmdtable)
 {
-	int	index = 0;
 	t_list	*cmdline;
 	t_list	*keepline;
 	t_node	*token;

@@ -52,12 +52,14 @@ void	identify_tokens(t_tab *cmdtable)
 	}
 }
 
-t_tab	*get_cmdtable(char **input)
+t_tab	*get_cmdtable(char **input, t_env *env)
 {
 	int	i = 0;
 	t_list	*list;
 	t_tab	*cmdtable;
 
+	if (!input)
+		return (NULL);
 	list = new_list(&input[i]);
 	cmdtable = malloc(sizeof(t_tab));
 	cmdtable->head = list;
@@ -72,10 +74,11 @@ t_tab	*get_cmdtable(char **input)
 		cmdtable->len++;
 	}
 	identify_tokens(cmdtable);
-	// format(cmdtable);
+	(void)env;
+	// format(cmdtable, env);
 	return (cmdtable);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	char	**input;
@@ -89,3 +92,4 @@ int	main(int argc, char **argv)
 	(void)argc;
 	return(0);
 }
+*/
