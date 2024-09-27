@@ -6,11 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 06:03:53 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/11 06:03:55 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/09/27 09:12:44 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 /**
  * Checks for unclosed quotes in user input
