@@ -21,7 +21,7 @@ int	strdol(char *str)
 		if (str[i] == '\'')
 			squote++;
 		else if (str[i] == '$' && squote % 2 == 0)
-			if (is_name(str[i + 1]) && !is_number(str[i + 1]))
+			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !is_number(str[i + 1])))
 				return (i);
 		i++;
 	}
@@ -32,6 +32,8 @@ int	strlen_isname(char *str)
 {
 	int	i = 0;
 	//
+	if (is_number(str[i]) || str[i] == '?')
+		return (++i);
 	while (str && str[i] != '\0' && is_name(str[i]))
 		i++;
 	return (i);
@@ -148,19 +150,64 @@ t_envnode	*search_key(t_env *list, char *key)
 
 }
 
+char	*ft_strndup(const char *s, int n)
+{
+	int		i;
+	char	*dest;
+
+	i = ft_strlen(s);
+	if (!s || n < 0 || i < n) // i < n ?
+		return (NULL);
+	dest = (char *) malloc((n + 1) * sizeof(char));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (s[i] != '\0' && i <= n)
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+// heredoc $? $$
 void	expand(t_node *token, t_env *env, int start)
 {
-	int	end = start;
-	char	key[4] = "alo";
-	char	keyt[5] = "USE";
-	// char	*expanded;
-
-	while (is_name(token->value[end]))
-		end++;
-	search_key(env, key);
-	search_key(env, keyt);
-	// key = ft_strndup(&token->value[start], (end - start));
-	// expanded = malloc(ft_strlen(token->value) - (end - start) + 1 * sizeof(char));	
+	int	i = 0;
+	int	count = 0;
+	int	count2 = 0;
+	int	end;
+	char	*key;
+	char	*expanded;
+	t_envnode	*node;
+//
+	start++;
+	end = start + strlen_isname(&token->value[start]) - 1;
+	key = ft_strndup(&token->value[start], (end - start));
+	node = search_key(env, key);
+	start--;
+	// func to replace key to node->value on token->value and return char *
+	if (node)
+		expanded = malloc((ft_strlen(token->value) - (end - start) + ft_strlen(node->value) + 1) * sizeof(char)); // if str == null ft_strlen return = 0?
+	else
+		expanded = malloc((ft_strlen(token->value) - (end - start) + 1) * sizeof(char)); 
+	while (token->value[count] != '\0')
+	{
+		if (count == start)
+		{
+			if (node)
+			{
+				while (node->value[count2] != '\0')
+					expanded[i++] = node->value[count2++];
+			}
+			count = end + 1;
+		}
+		else
+			expanded[i++] = token->value[count++];
+	}
+	free(token->value);
+	token->value = expanded;
 }
 
 void	format(t_tab *cmdtable, t_env *env)
