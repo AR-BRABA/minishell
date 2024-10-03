@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/01 16:52:15 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/03 14:29:01 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ enum e_type {
 	HEREDOC,
 };
 
+enum e_std {
+	STD_IN,
+	STD_OUT,
+	STD_ERROR,
+};
+
 typedef struct	s_node {
 	char	*value;
 	int	type;
@@ -49,6 +55,8 @@ typedef struct	s_list {
 typedef struct	s_tab {
 	t_list	*head;
 	int	len;
+	int	fd_in;
+	int	fd_out;
 }	t_tab;
 
 typedef struct	s_envnode {

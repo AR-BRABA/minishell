@@ -10,27 +10,9 @@ int	is_number(char c)
 	return (c >= '0' && c <= '9');
 }
 
-/* returns $ position if found outside simple quote, else: -1 */
-int	strdol(char *str)
-{
-	int	squote = 0;
-	int	i = 0;
-//
-	while(str && str[i] != '\0')
-	{
-		if (str[i] == '\'')
-			squote++;
-		else if (str[i] == '$' && squote % 2 == 0)
-			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !is_number(str[i + 1])))
-				return (i);
-		i++;
-	}
-	return (-1);
-}
-
 int	strlen_isname(char *str)
 {
-	int	i = 0;
+	int	i = 1;
 	//
 	if (is_number(str[i]) || str[i] == '?')
 		return (++i);
@@ -171,48 +153,79 @@ char	*ft_strndup(const char *s, int n)
 	return (dest);
 }
 
-// heredoc $? $$
-void	expand(t_node *token, t_env *env, int start)
+// /* returns $ position if found outside simple quote, else: -1 */
+// char	*get_next_var(char *str)
+// {
+// 	int	squote = 0;
+// 	int	start;
+// 	int	end;
+// 	char	*key;
+// //
+// 	while(str && str[start] != '\0')
+// 	{
+// 		if (str[start] == '\'')
+// 			squote++;
+// 		else if (str[start] == '$' && squote % 2 == 0)
+// 			if (str[start + 1] == '?' || (is_name(str[start + 1]) && !is_number(str[start + 1])))
+// 				break ;
+// 		start++;
+// 	}
+// 	key = ft_strndup(&str[start], strlen_isname(&str[start]));
+// 	return (key);
+// }
+
+/* retorna um ponteiro para a proxima var no token->value */
+char	*get_next_var(char *token)
 {
-	int	i = 0;
-	int	count = 0;
-	int	count2 = 0;
-	int	end;
-	char	*key;
+	static char	*var;
+	int	varlen;
+//
+	if (!var)
+		var = token;
+	else
+		var++;
+	while (var)
+	{
+		var = strchr(var, '$');
+		varlen = strlen_isname(var);
+		if (varlen <= 1)
+			*var += varlen;
+		else
+			return (var);
+	}
+	return (NULL);
+}
+
+// heredoc $? $$
+void	expand(t_node *token, t_env *env, char *var)
+{
+	int	newlen;
+	int	varlen;
 	char	*expanded;
 	t_envnode	*node;
-//
-	start++;
-	end = start + strlen_isname(&token->value[start]) - 1;
-	key = ft_strndup(&token->value[start], (end - start));
-	node = search_key(env, key);
-	start--;
-	// func to replace key to node->value on token->value and return char *
+	char	*str;
+// //
+	str = token->value;
+	varlen = strlen_isname(var);
+	var = strndup(var, varlen);
+	node = search_key(env, var);
 	if (node)
-		expanded = malloc((ft_strlen(token->value) - (end - start) + ft_strlen(node->value) + 1) * sizeof(char)); // if str == null ft_strlen return = 0?
+		newlen = ft_strlen(node->value);
 	else
-		expanded = malloc((ft_strlen(token->value) - (end - start) + 1) * sizeof(char)); 
-	while (token->value[count] != '\0')
-	{
-		if (count == start)
-		{
-			if (node)
-			{
-				while (node->value[count2] != '\0')
-					expanded[i++] = node->value[count2++];
-			}
-			count = end + 1;
-		}
-		else
-			expanded[i++] = token->value[count++];
-	}
+		newlen = 0;
+	expanded = malloc((ft_strlen(str) - varlen + newlen + 1) * sizeof(char));
+	ft_strlcpy(expanded, str, (*var - *str));
+	if (node)
+		ft_strlcat(expanded, node->value, newlen);
+	*str += *var + varlen;
+	ft_strlcat(expanded, str, ft_strlen(str));
 	free(token->value);
 	token->value = expanded;
 }
 
 void	format(t_tab *cmdtable, t_env *env)
 {
-	int	var = 0;
+	char	*var;
 	t_list	*cmd;
 	t_node	*token;
 	//
@@ -221,11 +234,11 @@ void	format(t_tab *cmdtable, t_env *env)
 	token = cmd->head;
 	while (cmd != NULL)
 	{
-		var = strdol(&token->value[var++]);
-		while (var >= 0) //segfault? HEREDOCCCCCCCCC
+		var = get_next_var(token->value);
+		while (var) //segfault? HEREDOCCCCCCCCC
 		{
 			expand(token, env, var);
-			var = strdol(&token->value[++var]);
+			var = get_next_var(token->value);
 		}
 		rm_quote(token);
 		token = token->next;
