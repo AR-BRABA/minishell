@@ -6,13 +6,14 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/05 13:21:14 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/05 15:06:22 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -136,7 +137,7 @@ t_envnode	*search_key(t_env *list, char *key);
 
 // CD.C ----------------------------------------------------------------------
 char	*get_key_value(t_env *list, char *key);
-void	update_key_value(t_env *list, char *key, char *value);
+void	update_key_value(t_env *list, char *key, char *new_val);
 int	cd(char *destpath, t_env *env);
 
 #endif
