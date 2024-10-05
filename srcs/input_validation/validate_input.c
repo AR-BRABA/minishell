@@ -6,11 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 00:15:09 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/07/10 23:44:00 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/09/27 09:12:24 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 
 /*

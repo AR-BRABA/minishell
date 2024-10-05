@@ -114,16 +114,6 @@ t_envnode	*search_key(t_env *list, char *key)
 		if (ft_strncmp(key, env->key, keylen) == 0)
 			break ;
 		env = env->next;
-	}
-	free(key);
-	return (env);
-}
-
-/* returns a duplicated string of n bytes */
-char	*ft_strndup(const char *s, int n)
-{
-	int		i;
-	char	*dest;
 
 	i = ft_strlen(s);
 	if (!s || n <= 0 || i < n)
