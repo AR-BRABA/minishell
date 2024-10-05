@@ -36,6 +36,8 @@ int	cd(char *dest, t_env *env)
 
 	// origin = NULL;
 	origin = getcwd(buf, PATH_MAX + 1);
+	if (!origin)
+		return (1);
 	// origin = get_key_value(env, "PWD");
 	if (dest[0] == '-')
 		dest = get_key_value(env, "OLD_PWD");
@@ -47,6 +49,8 @@ int	cd(char *dest, t_env *env)
 	update_key_value(env, "OLD_PWD", origin);
 	// origin = NULL;
 	origin = getcwd(buf2, PATH_MAX + 1);
+	if (!origin)
+		return (1);
 	update_key_value(env, "PWD", origin);
 	return (0);
 }
