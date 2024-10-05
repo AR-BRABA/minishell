@@ -96,6 +96,7 @@ void	rm_quote(t_node *token)
 		else
 			unquoted[q++] = token->value[i++];
 	}
+	unquoted[q] = '\0';
 	free(token->value);
 	token->value = unquoted;
 }
