@@ -25,8 +25,7 @@ void	update_key_value(t_env *list, char *key, char *new_val)
 	}
 }
 
-/* passar NULL se nao houver argumento */
-//TODO: need to test!!
+/* passar NULL se nao houver argumento ou tratar fora!*/
 int	cd(char *dest, t_env *env)
 {
 	char	*origin;
@@ -34,19 +33,17 @@ int	cd(char *dest, t_env *env)
 	char	buf2[PATH_MAX + 1];
 	int	ret;
 
-	// origin = NULL;
 	origin = getcwd(buf, PATH_MAX + 1);
 	if (!origin)
 		return (1);
-	// origin = get_key_value(env, "PWD");
 	if (dest[0] == '-')
-		dest = get_key_value(env, "OLD_PWD");
+		dest = get_key_value(env, "OLDPWD");
 	else if (dest[0] == '~' || !dest)
 		dest = get_key_value(env, "HOME");
 	ret = chdir(dest);
 	if (ret != 0)
 		return (1);
-	update_key_value(env, "OLD_PWD", origin);
+	update_key_value(env, "OLDPWD", origin);
 	// origin = NULL;
 	origin = getcwd(buf2, PATH_MAX + 1);
 	if (!origin)
