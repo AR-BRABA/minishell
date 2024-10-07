@@ -6,6 +6,8 @@ t_envnode	*new_envnode(char *envp)
 	t_envnode	*node;
 	
 	split = ft_split(envp, '=');
+	if (!split || !split[0] || ft_strlen(split[0]) != strlen_isname(split[0]))
+		return (NULL);
 	node = malloc(sizeof(t_envnode));
 	node->key = split[0];
 	node->value = split[1];
@@ -54,25 +56,49 @@ t_env	*get_env_list(char **envp)
 	return (env);
 }
 
-// essa func eh o builtin do env, mudar a formatacao pra ficar igual ao env
-void	print_env(t_env	*env)
+int	env(t_env *env)
 {
 	t_envnode	*node;
 	
-	if (!env)
-	{
-		printf("no env!!");
-		return;
-	}
-	printf("total env = %i\n", env->len);
+	if (!env || !env->head)
+		return (1);
 	node = env->head;
 	while (node != NULL)
 	{
-		printf("key: %s            value: %s\n", node->key, node->value);
+		ft_putstr_fd(node->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putstr_fd(node->value, 1);
+		ft_putchar_fd('\n', 1);
 		node = node->next;
 	}
+	return (0);
 }
 
+/* validate outside */
+int	envexport(char *input, t_env *env)
+{
+	t_envnode	*node;
+	
+	node = new_envnode(input);
+	if (!node)
+		return (1);
+	addback_env(node, env);
+	return(0);
+}
+
+
+int	envunset(char *key, t_env *env)
+{
+	t_envnode	*node;
+	
+	node = search_key(env, key);
+	if (!node)
+		return (1);
+	node->next->prev = node->prev;
+	node->prev->next = node->next;
+	free(node);
+	return (0);
+}
 // int	main(int argc, char **argv, char **envp)
 // {
 // 	(void)argc;

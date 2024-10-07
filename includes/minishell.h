@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/09/19 11:12:06 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/07 19:21:27 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ bool    has_only_spaces(char *input);
 t_envnode	*new_envnode(char *envp);
 void	addback_env(t_envnode *newnode, t_env *list);
 t_env	*get_env_list(char **envp);
-void	print_env(t_env	*env);
+int	env(t_env *env);
+int	envexport(char *input, t_env *env);
+int	envunset(char *key, t_env *env);
 
 // PRINT.C --------------------------------------------------------------------
 void	print_split(char **array);
