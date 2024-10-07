@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/07 19:21:27 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/07 19:26:37 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ t_list	*new_list(char **input);
 void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
+int	strlen_isname(char *str);
 
 #endif
