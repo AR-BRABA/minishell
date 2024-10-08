@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/03 14:29:01 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/05 07:57:38 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,8 @@ t_list	*new_list(char **input);
 void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
+
+// PWD.C -----------------------------------------------------------------------
+int	pwd(void);
 
 #endif
