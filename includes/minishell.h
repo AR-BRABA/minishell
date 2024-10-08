@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/05 15:06:22 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/07 17:11:46 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,9 @@ t_list	*new_list(char **input);
 void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
+
+// ECHO.C ---------------------------------------------------------------------
+int	echo(char **arg);
 
 // CD.C ----------------------------------------------------------------------
 char	*get_key_value(t_env *list, char *key);
