@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <sys/wait.h>
 
 enum e_type {
 	COMMAND,
@@ -78,7 +79,12 @@ void	addback_env(t_envnode *newnode, t_env *list);
 t_env	*get_env_list(char **envp);
 void	print_env(t_env	*env);
 
-// PRINT.C --------------------------------------------------------------------
+// EXECUTOR.C ------------------------------------------------------------------
+void	execute_commands(t_tab *cmdtable);
+int		execute_builtins(t_node *token);
+void	execute_external_command(t_node *token);
+
+// PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
 void	print_list(t_list *list);
 void	print_tab(t_tab	*table);
