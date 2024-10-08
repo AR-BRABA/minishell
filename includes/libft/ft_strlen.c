@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 19:15:21 by tsoares-          #+#    #+#             */
-/*   Updated: 2023/11/25 19:15:26 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/10/04 17:09:39 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	while (s && s[i] != '\0')
 		i++;
 	return (i);
 }

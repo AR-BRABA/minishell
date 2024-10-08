@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
 		user_input = readline("minishell$ ");
-		if (!user_input)
+		if (!user_input || ft_strncmp(user_input, "exit", 4) == 0)
 			break; // Stop the loop if readline() returns NULL (EOF)
 		if (user_input && !has_only_spaces(user_input))
 		{
