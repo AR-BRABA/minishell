@@ -9,6 +9,7 @@ LIBFT			= $(LIBFT_PATH)/libft.a
 SRC_DIR			= srcs
 VALIDATION_DIR		= $(SRC_DIR)/input_validation
 ENV_DIR			= $(SRC_DIR)/env
+EXECUTOR_DIR	= $(SRC_DIR)/executor
 PARSER_DIR		= $(SRC_DIR)/parser
 
 INCLUDE_DIR		= includes
@@ -19,19 +20,29 @@ OBJ_DIR			= objs
 #			  env/env.c
 #SRCS			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES		= $(SRC_DIR)/init_minishell.c
-VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c $(VALIDATION_DIR)/validate_input_utils.c
+VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
+				      $(VALIDATION_DIR)/validate_input_utils.c
 ENV_FILES		= $(ENV_DIR)/env.c
-PARSER_FILES		= $(PARSER_DIR)/free.c $(PARSER_DIR)/identify_char.c $(PARSER_DIR)/lexer.c \
-				$(PARSER_DIR)/lexer_utils.c $(PARSER_DIR)/print.c $(PARSER_DIR)/tokenizer.c \
-				$(PARSER_DIR)/tokenizer_utils.c $(PARSER_DIR)/token_format.c
+EXECUTOR_FILES	= $(EXECUTOR_DIR)/executor.c \
+				  $(EXECUTOR_DIR)/execute_builtins.c \
+				  $(EXECUTOR_DIR)/execute_external_commands.c
+PARSER_FILES	= $(PARSER_DIR)/free.c \
+				  $(PARSER_DIR)/identify_char.c \
+				  $(PARSER_DIR)/lexer.c \
+				  $(PARSER_DIR)/lexer_utils.c \
+				  $(PARSER_DIR)/print.c \
+				  $(PARSER_DIR)/tokenizer.c \
+				  $(PARSER_DIR)/tokenizer_utils.c \
+				  $(PARSER_DIR)/token_format.c
 
 #OBJS			= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
-				$(addprefix $(OBJ_DIR)/, $(notdir $(VALIDATION_FILES:.c=.o))) \
-				$(addprefix $(OBJ_DIR)/, $(notdir $(ENV_FILES:.c=.o))) \
-				$(addprefix $(OBJ_DIR)/, $(notdir $(PARSER_FILES:.c=.o))) \
+				  $(addprefix $(OBJ_DIR)/, $(notdir $(VALIDATION_FILES:.c=.o))) \
+				  $(addprefix $(OBJ_DIR)/, $(notdir $(ENV_FILES:.c=.o))) \
+				  $(addprefix $(OBJ_DIR)/, $(notdir $(EXECUTOR_FILES:.c=.o))) \
+				  $(addprefix $(OBJ_DIR)/, $(notdir $(PARSER_FILES:.c=.o))) \
 
-vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(PARSER_DIR) 
+vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(EXECUTOR_DIR) $(PARSER_DIR) 
 vpath %.h $(INCLUDE_DIR)
 
 all:			 $(NAME)
