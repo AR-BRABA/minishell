@@ -1,42 +1,26 @@
 #include "../../includes/minishell.h"
 
+/* returns if is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9]) */
 int	is_name(char c)
 {
-	return ((c == '_') || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+	return ((c == '_') || ft_isalnum(c));
 }
 
-int	is_number(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-/* returns $ position if found outside simple quote, else: -1 */
-int	strdol(char *str)
-{
-	int	squote = 0;
-	int	i = 0;
-//
-	while(str && str[i] != '\0')
-	{
-		if (str[i] == '\'')
-			squote++;
-		else if (str[i] == '$' && squote % 2 == 0)
-			if (is_name(str[i + 1]) && !is_number(str[i + 1]))
-				return (i);
-		i++;
-	}
-	return (-1);
-}
-
+/* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9] except on index 0, '?') */
 int	strlen_isname(char *str)
 {
-	int	i = 0;
+	int	i = 1;
 	//
-	while (str && str[i] != '\0' && is_name(str[i]))
+	if (!str || str[0] == '\0')
+		return (0);
+	if (str[i] == '?')
+		return (++i);
+	while (str[i] && is_name(str[i]))
 		i++;
 	return (i);
 }
 
+/* returns index of the first quote found. if not found, returns -1 */
 int	strquote(char *str, int start)
 {
 	int	i = start;
@@ -111,74 +95,162 @@ void	rm_quote(t_node *token)
 		else
 			unquoted[q++] = token->value[i++];
 	}
+	unquoted[q] = '\0';
 	free(token->value);
 	token->value = unquoted;
 }
 
-	// while (token->value[i] != '\0')
-	// {
-	// 	if (token->value[i++] == '\'' && dquote % 2 == 0)
-	// 		squote++;
-	// 	else if (token->value[i++] == '\"' && squote % 2 == 0)
-	// 		dquote++;
-	// 	else
-	// 		unquoted[q++] = token->value[i++];
-	// }
-
+/* search key on env list. returna an env node with key and value, if found. else: NULL. free key*/
 t_envnode	*search_key(t_env *list, char *key)
 {
 	int	keylen = ft_strlen(key);
-	int	envklen;
 	t_envnode	*env;
 
 	env = list->head;
 	while (env != NULL)
 	{
+		//compare key with env variables on list
 		if (ft_strncmp(key, env->key, keylen) == 0)
 			break ;
 		env = env->next;
-	}
-	if (env)
-		envklen = ft_strlen(env->key);
-	if ((env && envklen != keylen) || !env) //funciona?
+
+	i = ft_strlen(s);
+	if (!s || n <= 0 || i < n)
 		return (NULL);
-	printf("\n\nkey = %s\n", env->key);
-	return (env);
-
+	dest = (char *) malloc((n + 1) * sizeof(char));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (s[i] != '\0' && i < n)
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-void	expand(t_node *token, t_env *env, int start)
+/* returns $ position if found outside simple quote. else: -1 */
+int	strdol(char *str)
 {
-	int	end = start;
-	char	key[4] = "alo";
-	char	keyt[5] = "USE";
-	// char	*expanded;
-
-	while (is_name(token->value[end]))
-		end++;
-	search_key(env, key);
-	search_key(env, keyt);
-	// key = ft_strndup(&token->value[start], (end - start));
-	// expanded = malloc(ft_strlen(token->value) - (end - start) + 1 * sizeof(char));	
+	int	squote = 0;
+	int	i = 0;
+//
+	while(str && str[i] != '\0')
+	{
+		if (str[i] == '\'')
+			squote++;
+		else if (str[i] == '$' && squote % 2 == 0)
+			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i + 1])))
+				return (i) ;
+		i++;
+	}
+	return (-1);
 }
 
+/* join s1 and s2 into return string until n bytes and free s1*/
+char	*ft_strnjoin(char *s1, char *s2, int n)
+{
+	char	*s;
+	int		i;
+	int		s_pos;
+
+	if (!s1 && !s2)
+		return (NULL);
+	i = 0;
+	s_pos = 0;
+	s = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (s == NULL)
+		return (NULL);
+	while (s1 && s1[i] != '\0')
+		s[i++] = s1[s_pos++];
+	s_pos = 0;
+	while (s2 && s2[s_pos] != '\0' && s_pos < n)
+		s[i++] = s2[s_pos++];
+	s[i] = '\0';
+	free(s1);
+	return (s);
+}
+
+/* join s1 and s2 into return string and free s1*/
+char	*ft_strfjoin(char *s1, char *s2)
+{
+	char	*s;
+	int		i;
+	int		s_pos;
+
+	if (!s1 && !s2)
+		return (NULL);
+	i = 0;
+	s_pos = 0;
+	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
+	if (s == NULL)
+		return (NULL);
+	while (s1 && s1[i] != '\0')
+		s[i++] = s1[s_pos++];
+	s_pos = 0;
+	while (s2 && s2[s_pos] != '\0')
+		s[i++] = s2[s_pos++];
+	s[i] = '\0';
+	free(s1);
+	return (s);
+}
+
+/* search for '$' outside single quotes, if whats next is a valid env var name, searchs for it on env list. if found: the key is replaced by its value, else: its expanded to nothing. */
+void	expand(t_node *token, t_env *env)
+{
+	int	varlen;
+	char	*expanded;
+	t_envnode	*node;
+	char	*str;
+	char	*var;
+	int	dol;
+// //
+	str = token->value;
+	while (str)
+	{
+		//dol = index of next $ followed by a valid char. if not found, = -1
+		dol = strdol(str);
+		if (dol < 0)
+			break ;
+		// var = a pointer to '$' on str. (by incrementing str to '$' index)
+		var = str + dol;
+		// varlen = strlen while is a valid name, starting on '$'
+		varlen = strlen_isname(var);
+		// expanded = expanded + content before '$', if there is
+		expanded = ft_strnjoin(expanded, str, (var - str)); // free on
+		// node = node on env list matching var with node->key. if not found, NULL
+		node = search_key(env, strndup(var + 1, varlen - 1)); //free na key on
+		// if found, expanded = expanded + value of the matching key
+		if (node)
+			expanded = ft_strfjoin(expanded, node->value); // free on
+		// increments str pointer to after var ends
+		str += (var - str) + varlen;
+	}
+	// adds content that may be after expanding all existing variables
+	expanded = ft_strfjoin(expanded, str);
+	free(token->value);
+	token->value = expanded;
+}
+
+/* if not a heredoc delimiter, expands all variables that may exist. next, removes outside quotes that may exist */
 void	format(t_tab *cmdtable, t_env *env)
 {
-	int	var = 0;
 	t_list	*cmd;
 	t_node	*token;
 	//
 	(void)env;
 	cmd = cmdtable->head;
 	token = cmd->head;
+	if (!token)
+		return ; //barrar na validacao inicial inputs vazios
+	// percorrendo cmd table
 	while (cmd != NULL)
 	{
-		var = strdol(&token->value[var++]);
-		while (var >= 0) //segfault? HEREDOCCCCCCCCC
-		{
-			expand(token, env, var);
-			var = strdol(&token->value[++var]);
-		}
+		// se nao for um delimitador de heredoc, expande todas as variaveis desse token
+		if (!(token->type == REDIRECT_FILE && token->prev && token->prev->type == HEREDOC))
+			expand(token, env);
+		// removes outside quotes
 		rm_quote(token);
 		token = token->next;
 		if (token == NULL)
