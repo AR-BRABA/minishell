@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/09/24 19:52:55 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/05 08:17:06 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
 		user_input = readline("minishell$ ");
-		if (!user_input)
+		if (!user_input || ft_strncmp(user_input, "exit", 4) == 0)
 			break; // Stop the loop if readline() returns NULL (EOF)
 		if (user_input && !has_only_spaces(user_input))
 		{
