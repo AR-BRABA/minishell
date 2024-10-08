@@ -117,61 +117,77 @@ Para encontrar um equilíbrio, adotamos um modelo híbrido que combina o melhor 
   
   <br>
   
-  #### Workflow steps
+  #### Detalhamento do Fluxo de Trabalho
   
   1. **Criando uma Branch de Funcionalidade**:
      
-     * Comece a partir da branch `develop`;
-     
-     * Atualize o repositório local (`comando git pull`);
-     
-     * Crie uma nova branch usando a convenção de nomenclatura `feature/<nome-da-funcionalidade>`.
-       
+     -  Certifique-se que está na branch *develop*:<br>
+       `git branch`
+
+     -  Se não está na *develop*, acesse-a:<br>
+       `git switch develop`
+
+     -  Atualize o repositório local:<br>
+       `git pull`
+
+     -  Crie uma nova branch usando a convenção de nomenclatura `feature/<nome-da-funcionalidade>`.
+     `git checkout -b feature/<feature-name>`
        <br>
-  
+       <br>
   2. **Desenvolvimento e Testes**:
      
-     * Desenvolva a funcionalidade em sua branch específica;
+     - Desenvolva a funcionalidade em sua branch específica;
      
-     * Realize testes completos para garantir a qualidade.
-       
+     - Realize testes completos para garantir a qualidade.
        <br>
-  
+       <br>
   3. **Merge para a `develop`**:
      
-     * Certifique-se de estar na branch `develop`;
+     - Certifique-se que está na branch *develop*:<br>
+      `git branch`
+
+     - Se não está na *develop*, acesse-a:<br>
+      `git switch develop`
      
-     * Garanta que a branch `develop` esteja atualizada (comando `git pull`);
+     - Garanta que a branch *develop* esteja atualizada:
+      `git pull`
      
-     * Mergeie a branch temporária da funcionalidade para a `develop`.
-       
+     - Mescle a branch temporária da funcionalidade para a *develop*:
+      `git merge <nome-da-branch>`
+
+     - Ao finalizar o merge, delete a branch temporária
+      `git branch -d <nome-da-branch>` 
+       <br>
        <br>
   
   4. **Merge da `develop` para a `main`**:
      
-     * Crie um pull request (PR);
-     
-     * O PR deve ser revisado, testado e aprovado pelo outro membro da equipe;
-     
-     * A pessoa aprovadora deve garantir que está na branch `main`;
-     
-     * pessoa aprovadora deve garantir que a branch `main` está atualizada (comando `git pull`);
-     
-     * Faça o merge da branch `develop` para a `main`.
-       
-       <br>
+     - Crie um pull request (PR);
   
+     - Mova o card da tarefa da coluna `In progress` para a `Validation` no projeto **minishell** do Github Projects;
+     
+     - O PR deve ser revisado, testado e aprovado pelo outro membro da equipe;
+     
+     - A pessoa aprovadora deve garantir que está na branch *main*:<br>
+      `git branch`
+     
+     - Se a pessoa aprovadora não estiver na *main*, deverá acessá-la:<br>
+      `git switch main`
+
+     - A pessoa aprovadora deve garantir que a branch *main* está atualizada:<br>
+       `git pull`
+     
+     - Faça o merge da branch `develop` para a `main`:<br>
+      git merge develop`
+       <br>
+       <br>
   5. **Correção de Bugs**:
      
-     * Certifique-se de que seu repositório local está atualizado (comando `git pull`);
+     - Siga os passos da seção *#1* usando usando a convenção de nomenclatura `fix/<descrever-bug-de forma concisa>`;
      
-     * Comece a partir da branch `develop`;
+     - Faça o merge da branch temporária de correção para a *develop*, seguindo as instruções das seções *#2* e *#3*;
      
-     * Crie uma nova branch usandp a convenção de nomenclatura `fix/<descrever-bug-de forma concisa>`;
-     
-     * Faça o merge da branch temporária de correção para a `develop`;
-     
-     * Siga os passos da seção *#4* (**Merging `develop` into `main`**).
+     - Siga os passos da seção *#4*.
        
        <br>
   
