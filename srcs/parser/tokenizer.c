@@ -64,6 +64,8 @@ t_tab	*get_cmdtable(char **input, t_env *env)
 	cmdtable = malloc(sizeof(t_tab));
 	cmdtable->head = list;
 	cmdtable->len = 1;
+	cmdtable->fd_in = STD_IN;
+	cmdtable->fd_out = STD_OUT;
 	list = list->next;
 	i += cmdlen(&input[i]);
 	while (input[i] != NULL)
