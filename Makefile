@@ -9,6 +9,7 @@ LIBFT			= $(LIBFT_PATH)/libft.a
 SRC_DIR			= srcs
 VALIDATION_DIR		= $(SRC_DIR)/input_validation
 ENV_DIR			= $(SRC_DIR)/env
+CD_DIR			= $(SRC_DIR)/cd
 PARSER_DIR		= $(SRC_DIR)/parser
 PWD_DIR			= $(SRC_DIR)/pwd
 
@@ -22,6 +23,7 @@ OBJ_DIR			= objs
 SRC_FILES		= $(SRC_DIR)/init_minishell.c
 VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c $(VALIDATION_DIR)/validate_input_utils.c
 ENV_FILES		= $(ENV_DIR)/env.c
+CD_FILES		= $(ENV_DIR)/cd.c
 PWD_FILES		= $(PWD_DIR)/pwd.c
 PARSER_FILES		= $(PARSER_DIR)/free.c $(PARSER_DIR)/identify_char.c $(PARSER_DIR)/lexer.c \
 				$(PARSER_DIR)/lexer_utils.c $(PARSER_DIR)/print.c $(PARSER_DIR)/tokenizer.c \
@@ -32,9 +34,11 @@ OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(VALIDATION_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(ENV_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(PARSER_FILES:.c=.o))) \
+				$(addprefix $(OBJ_DIR)/, $(notdir $(CD_FILES:.c=.o))) \
+
+vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(PARSER_DIR) $(CD_DIR) $(PWD_DIR)
 				$(addprefix $(OBJ_DIR)/, $(notdir $(PWD_FILES:.c=.o))) \
 
-vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(PARSER_DIR) $(PWD_DIR)
 vpath %.h $(INCLUDE_DIR)
 
 all:			 $(NAME)
