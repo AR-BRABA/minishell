@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/27 20:32:26 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/10/13 18:11:30 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void execute_external_command(t_node *token)
         exec_args[i] = NULL;
 
         // executar comando externo com execvp
-        if (execvp(exec_args[0], exec_args) == -1)
-        {
-            perror("execvp failed");
+	if (execve(exec_args[0], exec_args, NULL) == -1)
+	{
+            perror("execve failed");
             exit(1);  // sair do processo filho
         }
     }
