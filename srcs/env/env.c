@@ -44,6 +44,7 @@ t_env	*get_env_list(char **envp)
 	env->len = 0;
 	env->head = NULL;
 	env->tail = env->head;
+	env->envp = envp; // Armazenar envp p/usar na exec de cmds externos
 	while (envp[i] != NULL)
 	{
 		node = new_envnode(envp[i]);
