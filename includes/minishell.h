@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/07 17:11:46 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/16 18:42:27 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	s_env {
 	int	len;
 	t_envnode	*head;
 	t_envnode	*tail;
+	char		**envp; //Armazena envp p/usar na exec de cmds externos
 } t_env;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
@@ -89,9 +90,9 @@ t_env	*get_env_list(char **envp);
 void	print_env(t_env	*env);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void	execute_commands(t_tab *cmdtable);
-int		execute_builtins(t_node *token);
-void	execute_external_command(t_node *token);
+void	execute_commands(t_tab *cmdtable, t_env *env);
+int		execute_builtins(t_node *token, t_env *env);
+void	execute_external_command(t_node *token, char **envp);
 
 // PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
