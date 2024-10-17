@@ -142,7 +142,7 @@ t_envnode	*search_key(t_env *list, char *key)
 		envklen = ft_strlen(env->key);
 	if ((env && envklen != keylen) || !env) //funciona?
 		return (NULL);
-	printf("\n\nkey = %s\n", env->key);
+	printf("\n\ntoken_format.c --> key = %s\n", env->key);
 	return (env);
 
 }
