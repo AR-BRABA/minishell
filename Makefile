@@ -18,10 +18,6 @@ PWD_DIR			= $(SRC_DIR)/pwd
 INCLUDE_DIR		= includes
 OBJ_DIR			= objs
 
-#SRC_FILES		= init_minishell.c validate_input.c validate_input_utils.c \
-#			  parser/free.c parser/identify_char.c parser/lexer.c parser/lexer_utils.c parser/print.c parser/tokenizer.c parser/tokenizer_utils.c parser/token_format.c \
-#			  env/env.c
-#SRCS			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES		= $(SRC_DIR)/init_minishell.c
 VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
 				      $(VALIDATION_DIR)/validate_input_utils.c
@@ -48,9 +44,9 @@ OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(PARSER_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(ECHO_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(CD_FILES:.c=.o))) \
-
-vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(EXECUTOR_DIR) $(PARSER_DIR) $(CD_DIR) $(PWD_DIR) $(ECHO_DIR) 
 				$(addprefix $(OBJ_DIR)/, $(notdir $(PWD_FILES:.c=.o))) \
+
+vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(ENV_DIR) $(EXECUTOR_DIR) $(PARSER_DIR) $(CD_DIR) $(PWD_DIR) $(ECHO_DIR)
 
 vpath %.h $(INCLUDE_DIR)
 
@@ -75,7 +71,7 @@ clean:
 			$(RM) $(OBJS)
 
 fclean:			clean
-			$(MAKE) -C $(LIBFT_PATH) fclean getcwd(buf, 0);
+			$(MAKE) -C $(LIBFT_PATH) fclean
 			$(RM) $(NAME)
 			$(RM) $(OBJ_DIR)
 
