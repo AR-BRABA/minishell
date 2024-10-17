@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/08 18:38:44 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:57:55 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 				cmdtab = get_cmdtable(split, env);
 				//expand and remove quotes (work in progress)
 				format(cmdtab, env);
-				execute_commands(cmdtab); // call executor
+				execute_commands(cmdtab, env); // call executor
 				destroy_table(cmdtab); // deallocate memory
 			}
 			// handle errors
