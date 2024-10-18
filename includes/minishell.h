@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -32,6 +33,12 @@ enum e_type {
 	HEREDOC,
 };
 
+enum e_std {
+	STD_IN,
+	STD_OUT,
+	STD_ERROR,
+};
+
 typedef struct	s_node {
 	char	*value;
 	int	type;
@@ -49,6 +56,8 @@ typedef struct	s_list {
 typedef struct	s_tab {
 	t_list	*head;
 	int	len;
+	int	fd_in;
+	int	fd_out;
 }	t_tab;
 
 typedef struct	s_envnode {
@@ -106,7 +115,7 @@ char	**metachar_split(char *user_input);
 
 /*
 * splits user_input into an array of tokens.
-* lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
+* lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE getcwd(buf, 0);
 */
 char	**get_tokens(char *user_input);
 
@@ -138,5 +147,16 @@ void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
 int	strlen_isname(char *str);
+
+// ECHO.C ---------------------------------------------------------------------
+int	echo(char **arg);
+
+// CD.C ----------------------------------------------------------------------
+char	*get_key_value(t_env *list, char *key);
+void	update_key_value(t_env *list, char *key, char *new_val);
+int	cd(char *destpath, t_env *env);
+
+// PWD.C -----------------------------------------------------------------------
+int	pwd(void);
 
 #endif

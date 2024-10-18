@@ -42,6 +42,10 @@ main() {
     local test_scripts=(
         "$TEST_SCRIPTS_DIR/border_special_chars.sh"
 	    "$TEST_SCRIPTS_DIR/here-doc_syntax.sh"
+<<<<<<< HEAD
+        "$TEST_SCRIPTS_DIR/append-mode_syntax.sh"
+=======
+>>>>>>> origin/develop
 	    "$TEST_SCRIPTS_DIR/invalid_sequences.sh"
     )
 
