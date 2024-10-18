@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/07 19:26:37 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/18 16:14:54 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,10 @@ t_envnode	*new_envnode(char *envp);
 void	addback_env(t_envnode *newnode, t_env *list);
 t_env	*get_env_list(char **envp);
 int	env(t_env *env);
-int	envexport(char *input, t_env *env);
-int	envunset(char *key, t_env *env);
+int	export(char **args, t_env *env);
+int	unset(char **args, t_env *env);
+int	destroy_env(t_env *env);
+int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
 
 // PRINT.C --------------------------------------------------------------------
 void	print_split(char **array);
