@@ -6,11 +6,25 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/15 15:57:55 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:07:18 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+
+// rl_clear_history on exit
+// missing: signals on forks and heredoc
+void sighandler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+}
 
 /**
  * Main function that reads the user input in a loop and validates the input
@@ -23,6 +37,8 @@ int	main(int argc, char **argv, char **envp)
 	char	**split;
 	t_tab	*cmdtab;
 
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, SIG_IGN);
 	(void)argc;
 	(void)argv;
 	//user_input = NULL;
