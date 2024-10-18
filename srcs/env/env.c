@@ -54,6 +54,8 @@ t_env	*get_env_list(char **envp)
 		addback_env(node, env);
 		i++;
 	}
+	node = new_envnode("?=0");
+	addback_env(node, env);
 	env->tail = node;
 	return (env);
 }
@@ -67,10 +69,13 @@ int	env(t_env *env)
 	node = env->head;
 	while (node != NULL)
 	{
-		ft_putstr_fd(node->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putstr_fd(node->value, 1);
-		ft_putchar_fd('\n', 1);
+		if (node->key[0] != '?')
+		{
+			ft_putstr_fd(node->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putstr_fd(node->value, 1);
+			ft_putchar_fd('\n', 1);
+		}
 		node = node->next;
 	}
 	return (0);
