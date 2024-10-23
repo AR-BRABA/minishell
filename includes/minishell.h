@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <sys/wait.h>
 
 enum e_type {
 	COMMAND,
@@ -71,6 +72,7 @@ typedef struct	s_env {
 	int	len;
 	t_envnode	*head;
 	t_envnode	*tail;
+	char		**envp; //Armazena envp p/usar na exec de cmds externos
 } t_env;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
@@ -91,7 +93,12 @@ int	unset(char **args, t_env *env);
 int	destroy_env(t_env *env);
 int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
 
-// PRINT.C --------------------------------------------------------------------
+// EXECUTOR.C ------------------------------------------------------------------
+void	execute_commands(t_tab *cmdtable, t_env *env);
+int		execute_builtins(t_node *token, t_env *env);
+void	execute_external_command(t_node *token, char **envp);
+
+// PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
 void	print_list(t_list *list);
 void	print_tab(t_tab	*table);

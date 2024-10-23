@@ -27,7 +27,7 @@ void	print_list(t_list *list)
 		printf("{value = !%s! \\ type = %i}->", node->value, node->type);
 		node = node->next;
 	}
-	printf("NULL");
+	printf("NULL\n");
 }
 
 void	print_tab(t_tab	*table)
