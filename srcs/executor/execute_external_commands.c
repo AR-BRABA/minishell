@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/minishell.h"
 
 char	*find_command_path(char *cmd, char **envp)
@@ -41,6 +40,7 @@ char	*find_command_path(char *cmd, char **envp)
 		ft_strlcpy(absolute_path, paths[i], ft_strlen(paths[i]) + 1); // Copiar o diretório
 		ft_strlcat(absolute_path, "/", ft_strlen(absolute_path) + 2); // adiciona a /
 		ft_strlcat(absolute_path, cmd, ft_strlen(absolute_path) + ft_strlen(cmd) + 1); // add o comando
+
 		if (access(absolute_path, X_OK) == 0) // O comando pode ser executado?
 		{
 			free_split(paths);
@@ -95,7 +95,7 @@ void execute_external_command(t_node *token, char **envp)
 	}
 
 	// buscar o caminho completo do comando
-	cmd_path = find_command_path(token->value, envp);
+	cmd_path = find_command_path(token->value, envp); // trocar para define_command_path?
 	if (!cmd_path)
 	{
 		ft_putstr_fd("Error: command not found in PATH\n", 2);
@@ -106,13 +106,14 @@ void execute_external_command(t_node *token, char **envp)
 	if (!exec_args)
 	{
 		free(cmd_path);
-        	return ;
+        return ;
 	}
 	pid = fork();  // Criar processo filho p/ executar comando externo
 	if (pid == 0)  // tô no processo filho
 	{
-		if (execve(cmd_path, exec_args, envp) == -1)
+		if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
 		{
+			// salvar exit status no envp em $?
 			perror("Error: execve failed");
 			free(exec_args);
 			free(cmd_path);
@@ -120,45 +121,9 @@ void execute_external_command(t_node *token, char **envp)
 		}
 	}
     	else if (pid > 0)  // tô no processo pai
-        	wait(NULL);  // esperar processo filho terminar
+        	wait(NULL);  // esperar qualquer processo filho terminar
     	else
         	perror("fork failed");
     	free(exec_args);
 		free(cmd_path);
-
-    // DEBUG --> preenche exec_args com os tokens do comando e argumentos
-//    while (token != NULL)
-//    {
-//        exec_args[i++] = token->value;
-//        token = token->next;
-//    }
-//    exec_args[i] = NULL;  // args deve terminar com NULL para execve
-
-    // DEBUG
-//    printf("execve vai executar o comando: %s\n", exec_args[0]);
-
-//    pid = fork();  // Criar processo filho p/ executar comando externo
-//    if (pid == 0)  // tô no processo filho
-//    {
-        /* // formatar os tokens em um array de argumentos
-        arg_token = token;
-        while (arg_token != NULL)
-        {
-            exec_args[i] = arg_token->value;  // preencher cada argumento
-            arg_token = arg_token->next;
-            i++;
-        }
-        exec_args[i] = NULL;*/
-
-        // executar comando externo com execvp
-//	if (execve(exec_args[0], exec_args, NULL) == -1)
-//	{
-//            perror("execve failed");
-//            exit(1);  // sair do processo filho
-//        }
-//    }
-//    else if (pid > 0)  // tô no processo pai
-//        wait(NULL);  // esperar processo filho terminar
-//    else
-//        perror("fork failed");
 }
