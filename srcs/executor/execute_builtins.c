@@ -20,7 +20,7 @@ int execute_builtins(t_node *token, t_env *env)
 	t_node	*arg_token;
 
 	if (!token || !token->value)
-	return (0);
+		return (0);
 	if (ft_strncmp(token->value, "cd", 2) == 0)
 	{
 		if (token->next)
