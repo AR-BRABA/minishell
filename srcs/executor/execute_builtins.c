@@ -12,18 +12,16 @@
 
 #include "../../includes/minishell.h"
 
-int execute_builtins(t_node *token, t_env *env)
+int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 {
 	int	i;
-	int	count;
 	char	**args;
-	t_node	*arg_token;
 
 	if (!token || !token->value)
 		return (0);
 	if (ft_strncmp(token->value, "cd", 2) == 0)
 	{
-		if (token->next)
+		if (token->next)	
 			return (cd(token->next->value, env));
 		return (cd(NULL, env));
     }
@@ -31,43 +29,30 @@ int execute_builtins(t_node *token, t_env *env)
 	{
 		if (!token->next)
 			return (echo(NULL));
-		arg_token = token->next;
-		count = 0;
-		while (arg_token) // contar o nº de argumentos
-		{
-			count++;
-			arg_token = arg_token->next;
-		}
-		args = (char **)malloc(sizeof(char *) * (count + 1)); // criar um array de strings para passar para o echo
+		args = list_to_char_array(token->next);
 		if (!args)
-		{
-			perror("Error: memory allocation failure!\n");
 			return (0);
-		}
-		arg_token = token->next; // voltar p/o 1º argumento e depois copiar os args p/o array
-		i = 0;
-		while (arg_token) // preencher o array de argumentos;
-		{
-			if (!arg_token->value)
-			{
-				free(args); // se der erro, dar free
-				return (0);
-			}
-			args[i] = arg_token->value; // copiar o valor do token p/o array de args
-			i++;
-			arg_token = arg_token->next;
-		}
-		args[i] = NULL;
 		i = echo(args); // chamar echo c/o array de argumentos
 		free(args);
 		return (i);
 	}
-   	/*else if (ft_strncmp(token->value, "exit", 4) == 0)
+   	else if (ft_strncmp(token->value, "exit", 4) == 0)
     {
-        builtin_exit();
-        return (1);
-    }*/
+		args = list_to_char_array(token->next);
+		if (!args)
+			return (0); // se não tiver argumento chama exit sem argumento????
+        return (mini_exit(args, env, cmdtab)); // exit encerra o programa
+    }
     else if (ft_strncmp(token->value, "pwd", 3) == 0)
 		return (pwd());
+	else if (ft_strncmp(token->value, "unset", 5) == 0); // implement unset
+	{
+		args = list_to_char_array(token->next);
+		if (!args)
+			return (0); // Qual erro retornar se não tiver argumentos mesmo?
+		i = unset(args, env);
+		free(args);
+		return(i);
+	}
 	return (-1); // Se não for built-in, retornar -1
 }
