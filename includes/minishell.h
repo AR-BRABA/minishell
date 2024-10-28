@@ -88,7 +88,11 @@ bool    has_only_spaces(char *input);
 t_envnode	*new_envnode(char *envp);
 void	addback_env(t_envnode *newnode, t_env *list);
 t_env	*get_env_list(char **envp);
-void	print_env(t_env	*env);
+int	env(t_env *env);
+int	export(char **args, t_env *env);
+int	unset(char **args, t_env *env);
+int	destroy_env(t_env *env);
+int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_tab *cmdtable, t_env *env);
@@ -153,6 +157,7 @@ t_list	*new_list(char **input);
 void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
+int	strlen_isname(char *str);
 
 // ECHO.C ---------------------------------------------------------------------
 int	echo(char **arg);
