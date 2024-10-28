@@ -45,7 +45,7 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
     }
     else if (ft_strncmp(token->value, "pwd", 3) == 0)
 		return (pwd());
-	else if (ft_strncmp(token->value, "unset", 5) == 0); // implement unset
+	else if (ft_strncmp(token->value, "unset", 5) == 0) // implement unset
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
