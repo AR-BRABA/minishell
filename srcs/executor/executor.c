@@ -31,7 +31,7 @@ void	execute_commands(t_tab *cmdtable, t_env *env)
             			i++;
             			tmp_token = tmp_token->next;
         		}*/
-			if (execute_builtins(token, env) == -1) // trocar para is_builtin para poder chamar perror caso nao seja builtin ou external command
+			if (execute_builtins(token, env, cmdtable) == -1) // trocar para is_builtin para poder chamar perror caso nao seja builtin ou external command
 				execute_external_command(token, env->envp);
 			//else
 				//perror("Error: Invalid command");

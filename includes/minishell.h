@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -95,7 +96,7 @@ int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_tab *cmdtable, t_env *env);
-int		execute_builtins(t_node *token, t_env *env);
+int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab);
 void	execute_external_command(t_node *token, char **envp);
 
 // PRINT.C ---------------------------------------------------------------------
@@ -135,6 +136,9 @@ char	*substr_by_address(char *str, int len);
 * ft_substr but starting by the first index of str
 */
 char	*substr_by_address(char *str, int len);
+
+// LIST_UTILS.C ---------------------------------------------------------------
+char	**list_to_char_array(t_node *token);
 
 // TOKENIZER.C ----------------------------------------------------------------
 t_tab	*get_cmdtable(char **input, t_env *env);

@@ -29,6 +29,7 @@ PARSER_FILES	= $(PARSER_DIR)/free.c \
 				  $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
+				  $(PARSER_DIR)/list_utils.c \
 				  $(PARSER_DIR)/print.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
