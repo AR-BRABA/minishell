@@ -28,7 +28,7 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 		return (NULL);
 	while (directory[i])
 		bin_path[i++] = directory[pos++];
-    bin_path[i++] = slash;
+	bin_path[i++] = slash;
 	pos = 0;
 	while (cmd[pos])
 		bin_path[i++] = cmd[pos++];
