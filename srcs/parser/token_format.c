@@ -53,7 +53,6 @@ int	strlen_unquote(char *quotestr)
 		}
 		i++;
 	}
-	printf("\nstrlen - quote = %i\n", (i - quote));
 	return (i - quote);
 }
 
