@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/29 23:36:49 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/29 23:39:22 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	//user_input = NULL;
 	// builds env linked list
-	main->envp = get_env_list(envp);
 	main = malloc(sizeof(t_main));
+	main->envp = get_env_list(envp);
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
 		main->input = readline("minishell$ ");
