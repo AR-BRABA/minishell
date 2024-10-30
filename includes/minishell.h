@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/29 20:41:19 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/29 23:36:08 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,13 @@ typedef struct	s_env {
 	t_envnode	*tail;
 	char		**envp; //Armazena envp p/usar na exec de cmds externos
 } t_env;
+
+typedef struct	s_main {
+	char	*input;
+	char	**split;
+	t_env	*envp;
+	t_tab	*cmdtab;
+} t_main;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char	*read_input(char *user_input);
