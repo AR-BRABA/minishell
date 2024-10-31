@@ -116,7 +116,7 @@ t_envnode	*search_key(t_env *list, char *key)
 	}
 	if (!env) //funciona?
 		return (NULL);
-	printf("\n\nkey = %s\n", env->key);
+	//printf("\n\nkey = %s\n", env->key);
 	return (env);
 }
 
