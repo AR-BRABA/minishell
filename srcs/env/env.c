@@ -5,9 +5,7 @@ t_envnode	*new_envnode(char *envp)
 	char	**split;
 	t_envnode	*node;
 	
-	split = ft_split(envp, '=');
-	if (!split || !split[0] || (int)ft_strlen(split[0]) != strlen_isname(split[0]))
-		return (NULL);
+	split = ft_split(envp, '='); //FIX: splitar apenas ate o primeiro =
 	node = malloc(sizeof(t_envnode));
 	if (!node)
 		return (NULL);
@@ -27,12 +25,14 @@ void	addback_env(t_envnode *newnode, t_env *list)
 	if (!node)
 	{
 		list->head = newnode;
+		list->tail = newnode;
+		list->len++;
 		return ;
 	}
-	while (node->next != NULL)
-		node = node->next;
+	node = list->tail;
 	newnode->prev = node;
 	node->next = newnode;
+	list->tail = newnode;
 	list->len++;
 }
 
@@ -48,7 +48,7 @@ t_env	*get_env_list(char **envp)
 	env->len = 0;
 	env->head = NULL;
 	env->tail = env->head;
-	env->envp = envp; // Armazenar envp p/usar na exec de cmds externos
+	env->envp = envp;
 	while (envp[i] != NULL)
 	{
 		node = new_envnode(envp[i]);
@@ -61,7 +61,7 @@ t_env	*get_env_list(char **envp)
 	return (env);
 }
 
-int	env(t_env *env)
+int	minienv(t_env *env)
 {
 	t_envnode	*node;
 	
@@ -90,6 +90,7 @@ int	export(char **args, t_env *env)
 	
 	while (args && args[count] != NULL)
 	{
+		//validate args here
 		node = new_envnode(args[count]);
 		if (node)
 			addback_env(node, env);
@@ -141,41 +142,56 @@ int	destroy_env(t_env *env)
 	return (0);
 }
 
-/* tem mais coisa mallocada? */
+char	*ft_getenv(t_env *list, char *key)
+{
+	int	len = ft_strlen(key);
+	t_envnode	*env;
+
+	env = list->head;
+	while (env != NULL)
+	{
+		//compare key with env variables on list
+		if (ft_strncmp(key, env->key, len + 1) == 0)
+			break ;
+		env = env->next;
+	}
+	if (!env)
+		return (NULL);
+	return (ft_strdup(env->value));
+}
+
 int	mini_exit(char **args, t_env *env, t_tab *cmdtab)
 {
-	int	i = 0;
-	int	nbr = 0;
+	int	nbr;
 
-	if (args && args[0] && args[1] != NULL)
-	{
-		ft_putstr_fd("Error: exit: too many arguments", 2);
-		return (1);
-	}
-	while (args && args[0] && args[0][i] != '\0')
-	{
-		if (ft_isdigit(args[0][i]) != 0 || (i != 0 && args[0][i] == '-'))
-		{
-			ft_putstr_fd("Error: exit: numeric argument required", 2);
-			destroy_env(env);
-			destroy_table(cmdtab);
-			exit(2);
-		}
-		i++;
-	}
 	if (args)
 		nbr = ft_atoi(args[0]);
+	else
+		nbr = ft_atoi(ft_getenv(env, "?"));
 	destroy_env(env);
 	destroy_table(cmdtab);
 	exit(nbr);
 }
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	(void)argc;
-// 	(void)argv;
-// 	t_env	*env;
+
+// se args eh letra -> executa e retorna 2
+// "Error: exit: numeric argument required", 2
+// se args > 1 -> retorna 1 e nao executa
+// "Error: exit: too many arguments", 2
+// a ordem importa. se for: a b, o erro sera: numeric argument required
+// passar a struct main!!!
+// usar essa versao com a struct principal:
 //
-// 	env = get_env_list(envp);
-// 	print_env(env);
-// 	return(0);
+// int	ft_exit(char *arg, t_main *main)
+// {
+// 	int	nbr;
+//
+// 	if (arg)
+// 		nbr = ft_atoi(arg);
+// 	else
+// 		nbr = ft_atoi(ft_getenv(main->envp, "?"));
+// 	free_split(main->split);
+// 	destroy_env(main->envp);
+// 	destroy_table(main->cmdtab);
+// 	free(main);
+// 	return (nbr);
 // }
