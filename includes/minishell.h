@@ -94,8 +94,8 @@ int	destroy_env(t_env *env);
 int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void	execute_commands(t_tab *cmdtable, t_env *env);
-int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab);
+void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
+int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab	);
 void	execute_external_command(t_node *token, char **envp);
 
 // PRINT.C ---------------------------------------------------------------------
