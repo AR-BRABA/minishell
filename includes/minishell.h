@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/18 16:14:54 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/29 23:36:08 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ typedef struct	s_env {
 	t_envnode	*head;
 	t_envnode	*tail;
 } t_env;
+
+typedef struct	s_main {
+	char	*input;
+	char	**split;
+	t_env	*envp;
+	t_tab	*cmdtab;
+} t_main;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char	*read_input(char *user_input);
@@ -157,6 +164,7 @@ void	rm_quote(t_node *token);
 void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
 int	strlen_isname(char *str);
+char	*ft_strfjoin(char *s1, char *s2);
 
 // ECHO.C ---------------------------------------------------------------------
 int	echo(char **arg);

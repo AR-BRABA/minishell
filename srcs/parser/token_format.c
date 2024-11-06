@@ -171,11 +171,11 @@ char	*ft_strfjoin(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	i = 0;
-	s_pos = 0;
 	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
 	if (s == NULL)
 		return (NULL);
+	i = 0;
+	s_pos = 0;
 	while (s1 && s1[i] != '\0')
 		s[i++] = s1[s_pos++];
 	s_pos = 0;
@@ -197,6 +197,7 @@ void	expand(t_node *token, t_env *env)
 	int	dol;
 // //
 	str = token->value;
+	expanded = NULL;
 	while (str)
 	{
 		//dol = index of next $ followed by a valid char. if not found, = -1

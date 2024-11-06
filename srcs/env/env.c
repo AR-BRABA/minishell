@@ -81,6 +81,7 @@ int	env(t_env *env)
 	return (0);
 }
 
+//TODO: erro chave nao eh valida
 int	export(char **args, t_env *env)
 {
 	int	count = 0;
@@ -96,6 +97,7 @@ int	export(char **args, t_env *env)
 	return(0);
 }
 
+//FIX: not working
 int	unset(char **args, t_env *env)
 {
 	int	count = 0;

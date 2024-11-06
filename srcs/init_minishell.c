@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/18 19:07:18 by jgils            ###   ########.fr       */
+/*   Updated: 2024/10/29 23:39:22 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ void sighandler(int sig)
  */
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
-	char	*user_input;
-	char	**split;
-	t_tab	*cmdtab;
+	t_main	*main;
 
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
@@ -43,30 +40,31 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	//user_input = NULL;
 	// builds env linked list
-	env = get_env_list(envp);
+	main = malloc(sizeof(t_main));
+	main->envp = get_env_list(envp);
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
-		user_input = readline("minishell$ ");
-		if (!user_input)
+		main->input = readline("minishell$ ");
+		if (!main->input)
 			break; // Stop the loop if readline() returns NULL (EOF)
-		else if (user_input && !has_only_spaces(user_input))
+		else if (main->input && !has_only_spaces(main->input))
 		{
-			if (validate_input(user_input))
+			if (validate_input(main->input))
 			{
 				//printf("Valid input: %s\n", user_input);
-				add_history(user_input);
+				add_history(main->input);
 				//lexer
-				split = metachar_split(user_input);
+				main->split = metachar_split(main->input);
 				//tokenizer
-				cmdtab = get_cmdtable(split, env);
+				main->cmdtab = get_cmdtable(main->split, main->envp);
 				//expand and remove quotes (work in progress)
-				format(cmdtab, env);
-				execute_commands(cmdtab, env, envp); // call executor
-				destroy_table(cmdtab); // deallocate memory
+				format(main->cmdtab, main->envp);
+				execute_commands(main->cmdtab, main->envp); // call executor
+				destroy_table(main->cmdtab); // deallocate memory
 			}
 			// handle errors
 		}
-		free(user_input);
+		free(main->input);
 	}
 	return (0);
 }
