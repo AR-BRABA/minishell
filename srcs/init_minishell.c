@@ -61,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 				cmdtab = get_cmdtable(split, env);
 				//expand and remove quotes (work in progress)
 				format(cmdtab, env);
-				execute_commands(cmdtab, env); // call executor
+				execute_commands(cmdtab, env, envp); // call executor
 				destroy_table(cmdtab); // deallocate memory
 			}
 			// handle errors
