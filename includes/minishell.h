@@ -73,7 +73,6 @@ typedef struct	s_env {
 	int	len;
 	t_envnode	*head;
 	t_envnode	*tail;
-	char		**envp; //Armazena envp p/usar na exec de cmds externos
 } t_env;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
