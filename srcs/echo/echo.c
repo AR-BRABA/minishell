@@ -6,7 +6,15 @@ int	echo(char **arg)
 	int	i;
 
 	if (arg && arg[0] && ft_strncmp(arg[0], "-n", 2) == 0)
-		n++;
+	{
+		n = 2;
+		while (arg[0][n] == 'n')
+			n++;
+		if (n != (int)ft_strlen(arg[0]))
+			n = 0;
+		else
+			n = 1;
+	}
 	i = n;
 	while (arg && arg[i])
 	{
