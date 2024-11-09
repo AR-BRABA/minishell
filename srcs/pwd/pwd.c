@@ -2,14 +2,14 @@
 
 int	pwd(void)
 {
-	char	*buf;
+	char	buf[PATH_MAX + 1];
+	char	*path;
 
-	buf = NULL;
-	buf = getcwd(buf, 0);
-	ft_putstr_fd(buf, 1); // substituir 1 por STDOUT
-	ft_putstr_fd("\n", 1); // substituir 1 por STDOUT
-	if (!buf)
+	path = getcwd(buf, 0);
+	ft_putstr_fd(path, 1);
+	ft_putstr_fd("\n", 1);
+	if (!path)
 		return (1);
-	free(buf);
+	free(path);
 	return (0);
 }

@@ -69,7 +69,7 @@ int	cd(char **args, t_env *env)
 	else
 		path = ft_strdup(args[0]);
 	origin = getcwd(buf, PATH_MAX + 1);
-	if (chdir(path) == -1)
+	if (chdir(path) == -1 || !origin)
 	{
 		minierror("cd", path, "No such file or directory", 1);
 		free(path);
