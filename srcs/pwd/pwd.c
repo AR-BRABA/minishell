@@ -10,6 +10,5 @@ int	pwd(void)
 	ft_putstr_fd("\n", 1);
 	if (!path)
 		return (1);
-	free(path);
 	return (0);
 }
