@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/05 11:38:32 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/09 18:35:53 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void	format(t_tab *cmdtable, t_env *env);
 t_envnode	*search_key(t_env *list, char *key);
 int	strlen_isname(char *str);
 char	*ft_strfjoin(char *s1, char *s2);
+int	is_name(char c);
 
 // ECHO.C ---------------------------------------------------------------------
 int	echo(char **arg);
@@ -173,7 +174,8 @@ int	echo(char **arg);
 // CD.C ----------------------------------------------------------------------
 char	*get_key_value(t_env *list, char *key);
 void	update_key_value(t_env *list, char *key, char *new_val);
-int	cd(char *destpath, t_env *env);
+int	cd(char **args, t_env *env);
+int	minierror(char *cmd, char *arg, char *message, int ret);
 
 // PWD.C -----------------------------------------------------------------------
 int	pwd(void);

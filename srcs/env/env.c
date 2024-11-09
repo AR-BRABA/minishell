@@ -1,19 +1,34 @@
 #include "../../includes/minishell.h"
 
-t_envnode	*new_envnode(char *envp)
+int	str_isname(char *str)
 {
-	char	**split;
+	int	i = 0;
+
+	while (str[i] != '\0')
+	{
+		if (((i == 0 && ft_isdigit(str[i])) || !is_name(str[i])))
+			return(0);
+		i++;
+	}
+	return(1);
+}
+t_envnode	*new_envnode(char *str)
+{
+	int	pos;
+	char *split;
 	t_envnode	*node;
 	
-	split = ft_split(envp, '='); //FIX: splitar apenas ate o primeiro =
+	split = ft_strchr(str, '=');
+	if (!split || str - split == 0)
+		return (NULL);
+	pos = (split - str);
 	node = malloc(sizeof(t_envnode));
 	if (!node)
 		return (NULL);
-	node->key = split[0];
-	node->value = split[1];
+	node->key = strndup(str, pos);
+	node->value = ft_strdup(&str[++pos]);
 	node->prev = NULL;
 	node->next = NULL;
-	free(split);
 	return (node);
 }
 
@@ -82,24 +97,35 @@ int	minienv(t_env *env)
 	return (0);
 }
 
-//TODO: erro chave nao eh valida
 int	export(char **args, t_env *env)
 {
+	int	ret = 0;
 	int	count = 0;
 	t_envnode	*node;
 	
 	while (args && args[count] != NULL)
 	{
-		//validate args here
+		// TODO: validar caso de prompt '1asd' nao printar erro
 		node = new_envnode(args[count]);
-		if (node)
+		if (node && str_isname(node->key))
 			addback_env(node, env);
+		else if (node)
+		{
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(node->key, 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			free(node->key);
+			free(node->value);
+			free(node);
+			ret = 1;
+		}
+		else
+			ret = 1;
 		count++;
 	}
-	return(0);
+	return(ret);
 }
 
-//FIX: not working
 int	unset(char **args, t_env *env)
 {
 	int	count = 0;
@@ -109,7 +135,7 @@ int	unset(char **args, t_env *env)
 	{
 		node = search_key(env, args[count]);
 		if (!node)
-			return (1);
+			return (0);
 		if (node->next)
 			node->next->prev = node->prev;
 		if (node->prev)
@@ -150,7 +176,6 @@ char	*ft_getenv(t_env *list, char *key)
 	env = list->head;
 	while (env != NULL)
 	{
-		//compare key with env variables on list
 		if (ft_strncmp(key, env->key, len + 1) == 0)
 			break ;
 		env = env->next;
