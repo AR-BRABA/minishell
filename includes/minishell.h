@@ -73,7 +73,6 @@ typedef struct	s_env {
 	int	len;
 	t_envnode	*head;
 	t_envnode	*tail;
-	char		**envp; //Armazena envp p/usar na exec de cmds externos
 } t_env;
 
 typedef struct	s_main {
@@ -102,8 +101,8 @@ int	destroy_env(t_env *env);
 int	miniexit(char **args, t_env *env, t_tab *cmdtab);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void	execute_commands(t_tab *cmdtable, t_env *env);
-int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab);
+void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
+int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab	);
 void	execute_external_command(t_node *token, char **envp);
 
 // PRINT.C ---------------------------------------------------------------------

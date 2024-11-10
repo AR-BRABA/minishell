@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	execute_commands(t_tab *cmdtable, t_env *env)
+void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
 {
 	t_list	*cmdlist;
 	t_node	*token;
@@ -32,7 +32,7 @@ void	execute_commands(t_tab *cmdtable, t_env *env)
             			tmp_token = tmp_token->next;
         		}*/
 			if (execute_builtins(token, env, cmdtable) == -1) // trocar para is_builtin para poder chamar perror caso nao seja builtin ou external command
-				execute_external_command(token, env->envp);
+				execute_external_command(token, envp);
 			//else
 				//perror("Error: Invalid command");
 		/*}
