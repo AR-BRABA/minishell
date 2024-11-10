@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/29 23:39:22 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/10 00:00:42 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // rl_clear_history on exit
 // missing: signals on forks and heredoc
-void sighandler(int sig)
+void sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -34,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_main	*main;
 
-	signal(SIGINT, sighandler);
+	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	(void)argc;
 	(void)argv;
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 				//expand and remove quotes (work in progress)
 				format(main->cmdtab, main->envp);
 				execute_commands(main->cmdtab, main->envp); // call executor
-				destroy_table(main->cmdtab); // deallocate memory
+				free_table(main->cmdtab); // deallocate memory
 			}
 			// handle errors
 		}

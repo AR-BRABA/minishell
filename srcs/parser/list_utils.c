@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/25 15:29:32 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/11/10 00:06:51 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char    **list_to_char_array(t_node *token)
 		count++;
 		arg_token = arg_token->next;
 	}
-	args = (char **)malloc(sizeof(char *) * (count + 1)); // criar um array de strings para passar para o echo
+	args = (char **)malloc(sizeof(char *) * (count + 1)); // criar um array de strings para passar para o ft_echo
 	if (!args)
 	{
 		perror("Error: memory allocation failure!\n");

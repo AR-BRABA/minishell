@@ -1,11 +1,5 @@
 #include "../../includes/minishell.h"
 
-/* returns if is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9]) */
-int	is_name(char c)
-{
-	return ((c == '_') || ft_isalnum(c));
-}
-
 /* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9] except on index 0, '?') */
 int	strlen_isname(char *str)
 {
