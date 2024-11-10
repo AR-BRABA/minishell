@@ -47,7 +47,6 @@ int	strlen_unquote(char *quotestr)
 		}
 		i++;
 	}
-	printf("\nstrlen - quote = %i\n", (i - quote));
 	return (i - quote);
 }
 
@@ -231,7 +230,7 @@ void	format(t_tab *cmdtable, t_env *env)
 	while (cmd != NULL && token != NULL)
 	{
 		// se nao for um delimitador de heredoc, expande todas as variaveis desse token
-		if (!(token->type == REDIRECT_FILE && token->prev && token->prev->type == HEREDOC))
+		if (token->type != HEREDOC_DELIMITER)
 			expand(token, env);
 		// removes outside quotes
 		rm_quote(token);

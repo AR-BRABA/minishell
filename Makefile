@@ -65,6 +65,9 @@ $(LIBFT):
 				$(MAKE) -C $(LIBFT_PATH) all; \
 			fi
 
+val: $(NAME)
+			valgrind --leak-check=full --suppressions=tests/valgrind.supp ./minishell
+
 clean:
 			$(MAKE) -C $(LIBFT_PATH) clean
 			$(RM) $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 11:52:29 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/10 16:29:53 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ enum e_type {
 	PIPE,
 	REDIRECT_IN,
 	REDIRECT_OUT,
-	REDIRECT_FILE,
+	IN_FILE,
+	OUT_FILE,
+	HEREDOC_DELIMITER,
 	APPEND,
 	HEREDOC,
 };
@@ -116,6 +118,7 @@ void	print_tab(t_tab	*table);
 void	free_split(char **array);
 void	free_table(t_tab *cmdtable);
 int	free_env(t_env *env);
+void	free_list(t_list *cmdline);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
 int	is_operator(char c);
