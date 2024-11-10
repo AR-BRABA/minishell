@@ -228,7 +228,7 @@ void	format(t_tab *cmdtable, t_env *env)
 	if (!token)
 		return ; //barrar na validacao inicial inputs vazios
 	// percorrendo cmd table
-	while (cmd != NULL)
+	while (cmd != NULL && token != NULL)
 	{
 		// se nao for um delimitador de heredoc, expande todas as variaveis desse token
 		if (!(token->type == REDIRECT_FILE && token->prev && token->prev->type == HEREDOC))
@@ -237,6 +237,11 @@ void	format(t_tab *cmdtable, t_env *env)
 		rm_quote(token);
 		token = token->next;
 		if (token == NULL)
+		{
 			cmd = cmd->next;
+			if (cmd == NULL)
+				break ;
+			token = cmd->head;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 00:06:51 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/10 15:16:53 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char    **list_to_char_array(t_node *token)
     count = 0;
     i = 0;
     arg_token = token;
-    while(arg_token)
+    while(arg_token && arg_token->type == ARG)
 	{
 		count++;
 		arg_token = arg_token->next;
@@ -39,7 +39,7 @@ char    **list_to_char_array(t_node *token)
 	}
 	arg_token = token; // voltar p/o 1º argumento e depois copiar os args p/o array
 	i = 0;
-	while (arg_token) // preencher o array de argumentos;
+	while (arg_token && arg_token->type == ARG) // preencher o array de argumentos;
 	{
 		if (!arg_token->value)
 		{
