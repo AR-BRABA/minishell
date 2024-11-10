@@ -6,13 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/09 18:02:13 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/09 21:58:20 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//TODO: env e export
 int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 {
 	int	i;
@@ -46,7 +45,7 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // se não tiver argumento chama exit sem argumento????
-		return (mini_exit(args, env, cmdtab)); // exit encerra o programa
+		return (miniexit(args, env, cmdtab)); // exit encerra o programa
 	}
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		return (pwd());

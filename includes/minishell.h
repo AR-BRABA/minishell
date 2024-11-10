@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/09 18:35:53 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/09 21:58:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	minienv(t_env *env);
 int	export(char **args, t_env *env);
 int	unset(char **args, t_env *env);
 int	destroy_env(t_env *env);
-int	mini_exit(char **args, t_env *env, t_tab *cmdtab);
+int	miniexit(char **args, t_env *env, t_tab *cmdtab);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_tab *cmdtable, t_env *env);
@@ -176,6 +176,7 @@ char	*get_key_value(t_env *list, char *key);
 void	update_key_value(t_env *list, char *key, char *new_val);
 int	cd(char **args, t_env *env);
 int	minierror(char *cmd, char *arg, char *message, int ret);
+int	splitlen(char **split);
 
 // PWD.C -----------------------------------------------------------------------
 int	pwd(void);

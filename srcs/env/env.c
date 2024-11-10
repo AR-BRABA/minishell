@@ -185,38 +185,37 @@ char	*ft_getenv(t_env *list, char *key)
 	return (ft_strdup(env->value));
 }
 
-int	mini_exit(char **args, t_env *env, t_tab *cmdtab)
+int	miniexit(char **args, t_env *env, t_tab *cmdtab)
 {
-	int	nbr;
+	int	len = splitlen(args);
+	int	i = 0;
+	int	nbr = 1;
 
-	if (args)
-		nbr = ft_atoi(args[0]);
+	ft_putstr_fd("exit\n", 1);
+	if (args[0][i] == '-')
+		i++;
+	while (args && args[0][i] != '\0')
+	{
+		if (!ft_isdigit(args[0][i]))
+		{
+			nbr = 0;
+			break;
+		}
+		i++;
+	}
+	if (!nbr || i >= 20)
+		nbr = minierror("exit", args[0], "numeric argument required", 2);
 	else
-		nbr = ft_atoi(ft_getenv(env, "?"));
+	{
+		if (len > 1)
+			return (minierror("exit", NULL, "too many arguments", 1));
+		if (len == 1)
+			nbr = ft_atoi(args[0]); // trocar por atol
+		else
+			nbr = ft_atoi(ft_getenv(env, "?")); // trocar por atol
+	}
+	free_split(args);
 	destroy_env(env);
 	destroy_table(cmdtab);
-	exit(nbr);
+	exit (nbr);
 }
-
-// se args eh letra -> executa e retorna 2
-// "Error: exit: numeric argument required", 2
-// se args > 1 -> retorna 1 e nao executa
-// "Error: exit: too many arguments", 2
-// a ordem importa. se for: a b, o erro sera: numeric argument required
-// passar a struct main!!!
-// usar essa versao com a struct principal:
-//
-// int	ft_exit(char *arg, t_main *main)
-// {
-// 	int	nbr;
-//
-// 	if (arg)
-// 		nbr = ft_atoi(arg);
-// 	else
-// 		nbr = ft_atoi(ft_getenv(main->envp, "?"));
-// 	free_split(main->split);
-// 	destroy_env(main->envp);
-// 	destroy_table(main->cmdtab);
-// 	free(main);
-// 	return (nbr);
-// }
