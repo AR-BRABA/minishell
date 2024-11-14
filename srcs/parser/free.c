@@ -25,6 +25,7 @@ void	free_table(t_tab *cmdtable)
 	while (cmdline != NULL && token != NULL)
 	{
 		keeptoken = token->next;
+		free(token->value);
 		free(token);
 		if (keeptoken == NULL)
 		{
@@ -51,6 +52,7 @@ void	free_list(t_list *cmdline)
 	while (cmdline != NULL && token != NULL)
 	{
 		tmptoken = token->next;
+		free(token->value);
 		free(token);
 		if (tmptoken == NULL)
 		{

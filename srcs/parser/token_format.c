@@ -162,7 +162,7 @@ char	*ft_strfjoin(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
+	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char)); // leak
 	if (s == NULL)
 		return (NULL);
 	i = 0;
@@ -210,7 +210,7 @@ void	expand(t_node *token, t_env *env)
 		str += (var - str) + varlen;
 	}
 	// adds content that may be after expanding all existing variables
-	expanded = ft_strfjoin(expanded, str);
+	expanded = ft_strfjoin(expanded, str); // leak aq
 	free(token->value);
 	token->value = expanded;
 }

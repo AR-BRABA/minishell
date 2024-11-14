@@ -5,11 +5,12 @@ int	ft_exit(char **args, t_env *env, t_tab *cmdtab)
 	int	len = split_len(args);
 	int	i = 0;
 	int	nbr = 1;
+	char *tmp;
 
 	ft_putstr_fd("exit\n", 1);
-	if (args[0][i] == '-')
+	if (args && args[0] && args[0][i] == '-')
 		i++;
-	while (args && args[0][i] != '\0')
+	while (args && args[0] && args[0][i] != '\0')
 	{
 		if (!ft_isdigit(args[0][i]))
 		{
@@ -27,7 +28,11 @@ int	ft_exit(char **args, t_env *env, t_tab *cmdtab)
 		if (len == 1)
 			nbr = ft_atoi(args[0]); // trocar por atol
 		else
-			nbr = ft_atoi(get_key_value(env, "?")); // trocar por atol
+		{
+			tmp = get_key_value(env, "?");
+			nbr = ft_atoi(tmp); // trocar por atol
+			free(tmp);
+		}
 	}
 	free_split(args);
 	free_env(env);

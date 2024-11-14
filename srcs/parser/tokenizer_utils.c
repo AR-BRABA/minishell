@@ -71,9 +71,21 @@ t_list	*new_list(char **input)
 	cmdlist->len = 0;
 	cmdlist->prev = NULL;
 	cmdlist->next = NULL;
+	cmd = new_node(input[i++]);
+	if (!cmd)
+	{
+		free_list(cmdlist);
+		return (NULL);
+	}
+	cmdlist->head = cmd;
 	while (input[i] != NULL)
 	{
 		cmd = new_node(input[i]);
+		if (!cmd)
+		{
+			free_list(cmdlist);
+			return (NULL);
+		}
 		add_node(cmd, cmdlist);
 		cmdlist->len++;
 		if (input[i] && input[i][0] == '|')

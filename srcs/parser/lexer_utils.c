@@ -26,6 +26,7 @@ char	*strtrim_space(char *s1)
 		start++;
 	}
 	trim[i] = '\0';
+	// free(s1);
 	return (trim);
 }
 

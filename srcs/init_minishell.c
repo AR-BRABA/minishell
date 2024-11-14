@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 18:27:27 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/14 12:22:03 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 				add_history(main->input);
 				//lexer
 				main->split = metachar_split(main->input);
+				free(main->input);
 				// free main->input??
 				//tokenizer
 				main->cmdtab = get_cmdtable(main->split, main->envp);
@@ -65,7 +66,6 @@ int	main(int argc, char **argv, char **envp)
 			}
 			// handle errors
 		}
-		free(main->input);
 	}
 	return (0);
 }
