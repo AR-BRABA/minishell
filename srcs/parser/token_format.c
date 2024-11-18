@@ -108,6 +108,8 @@ t_envnode	*search_key(t_env *list, char *key)
 			break ;
 		env = env->next;
 	}
+	if (!env) //funciona?
+		return (NULL);
 	return (env);
 }
 

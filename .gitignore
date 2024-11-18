@@ -3,3 +3,4 @@ minishell
 includes/libft/*.o
 includes/libft/libft.a
 objs
+.idea/
