@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 16:29:53 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/21 12:21:23 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,5 +189,8 @@ int	split_len(char **split);
 
 // ft_pwd.C -----------------------------------------------------------------------
 int	ft_pwd(void);
+
+// pipe.c
+int	count_token_type(t_tab *cmdtab, int type);
 
 #endif
