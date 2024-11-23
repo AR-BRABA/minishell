@@ -20,76 +20,101 @@ int	count_token_type(t_tab *cmdtab, int type)
 	return count;
 }
 
-/*
-char	**get_by_type(t_tab *cmdtab, int type)
+char	**get_value_by_type(t_tab *cmdtab, int type)
 {
 	t_list	*cmd = cmdtab->head;
 	t_node	*token = cmd->head;
 
 	int	count = count_token_type(cmdtab, type);
-	while (cmd != NULL && token != NULL)
+	char **array = malloc((count + 1) * sizeof(char *));
+	count = 0;
+	while (cmd != NULL)
 	{
-		if (token->type == type)
-			count++;
-		token = token->next;
-		if (token->next == NULL)
+		token = cmd->head;
+		while (token != NULL)
 		{
-			cmd = cmd->next;
-			if (cmd)
-				token = cmd->head;
+			if (token->type == type)
+				array[count++] = ft_strdup(token->value);
+			token = token->next;
 		}
+		cmd = cmd->next;
 	}
+	return (array);
 }
 
-int	ft_pipe(t_tab *cmdtab, t_env *envp)
+// t_node	*get_next_token(t_tab *cmdtab, t_node *start, int type)
+// {
+// 	t_list	*cmd = cmdtab->head;
+// 	t_node	*token = start;
+//
+// 	while (cmd != NULL)
+// 	{
+// 		if (!token)
+// 			token = cmd->head;
+// 		while (token != NULL)
+// 		{
+// 			if (token->type == type)
+// 				return (token);
+// 			token = token->next;
+// 		}
+// 		cmd = cmd->next;
+// 	}
+// 	return (NULL);
+// }
+
+int	ft_pipe(t_tab *cmdtab, t_env *envp, char **env)
 {
 	int	i = 0;
 	int	fd[2 * cmdtab->len];
 
-	while (i < cmdtab->len * 2)
+	while (i < cmdtab->len)
 	{
 		if (pipe(fd + (i * 2)) < 0)
-			return 1;
+			exit(1);
 		i++;
 	}
 
 	t_list *cmdline = cmdtab->head;
-	t_node *token = cmdline->head;
 
 	int pid;
 	int cmd = 0;
-	while (cmd != cmdtab->len)
+	while (cmdline != NULL)
 	{
 		pid = fork();
 		if (pid < 0)
 			return(1);
 		if (pid == 0)
 		{
-			if (cmd != 0)
+			//fd in
+			if (cmd > 0) // se n for o primeiro
 			{
 				if (dup2(fd[(cmd - 1) * 2], 0) < 0)
-					return 1;
+					exit(1);
 			}
-			if (cmd != cmdtab->len)
+			// fd out
+			if (cmd < cmdtab->len - 1) //se n for o ultimo
 			{
-				if (dup2(fd[(cmd + 1) * 2], 1) < 0)
-					return 1;
+				if (dup2(fd[cmd * 2 + 1], 1) < 0)
+					exit(1);
 			}
-			cmd++;
 
 			int	c = 0;
-			while ( c <= cmdtab->len * 2)
+			while ( c < (cmdtab->len * 2))
 				close(fd[c++]);
 
-			// trocar para is_builtin para poder chamar perror caso nao seja builtin ou external command
-			if (execute_builtins(token, envp, cmdtab) == -1)
-				execute_external_command(token, envp->envp);
+			// temporariamente executando por aqui (integrar com execucao no futuro)
+			if (execute_builtins(cmdline->head, envp, cmdtab) == -1)
+				execute_external_pipe_command(cmdline->head, env);
+
 		}
-		int	c = 0;
-		while ( c <= cmdtab->len * 2)
-			close(fd[c++]);
+		// printf("SAIUUUUUU %i\n", pid);
+		cmd++;
+		cmdline = cmdline->next;
 	}
-	// closes all fds
+	int	c = 0;
+	while ( c < (cmdtab->len * 2))
+		close(fd[c++]);
+	if (pid != 0)
+		wait(&pid);
 	return 0;
 }
-*/
