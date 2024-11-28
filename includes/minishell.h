@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/22 20:11:00 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/26 10:48:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct	s_node {
 typedef struct	s_list {
 	int	len;
 	t_node	*head;
+	int	fd[2];
 	struct s_list	*prev;
 	struct s_list	*next;
 }	t_list;
@@ -60,8 +61,6 @@ typedef struct	s_list {
 typedef struct	s_tab {
 	t_list	*head;
 	int	len;
-	int	fd_in;
-	int	fd_out;
 }	t_tab;
 
 typedef struct	s_envnode {

@@ -76,8 +76,6 @@ t_tab	*init_cmdtab(char **input)
 	}
 	cmdtable->head = list;
 	cmdtable->len = 1;
-	cmdtable->fd_in = STD_IN;
-	cmdtable->fd_out = STD_OUT;
 	return (cmdtable);
 }
 
