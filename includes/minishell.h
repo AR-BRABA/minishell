@@ -194,4 +194,7 @@ int	ft_pwd(void);
 int	count_token_type(t_tab *cmdtab, int type);
 int	ft_pipe(t_tab *cmdtab, t_env *envp, char **env);
 
+// ft_pwd.C -----------------------------------------------------------------------
+int	ft_pwd(void);
+
 #endif
