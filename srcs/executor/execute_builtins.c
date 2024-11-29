@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/09 21:58:20 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/10 11:54:10 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 	{
 		if (token->next)
 			args = list_to_char_array(token->next);
-		i = cd(args, env);
+		i = ft_cd(args, env);
 		if (args)
 			free(args);
 		return(i);
@@ -32,11 +32,11 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 	else if (ft_strncmp(token->value, "echo", 5) == 0)
 	{
 		if (!token->next)
-			return (echo(NULL));
+			return (ft_echo(NULL));
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0);
-		i = echo(args); // chamar echo c/o array de argumentos
+		i = ft_echo(args); // chamar ft_echo c/o array de argumentos
 		free(args);
 		return (i);
 	}
@@ -45,27 +45,27 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // se não tiver argumento chama exit sem argumento????
-		return (miniexit(args, env, cmdtab)); // exit encerra o programa
+		return (ft_exit(args, env, cmdtab)); // exit encerra o programa
 	}
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
-		return (pwd());
+		return (ft_pwd());
 	else if (ft_strncmp(token->value, "env", 4) == 0)
-		return (minienv(env));
-	else if (ft_strncmp(token->value, "unset", 6) == 0) // implement unset
+		return (ft_env(env));
+	else if (ft_strncmp(token->value, "unset", 6) == 0) // implement ft_unset
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // Qual erro retornar se não tiver argumentos mesmo?
-		i = unset(args, env);
+		i = ft_unset(args, env);
 		free(args);
 		return(i);
 	}
-	else if (ft_strncmp(token->value, "export", 7) == 0) // implement unset
+	else if (ft_strncmp(token->value, "export", 7) == 0) // implement ft_unset
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // Qual erro retornar se não tiver argumentos mesmo?
-		i = export(args, env);
+		i = ft_export(args, env);
 		free(args);
 		return(i);
 	}

@@ -36,6 +36,7 @@ int	count_tokens(char *user_input)
 			while (is_space(input[count]))
 				count++;
 	}
+	free(input);
 	return (tokens);
 }
 

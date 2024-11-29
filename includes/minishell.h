@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/09 21:58:00 by jgils            ###   ########.fr       */
+/*   Updated: 2024/11/10 16:29:53 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ enum e_type {
 	PIPE,
 	REDIRECT_IN,
 	REDIRECT_OUT,
-	REDIRECT_FILE,
+	IN_FILE,
+	OUT_FILE,
+	HEREDOC_DELIMITER,
 	APPEND,
 	HEREDOC,
 };
@@ -94,11 +96,12 @@ bool    has_only_spaces(char *input);
 t_envnode	*new_envnode(char *envp);
 void	addback_env(t_envnode *newnode, t_env *list);
 t_env	*get_env_list(char **envp);
-int	minienv(t_env *env);
-int	export(char **args, t_env *env);
-int	unset(char **args, t_env *env);
-int	destroy_env(t_env *env);
-int	miniexit(char **args, t_env *env, t_tab *cmdtab);
+int	ft_env(t_env *env);
+int	ft_export(char **args, t_env *env);
+int	ft_unset(char **args, t_env *env);
+int	free_env(t_env *env);
+int	ft_exit(char **args, t_env *env, t_tab *cmdtab);
+int	str_isname(char *str);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
@@ -112,7 +115,9 @@ void	print_tab(t_tab	*table);
 
 // FREE.C ---------------------------------------------------------------------
 void	free_split(char **array);
-void	destroy_table(t_tab *cmdtable);
+void	free_table(t_tab *cmdtable);
+int	free_env(t_env *env);
+void	free_list(t_list *cmdline);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
 int	is_operator(char c);
@@ -137,6 +142,11 @@ char	**get_tokens(char *user_input);
 // LEXER_UTILS.C --------------------------------------------------------------
 char	*strtrim_space(char *s1);
 char	*substr_by_address(char *str, int len);
+
+// UTILS.C ---------------------------------------------------------------------
+int	ft_error(char *cmd, char *arg, char *message, int ret);
+int	str_isname(char *str);
+int	split_len(char **split);
 
 /*
 * ft_substr but starting by the first index of str
@@ -167,17 +177,17 @@ int	strlen_isname(char *str);
 char	*ft_strfjoin(char *s1, char *s2);
 int	is_name(char c);
 
-// ECHO.C ---------------------------------------------------------------------
-int	echo(char **arg);
+// ft_echo.C ---------------------------------------------------------------------
+int	ft_echo(char **arg);
 
-// CD.C ----------------------------------------------------------------------
+// ft_cd.C ----------------------------------------------------------------------
 char	*get_key_value(t_env *list, char *key);
 void	update_key_value(t_env *list, char *key, char *new_val);
-int	cd(char **args, t_env *env);
-int	minierror(char *cmd, char *arg, char *message, int ret);
-int	splitlen(char **split);
+int	ft_cd(char **args, t_env *env);
+int	ft_error(char *cmd, char *arg, char *message, int ret);
+int	split_len(char **split);
 
-// PWD.C -----------------------------------------------------------------------
-int	pwd(void);
+// ft_pwd.C -----------------------------------------------------------------------
+int	ft_pwd(void);
 
 #endif

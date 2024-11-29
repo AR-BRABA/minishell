@@ -41,6 +41,7 @@ void	add_list(t_list *newnode, t_tab *cmdtable)
 		list->next = newnode;
 		newnode->prev = list;
 	}
+	cmdtable->len++;
 }
 
 t_node	*new_node(char *token)
@@ -48,6 +49,8 @@ t_node	*new_node(char *token)
 	t_node	*cmd;
 
 	cmd = malloc(sizeof(t_node));
+	if (!cmd)
+		return (NULL);
 	cmd->value = token;
 	cmd->type = -1;
 	cmd->prev = NULL;
@@ -63,12 +66,26 @@ t_list	*new_list(char **input)
 	t_list	*cmdlist;
 
 	cmdlist = malloc(sizeof(t_list));
+	if (!cmdlist)
+		return (NULL);
 	cmdlist->len = 0;
 	cmdlist->prev = NULL;
 	cmdlist->next = NULL;
+	cmd = new_node(input[i++]);
+	if (!cmd)
+	{
+		free_list(cmdlist);
+		return (NULL);
+	}
+	cmdlist->head = cmd;
 	while (input[i] != NULL)
 	{
 		cmd = new_node(input[i]);
+		if (!cmd)
+		{
+			free_list(cmdlist);
+			return (NULL);
+		}
 		add_node(cmd, cmdlist);
 		cmdlist->len++;
 		if (input[i] && input[i][0] == '|')

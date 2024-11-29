@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int	echo(char **arg)
+int	ft_echo(char **arg)
 {
 	int	n = 0;
 	int	i;

@@ -13,8 +13,7 @@ void	free_split(char **array)
 	free(array);
 }
 
-// test!
-void	destroy_table(t_tab *cmdtable)
+void	free_table(t_tab *cmdtable)
 {
 	t_list	*cmdline;
 	t_list	*keepline;
@@ -26,6 +25,7 @@ void	destroy_table(t_tab *cmdtable)
 	while (cmdline != NULL && token != NULL)
 	{
 		keeptoken = token->next;
+		free(token->value);
 		free(token);
 		if (keeptoken == NULL)
 		{
@@ -40,4 +40,50 @@ void	destroy_table(t_tab *cmdtable)
 			token = keeptoken;
 	}
 	free(cmdtable);
+}
+
+void	free_list(t_list *cmdline)
+{
+	t_list	*tmpline;
+	t_node	*token;
+	t_node	*tmptoken;
+	
+	token = cmdline->head;
+	while (cmdline != NULL && token != NULL)
+	{
+		tmptoken = token->next;
+		free(token->value);
+		free(token);
+		if (tmptoken == NULL)
+		{
+			tmpline = cmdline->next;
+			free(cmdline);
+			if (tmpline == NULL)
+				break ;
+			cmdline = tmpline;
+			token = tmpline->head;
+		}
+		else
+			token = tmptoken;
+	}
+}
+
+int	free_env(t_env *env)
+{
+	t_envnode	*node;
+	t_envnode	*temp;
+	
+	if (!env || !env->head)
+		return (1);
+	node = env->head;
+	while (node != NULL)
+	{
+		temp = node->next;
+		free(node->key);
+		free(node->value);
+		free(node);
+		node = temp;
+	}
+	free(env);
+	return (0);
 }

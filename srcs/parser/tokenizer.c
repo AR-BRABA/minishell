@@ -10,7 +10,12 @@ void	get_redirect_type(t_node *token)
 		token->type = REDIRECT_IN;
 	else if (token->value[0] == '>' && token->value[1] == '\0')
 		token->type = REDIRECT_OUT;
-	token->next->type = REDIRECT_FILE;
+	if (token->type == APPEND || token->type == REDIRECT_OUT)
+		token->next->type = OUT_FILE;
+	else if (token->type == REDIRECT_IN)
+		token->next->type = IN_FILE;
+	else if (token->type == HEREDOC)
+		token->next->type = HEREDOC_DELIMITER;
 }
 
 void	get_type(t_node *token)
@@ -52,7 +57,7 @@ void	identify_tokens(t_tab *cmdtable)
 	}
 }
 
-t_tab	*get_cmdtable(char **input, t_env *env)
+t_tab	*init_cmdtab(char **input)
 {
 	int	i = 0;
 	t_list	*list;
@@ -61,37 +66,44 @@ t_tab	*get_cmdtable(char **input, t_env *env)
 	if (!input)
 		return (NULL);
 	list = new_list(&input[i]);
+	if (!list)
+		return (NULL);
 	cmdtable = malloc(sizeof(t_tab));
+	if (!cmdtable)
+	{
+		free_list(list);
+		return (NULL);
+	}
 	cmdtable->head = list;
 	cmdtable->len = 1;
 	cmdtable->fd_in = STD_IN;
 	cmdtable->fd_out = STD_OUT;
-	list = list->next;
-	i += cmdlen(&input[i]);
+	return (cmdtable);
+}
+
+t_tab	*get_cmdtable(char **input, t_env *env)
+{
+	int	i = 0;
+	t_list	*list;
+	t_tab	*cmdtable;
+
+	cmdtable = init_cmdtab(input);
+	if (!cmdtable)
+		return (NULL);
+	i += cmdlen(input);
 	while (input[i] != NULL)
 	{
 		list = new_list(&input[i]);
+		if (!list)
+		{
+			free_list(list);
+			free_table(cmdtable);
+			return (NULL);
+		}
 		add_list(list, cmdtable);
 		i += cmdlen(&input[i]);
-		cmdtable->len++;
 	}
 	identify_tokens(cmdtable);
-	(void)env;
-	// format(cmdtable, env);
+	format(cmdtable, env);
 	return (cmdtable);
 }
-/*
-int	main(int argc, char **argv)
-{
-	char	**input;
-	t_tab	*cmdtable;
-
-	input = metachar_split(argv[1]);
-	print_split(input);
-	cmdtable = get_cmdtable(input);
-	print_tab(cmdtable);
-	free(input);
-	(void)argc;
-	return(0);
-}
-*/
