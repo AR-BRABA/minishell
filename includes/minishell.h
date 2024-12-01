@@ -195,4 +195,7 @@ int	count_token_type(t_tab *cmdtab, int type);
 int	ft_pipe(t_tab *cmdtab, t_env *envp, char **env);
 void	redirect(t_list *cmdline);
 
+// ft_pwd.C -----------------------------------------------------------------------
+int	ft_pwd(void);
+
 #endif
