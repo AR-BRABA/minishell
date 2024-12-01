@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/22 21:06:18 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/01 18:24:50 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,15 @@ static char **create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-void execute_external_command(t_node *token, char **envp)
+void execute_external_command(t_list *cmdlist, char **envp)
 {
 	pid_t	pid;
 	char	**exec_args;  // Array para armazenar os argumentos
 	char	*cmd_path;
+	t_node *token;
 
+
+	token = cmdlist->head;
 	if (!token || !token->value)
 	{
 		ft_putstr_fd("Error: command not found: %s\n", 2);
@@ -132,7 +135,7 @@ void execute_external_command(t_node *token, char **envp)
 	if (!exec_args)
 	{
 		free(cmd_path);
-        return ;
+		return ;
 	}
 	pid = fork();  // Criar processo filho p/ executar comando externo
 	if (pid == 0)  // tô no processo filho
@@ -155,10 +158,11 @@ void execute_external_command(t_node *token, char **envp)
 }
 
 // temp func:
-void execute_external_pipe_command(t_node *token, char **envp)
+void execute_external_pipe_command(t_list *cmdlist, char **envp)
 {
 	char	**exec_args;  // Array para armazenar os argumentos
 	char	*cmd_path;
+	t_node	*token = cmdlist->head;
 
 	if (!token || !token->value)
 	{
@@ -188,6 +192,4 @@ void execute_external_pipe_command(t_node *token, char **envp)
 		free(cmd_path);
 		exit(1);  // sair do processo filho
 	}
-	free(exec_args);
-	free(cmd_path);
 }
