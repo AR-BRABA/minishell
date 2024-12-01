@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/01 18:13:55 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/01 20:22:43 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
 			{
 				int pid = fork();
 				if (pid == 0)
+				{
+					redirect(cmdlist);
 					execute_external_pipe_command(cmdlist, envp);
+				}
 				else
 					wait(&pid);
 			}

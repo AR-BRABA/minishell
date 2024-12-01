@@ -1,11 +1,11 @@
 #include "../includes/minishell.h"
-#include <fcntl.h>
-#include <unistd.h>
+#include <stdio.h>
 
 void	redirect(t_list *cmdline)
 {
 	int	fd[2];
 	t_node *token= cmdline->head;
+	char *input;
 
 	// write(2, "entrou redirect\n", 4);
 	while (token != NULL)
@@ -13,9 +13,22 @@ void	redirect(t_list *cmdline)
 		if (token->type == REDIRECT_IN)
 		{
 			fd[0] = open(token->next->value, O_CREAT | O_TRUNC | O_RDWR, 0664);
+		}
+		else if (token->type == HEREDOC)
+		{
+			pipe(fd);
+			input = readline("> ");
+			while (ft_strncmp(input, token->next->value, ft_strlen(token->next->value) + 1) != 0) 
+			{
+				write(fd[1], input, ft_strlen(input));
+				write(fd[1], "\n", 1);
+				free(input);
+				input = readline("> ");
+			}
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
 				exit(1);
 			close(fd[0]);
+			close(fd[1]);
 			token = token->next->next;
 		}
 		else if (token->type == REDIRECT_OUT || token->type == APPEND)
@@ -79,6 +92,15 @@ int	ft_pipe(t_tab *cmdtab, t_env *envp, char **env)
 	int count = 0;
 	int	status = 0;
 	while (count < cmdtab->len)
+	{
 		wait(&status);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			status = WTERMSIG(status);
+		printf("%i\n", status);
+		count++;
+		//guardo noenv
+	}
 	return 0;
 }

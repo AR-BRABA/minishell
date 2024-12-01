@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/01 16:57:33 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/01 20:00:56 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
+#include <fcntl.h>
 
 enum e_type {
 	COMMAND,
