@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/01 20:00:56 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/02 18:07:39 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	str_isname(char *str);
 void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
 int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab	);
 void	execute_external_command(t_list *cmdlist, char **envp);
-void execute_external_pipe_command(t_list *cmdlist, char **envp); //temp
+int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env);
 
 // PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
@@ -191,12 +191,7 @@ int	split_len(char **split);
 // ft_pwd.C -----------------------------------------------------------------------
 int	ft_pwd(void);
 
-// pipe.c
-int	count_token_type(t_tab *cmdtab, int type);
-int	ft_pipe(t_tab *cmdtab, t_env *envp, char **env);
+// redirect.c
 void	redirect(t_list *cmdline);
-
-// ft_pwd.C -----------------------------------------------------------------------
-int	ft_pwd(void);
 
 #endif
