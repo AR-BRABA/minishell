@@ -11,25 +11,21 @@ VALIDATION_DIR		= $(SRC_DIR)/input_validation
 EXECUTOR_DIR	= $(SRC_DIR)/executor
 PARSER_DIR		= $(SRC_DIR)/parser
 BUILTINS_DIR			= $(SRC_DIR)/builtins
-
+UTILS_DIR			= $(SRC_DIR)/utils
 INCLUDE_DIR		= includes
 OBJ_DIR			= objs
 
-SRC_FILES		= $(SRC_DIR)/init_minishell.c \
-					$(SRC_DIR)/utils.c \
-					$(SRC_DIR)/redirect.c
-
+SRC_FILES		= $(SRC_DIR)/init_minishell.c
 VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
 					  $(VALIDATION_DIR)/validate_input_utils.c
 EXECUTOR_FILES	= $(EXECUTOR_DIR)/executor.c \
 				  $(EXECUTOR_DIR)/execute_builtins.c \
-				  $(EXECUTOR_DIR)/execute_external_commands.c
-PARSER_FILES	= $(PARSER_DIR)/free.c \
-				  $(PARSER_DIR)/identify_char.c \
+				  $(EXECUTOR_DIR)/execute_external_commands.c \
+					$(EXECUTOR_DIR)/redirect.c
+PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
 				  $(PARSER_DIR)/list_utils.c \
-				  $(PARSER_DIR)/print.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
 				  $(PARSER_DIR)/token_format.c
@@ -40,14 +36,18 @@ BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/exit.c \
 					  $(BUILTINS_DIR)/unset.c \
 					  $(BUILTINS_DIR)/export.c \
+					  $(BUILTINS_DIR)/utils.c
+UTILS_FILES		=	$(PARSER_DIR)/print.c \
+					$(PARSER_DIR)/free.c \
 
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(VALIDATION_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(BUILTINS_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(EXECUTOR_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(PARSER_FILES:.c=.o))) \
+				$(addprefix $(OBJ_DIR)/, $(notdir $(UTILS_FILES:.c=.o))) \
 
-vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(BUILTINS_DIR) $(EXECUTOR_DIR) $(PARSER_DIR)
+vpath %.c $(SRC_DIR) $(VALIDATION_DIR) $(BUILTINS_DIR) $(EXECUTOR_DIR) $(PARSER_DIR) $(UTILS_DIR)
 
 vpath %.h $(INCLUDE_DIR)
 

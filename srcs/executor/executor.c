@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/03 14:44:39 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/03 15:26:43 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 // tratar:
 // erros
-// cat | cat | ls
-// redirect <
 // leak? fds abertos
 int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 {
