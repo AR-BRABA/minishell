@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/02 18:07:39 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/03 17:43:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,6 @@ int	split_len(char **split);
 */
 char	*substr_by_address(char *str, int len);
 
-// LIST_UTILS.C ---------------------------------------------------------------
-char	**list_to_char_array(t_node *token);
-
 // TOKENIZER.C ----------------------------------------------------------------
 t_tab	*get_cmdtable(char **input, t_env *env);
 void	identify_tokens(t_tab *cmdtable);
@@ -193,5 +190,9 @@ int	ft_pwd(void);
 
 // redirect.c
 void	redirect(t_list *cmdline);
+
+// convertions.c
+char	**env_to_char_array(t_env *envp);
+char	**list_to_char_array(t_node *token);
 
 #endif

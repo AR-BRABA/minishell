@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/03 15:26:43 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/03 18:28:33 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 	int	fd[2];
 	int	savefd = -1;
 	t_list *cmdlist = cmdtab->head;
-	int pid;
+	int pid[cmdtab->len];
+	int	n = -1;
 
 	while (cmdlist != NULL)
 	{
@@ -29,10 +30,10 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 			if (pipe(fd) < 0)
 				exit(1);
 		// independente de quantos comandos, forka
-		pid = fork();
-		if (pid < 0)
+		pid[++n] = fork();
+		if (pid[n] < 0)
 			return(1);
-		if (pid == 0)
+		if (pid[n] == 0)
 		{
 			// caso exista +1 comando, dup no fd out, que guardamos em fd[1]
 			if (cmdlist->next)
@@ -74,19 +75,23 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 		cmdlist = cmdlist->next;
 	}
 	// exit status
+	n = 0;
 	int count = 0;
 	int	status = 0;
-	while (count < cmdtab->len)
+	int	stat = -3;
+	while (n < cmdtab->len)
 	{
-		wait(&status);
+		waitpid(pid[n++], &status, 0);
 		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
+			stat = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			status = WTERMSIG(status);
-		// printf("%i\n", status);
+			stat = WTERMSIG(status);
+		else if (WIFSTOPPED(status))
+			stat = WSTOPSIG(status);
+		printf("!%i!\n", stat);
 		count++;
-		//guardar no env > $?
 	}
+	//guardar no env > $?
 	return 0;
 }
 

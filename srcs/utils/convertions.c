@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_utils.c                                       :+:      :+:    :+:   */
+/*   convertions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 15:16:53 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/03 19:13:54 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,30 @@ char    **list_to_char_array(t_node *token)
 	}
 	args[i] = NULL;
     return (args);
+}
+
+// test
+char	**env_to_char_array(t_env *envp)
+{
+	int	count = 0;
+	t_envnode	*node;
+	char **array;
+	
+	if (!envp || !envp->head)
+		return (NULL);
+	array = malloc((envp->len + 1) * sizeof (char *));
+	node = envp->head;
+	while (node != NULL)
+	{
+		if (node->key[0] != '?')
+		{
+			array[count] = ft_strjoin("", node->key);
+			array[count] = ft_strjoin(array[count], "=");
+			array[count] = ft_strjoin(array[count], node->value);
+			count++;
+		}
+		node = node->next;
+	}
+	array[count] = NULL;
+	return (array);
 }
