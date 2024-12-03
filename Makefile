@@ -25,10 +25,9 @@ EXECUTOR_FILES	= $(EXECUTOR_DIR)/executor.c \
 PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
-				  $(PARSER_DIR)/list_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
-				  $(PARSER_DIR)/token_format.c
+				  $(PARSER_DIR)/format.c
 BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/env.c \
 					  $(BUILTINS_DIR)/cd.c \
@@ -37,8 +36,9 @@ BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/unset.c \
 					  $(BUILTINS_DIR)/export.c \
 					  $(BUILTINS_DIR)/utils.c
-UTILS_FILES		=	$(PARSER_DIR)/print.c \
-					$(PARSER_DIR)/free.c \
+UTILS_FILES		=	$(UTILS_DIR)/print.c \
+					$(UTILS_DIR)/free.c \
+				  $(UTILS_DIR)/convertions.c \
 
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
 				$(addprefix $(OBJ_DIR)/, $(notdir $(VALIDATION_FILES:.c=.o))) \
