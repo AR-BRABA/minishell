@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/02 18:52:39 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/02 21:28:35 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ static char **create_exec_args(t_node *token)
 // }
 
 // fork esta sendo criado na execute_fork_commands, dentro do loop de execucao pois ha casos que builtins tbm sao executados em fork (casos de pipe ou comandos simples != de cd, export e unset)
-// -> versao da execute_external_commands sem forkar
+// -> versao da execute_external_commands sem fork
 void execute_external_command(t_list *cmdlist, char **envp)
 {
 	char	**exec_args;  // Array para armazenar os argumentos

@@ -6,12 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/01 20:35:51 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/02 20:31:27 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 // rl_clear_history on exit
 // missing: signals on forks and heredoc

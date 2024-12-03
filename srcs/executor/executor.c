@@ -6,16 +6,21 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/02 18:35:17 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/03 14:44:39 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// tratar:
+// erros
+// cat | cat | ls
+// redirect <
+// leak? fds abertos
 int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 {
 	int	fd[2];
-	int	save_fd[1];
+	int	savefd = -1;
 	t_list *cmdlist = cmdtab->head;
 	int pid;
 
@@ -36,20 +41,20 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 			{
 				if (dup2(fd[1], 1) < 0)
 					exit(1);
+				// fecha os fds que fizemos dup pois nao vamos mais nesse processo filho
+				close(fd[0]);
+				close(fd[1]);
 			}
 			// caso tenha 1 comando antes, dup no fd in do ->comando anterior,
-			// que salvamos no fim do looping anterior, e agora guardamos em fd[0]
+			// que salvamos no fim do looping anterior
 			if (cmdlist->prev)
 			{
-				if (dup2(save_fd[0], 0) < 0)
+				if (dup2(savefd, 0) < 0)
 					exit(1);
-				close(save_fd[0]);
+				close(savefd);
 			}
 			// faz todos os redirects desse comando (dessa command list)
 			redirect(cmdlist);
-			// fecha os fds que fizemos dup pois nao vamos mais usar depois de pipar e redirecionar
-			close(fd[1]);
-			close(fd[0]);
 			// tenta executar builtins, se nao conseguir, executa comando externo
 			int ret = execute_builtins(cmdlist->head, envp, cmdtab);
 			if (ret == -1)
@@ -57,12 +62,17 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 			// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
 			exit(ret);
 		}
-		// salvamos o fd in desse comando, se tiver mais um comando depois
-		if (cmdlist->next) // ?
-			save_fd[0] = dup(fd[0]);
-		// fechamos os fds criados pelo pipe no processo pai
-		close(fd[0]);
-		close(fd[1]);
+		// fechando os fds no processo pai:
+		// fechamos o fd in do comando anterior, caso esteja salvo (caso haja comando anterior)
+		if (cmdlist->prev)
+			close(savefd);
+		// se ha um proximo comando, quer dizer que foi aberto um pipe nesse loop,
+		if (cmdlist->next)
+		{
+			// entao temos que fechar o fd[1] e salvar o fd[0] pro prox comando
+			close(fd[1]);
+			savefd = fd[0];
+		}
 		cmdlist = cmdlist->next;
 	}
 	// exit status
