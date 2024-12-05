@@ -1,6 +1,8 @@
 #include "../../includes/minishell.h"
 
-// testcase: << delimiter1 << delimiter2 not working
+// testcases not working:
+// << delimiter1 << delimiter2
+// << del > file
 void	redirect(t_list *cmdlist)
 {
 	int	fd[2];

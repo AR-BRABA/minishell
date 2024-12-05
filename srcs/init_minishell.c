@@ -6,23 +6,26 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/02 20:31:27 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/05 18:48:21 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// rl_clear_history on exit
 // missing: signals on forks and heredoc
 void sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
-		rl_redisplay();
+		if (RL_ISSTATE(RL_STATE_READCMD))
+			rl_redisplay();
+		// salvar exit statu
+		// set_status(130);
 	}
+	return ;
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/03 18:28:33 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/04 20:28:56 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 			stat = WTERMSIG(status);
 		else if (WIFSTOPPED(status))
 			stat = WSTOPSIG(status);
-		printf("!%i!\n", stat);
+		// printf("!%i!\n", stat);
+		(void)stat;
 		count++;
 	}
 	//guardar no env > $?

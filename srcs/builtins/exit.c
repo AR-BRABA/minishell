@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 
+// rl_clear_history on exit
 int	ft_exit(char **args, t_env *env, t_tab *cmdtab)
 {
 	int	len = split_len(args);
