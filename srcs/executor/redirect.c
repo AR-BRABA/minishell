@@ -49,7 +49,6 @@ void	redirect(t_list *cmdlist)
 				free(input);
 				input = readline("> ");
 			}
-			//?
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
 			{
 				perror("minishell");

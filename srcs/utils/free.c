@@ -1,5 +1,20 @@
 #include "../../includes/minishell.h"
 
+void	free_main(t_main *main)
+{
+	free_split(main->envp);
+	free_env(main->envp_list);
+	free_table(main->cmdtab);
+	free(main);
+}
+
+void	free_envnode(t_envnode	*node)
+{
+	free(node->key);
+	free(node->value);
+	free(node);
+}
+
 void	free_split(char **array)
 {
 	int	i;

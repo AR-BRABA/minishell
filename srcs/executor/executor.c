@@ -6,21 +6,36 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/04 20:28:56 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/11 00:05:28 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// test
+t_node    *get_cmd(t_list *cmdlist)
+{
+    t_node  *token;
+
+    token = cmdlist->head;
+    while(token != NULL)
+	{
+		if (token->type == COMMAND)
+			return (token);
+		token = token->next;
+	}
+	return (NULL);
+}
+
 // tratar:
 // erros
 // leak? fds abertos
-int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
+int	execute_fork_commands(t_main *main)
 {
 	int	fd[2];
 	int	savefd = -1;
-	t_list *cmdlist = cmdtab->head;
-	int pid[cmdtab->len];
+	t_list *cmdlist = main->cmdtab->head;
+	int pid[main->cmdtab->len];
 	int	n = -1;
 
 	while (cmdlist != NULL)
@@ -55,9 +70,9 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 			// faz todos os redirects desse comando (dessa command list)
 			redirect(cmdlist);
 			// tenta executar builtins, se nao conseguir, executa comando externo
-			int ret = execute_builtins(cmdlist->head, envp, cmdtab);
+			int ret = execute_builtins(cmdlist, main);
 			if (ret == -1)
-				execute_external_command(cmdlist, env);
+				execute_external_command(cmdlist, main->envp);
 			// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
 			exit(ret);
 		}
@@ -78,8 +93,8 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 	n = 0;
 	int count = 0;
 	int	status = 0;
-	int	stat = -3;
-	while (n < cmdtab->len)
+	int	stat = 0;
+	while (n < main->cmdtab->len)
 	{
 		waitpid(pid[n++], &status, 0);
 		if (WIFEXITED(status))
@@ -89,20 +104,20 @@ int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env)
 		else if (WIFSTOPPED(status))
 			stat = WSTOPSIG(status);
 		// printf("!%i!\n", stat);
-		(void)stat;
 		count++;
 	}
-	//guardar no env > $?
+	update_env("?", ft_itoa(127 + stat), main->envp_list);
 	return 0;
 }
 
-void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
+void	execute_commands(t_main *main)
 {
+	char *exit;
 	t_list	*cmdlist;
 
-	cmdlist = cmdtable->head;
+	cmdlist = main->cmdtab->head;
 	// exception: simple commands that should be executed on main process (cd, export, unset)
-	if ((cmdtable->len == 1) && 
+	if ((main->cmdtab->len == 1) && 
 			(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
 			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
@@ -117,7 +132,7 @@ void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
 		redirect(cmdlist);
 
 		// execute
-		execute_builtins(cmdlist->head, env, cmdtable);
+		exit = ft_itoa(execute_builtins(cmdlist, main));
 		
 		// restore std in/out fd;
 		dup2(savefd[0], 0);
@@ -128,7 +143,9 @@ void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
 		close(savefd[1]);
 	}
 	else
-		execute_fork_commands(cmdtable, env, envp);
+		exit = ft_itoa(execute_fork_commands(main));
+	update_env("?", exit, main->envp_list);
+	free(exit);
 }
 
 /*

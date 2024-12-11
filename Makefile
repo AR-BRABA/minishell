@@ -68,7 +68,7 @@ $(LIBFT):
 			fi
 
 val: $(NAME)
-			valgrind --leak-check=full --show-leak-kinds=all --suppressions=tests/valgrind.supp ./minishell
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes -s --suppressions=tests/valgrind.supp ./minishell
 
 clean:
 			$(MAKE) -C $(LIBFT_PATH) clean

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/03 17:43:58 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/11 00:11:42 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ enum e_type {
 	HEREDOC_DELIMITER,
 	APPEND,
 	HEREDOC,
-};
-
-enum e_std {
-	STD_IN,
-	STD_OUT,
-	STD_ERROR,
 };
 
 typedef struct	s_node {
@@ -78,9 +72,8 @@ typedef struct	s_env {
 } t_env;
 
 typedef struct	s_main {
-	char	*input;
-	char	**split;
-	t_env	*envp;
+	t_env	*envp_list;
+	char	**envp;
 	t_tab	*cmdtab;
 } t_main;
 
@@ -100,14 +93,17 @@ int	ft_env(t_env *env);
 int	ft_export(char **args, t_env *env);
 int	ft_unset(char **args, t_env *env);
 int	free_env(t_env *env);
-int	ft_exit(char **args, t_env *env, t_tab *cmdtab);
+int	ft_exit(char **args, t_main *main);
 int	str_isname(char *str);
+void	update_env(char *key, char *value, t_env *envp);
+void	update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
-int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab	);
+void	execute_commands(t_main *main);
+int execute_builtins(t_list *cmdlist, t_main *main);
 void	execute_external_command(t_list *cmdlist, char **envp);
-int	execute_fork_commands(t_tab *cmdtab, t_env *envp, char **env);
+int	execute_fork_commands(t_main *main);
+t_node    *get_cmd(t_list *cmdlist);
 
 // PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
@@ -119,6 +115,8 @@ void	free_split(char **array);
 void	free_table(t_tab *cmdtable);
 int	free_env(t_env *env);
 void	free_list(t_list *cmdline);
+void	free_envnode(t_envnode	*node);
+void	free_main(t_main *main);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
 int	is_operator(char c);

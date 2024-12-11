@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/02 21:28:35 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/11 00:04:53 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void execute_external_command(t_list *cmdlist, char **envp)
 {
 	char	**exec_args;  // Array para armazenar os argumentos
 	char	*cmd_path;
-	t_node	*token = cmdlist->head;
+	t_node	*token = get_cmd(cmdlist);
 
 	if (!token || !token->value)
 	{
