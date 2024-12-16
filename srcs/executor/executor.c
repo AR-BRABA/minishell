@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/11 00:05:28 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/15 23:59:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,13 @@ void	execute_commands(t_main *main)
 	char *exit;
 	t_list	*cmdlist;
 
+	main->envp = env_to_char_array(main->envp_list);
 	cmdlist = main->cmdtab->head;
 	// exception: simple commands that should be executed on main process (cd, export, unset)
 	if ((main->cmdtab->len == 1) && 
 			(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
 			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
+			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
 	{
 

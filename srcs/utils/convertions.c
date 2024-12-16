@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/10 23:59:57 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/15 23:55:10 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ char	**env_to_char_array(t_env *envp)
 		if (node->key[0] != '?')
 		{
 			array[count] = ft_strjoin("", node->key);
-			array[count] = ft_strjoin(array[count], "=");
-			array[count] = ft_strjoin(array[count], node->value);
+			array[count] = ft_strfjoin(array[count], "=");
+			array[count] = ft_strfjoin(array[count], node->value);
 			count++;
 		}
 		node = node->next;
