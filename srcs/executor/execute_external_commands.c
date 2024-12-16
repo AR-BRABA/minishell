@@ -6,11 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/11 00:04:53 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/16 00:20:20 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 char	*build_binary_path(char const *directory, char slash, char const *cmd)
 {
@@ -54,11 +55,10 @@ char	*find_command_path(char *cmd, char **envp)
 	// remover "PATH=" p/ficar só c/os nomes dos diretórios
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
-
 	i = 0;
 	while (paths[i])
 	{
-		absolute_path = build_binary_path(paths[i] + 5, '/', cmd);
+		absolute_path = build_binary_path(paths[i], '/', cmd);
 		if (!absolute_path)
 		{
 			free_split(paths);
