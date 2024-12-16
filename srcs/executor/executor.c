@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/15 23:59:00 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/16 00:50:51 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,10 @@ int	execute_fork_commands(t_main *main)
 			stat = WTERMSIG(status);
 		else if (WIFSTOPPED(status))
 			stat = WSTOPSIG(status);
-		// printf("!%i!\n", stat);
 		count++;
 	}
-	update_env("?", ft_itoa(127 + stat), main->envp_list);
-	return 0;
+	// printf("!%i!\n", stat);
+	return stat;
 }
 
 void	execute_commands(t_main *main)
@@ -115,7 +114,6 @@ void	execute_commands(t_main *main)
 	char *exit;
 	t_list	*cmdlist;
 
-	main->envp = env_to_char_array(main->envp_list);
 	cmdlist = main->cmdtab->head;
 	// exception: simple commands that should be executed on main process (cd, export, unset)
 	if ((main->cmdtab->len == 1) && 

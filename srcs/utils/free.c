@@ -3,9 +3,13 @@
 void	free_main(t_main *main)
 {
 	free_split(main->envp);
+	// main->envp = NULL;
 	free_env(main->envp_list);
+	// main->envp_list = NULL;
 	free_table(main->cmdtab);
+	// main->cmdtab = NULL;
 	free(main);
+	// main = NULL;
 }
 
 void	free_envnode(t_envnode	*node)
@@ -19,6 +23,8 @@ void	free_split(char **array)
 {
 	int	i;
 
+	if (!array)
+		return ;
 	i = 0;
 	while (array[i] != NULL)
 	{
