@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/16 00:50:51 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/16 01:08:56 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ void	execute_commands(t_main *main)
 			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
 	{
+
+		// TODO: check success on dups and fix open fds!!!
 
 		// save std in/out fds
 		int savefd[2];
