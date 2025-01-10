@@ -19,6 +19,7 @@ void	redirect(t_list *cmdlist)
 			// if (access(token->next->value, 0)) ?
 
 			// abre o arquivo e guarda no fd[0]
+			// checar permissao
 			fd[0] = open(token->next->value, O_RDONLY);
 			// se nao houve nenhum erro no fd, dupa e substitui o std in 
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
@@ -37,7 +38,11 @@ void	redirect(t_list *cmdlist)
 		else if (token->type == HEREDOC) // testar
 		{
 			// usamos um pipe para redirecionar o texto de input do heredoc
-			pipe(fd);
+			if (pipe(fd) < 0)
+			{
+				perror("minishell");
+				exit(1);
+			}
 			// guardamos a saida da readline
 			input = readline("> ");
 			// enquanto nao achar o delimitador do heredoc (token->next->value) no input, continua guardando os inputs
@@ -49,7 +54,7 @@ void	redirect(t_list *cmdlist)
 				free(input);
 				input = readline("> ");
 			}
-			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
+			if (dup2(fd[0], 0) < 0)
 			{
 				perror("minishell");
 				exit(1);
@@ -70,6 +75,7 @@ void	redirect(t_list *cmdlist)
 				perror("minishell");
 				exit(1);
 			}
+			close(fd[0]);
 			close(fd[1]);
 			token = token->next->next;
 		}
