@@ -1,7 +1,6 @@
 #include "../../includes/minishell.h"
 
-// rl_clear_history on exit
-int	ft_exit(char **args, t_main *main)
+int	ft_exit(char **args, t_env *env, t_tab *cmdtab)
 {
 	int	len = split_len(args);
 	int	i = 0;
@@ -30,12 +29,13 @@ int	ft_exit(char **args, t_main *main)
 			nbr = ft_atoi(args[0]); // trocar por atol
 		else
 		{
-			tmp = get_key_value(main->envp_list, "?");
+			tmp = get_key_value(env, "?");
 			nbr = ft_atoi(tmp); // trocar por atol
 			free(tmp);
 		}
 	}
-	free_main(main);
 	free_split(args);
+	free_env(env);
+	free_table(cmdtab);
 	exit (nbr);
 }
