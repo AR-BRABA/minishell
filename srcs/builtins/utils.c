@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	ft_error(char *cmd, char *arg, char *message, int ret)
 {
@@ -9,8 +9,11 @@ int	ft_error(char *cmd, char *arg, char *message, int ret)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(arg, 2);
 	}
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(message, 2);
+	if (message)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(message, 2);
+	}
 	ft_putstr_fd("\n", 2);
 	return (ret);
 }

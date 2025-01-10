@@ -68,7 +68,8 @@ t_list	*new_list(char **input)
 	cmdlist = malloc(sizeof(t_list));
 	if (!cmdlist)
 		return (NULL);
-	cmdlist->len = 0;
+	cmdlist->fd[0] = 0;
+	cmdlist->fd[1] = 1;
 	cmdlist->prev = NULL;
 	cmdlist->next = NULL;
 	cmd = new_node(input[i++]);
@@ -78,6 +79,7 @@ t_list	*new_list(char **input)
 		return (NULL);
 	}
 	cmdlist->head = cmd;
+	cmdlist->len = 1;
 	while (input[i] != NULL)
 	{
 		cmd = new_node(input[i]);

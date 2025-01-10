@@ -6,11 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/10/16 19:37:53 by tsoares-         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:20:20 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 char	*build_binary_path(char const *directory, char slash, char const *cmd)
 {
@@ -36,6 +37,7 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
+// invalid read of size 1
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
@@ -53,11 +55,10 @@ char	*find_command_path(char *cmd, char **envp)
 	// remover "PATH=" p/ficar só c/os nomes dos diretórios
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
-
 	i = 0;
 	while (paths[i])
 	{
-		absolute_path = build_binary_path(paths[i] + 5, '/', cmd);
+		absolute_path = build_binary_path(paths[i], '/', cmd);
 		if (!absolute_path)
 		{
 			free_split(paths);
@@ -82,9 +83,9 @@ static char **create_exec_args(t_node *token)
 	int	count;
 	t_node	*tmp_token;
 
-	count = 0;
-	tmp_token = token;
-	while (tmp_token)
+	count = 1;
+	tmp_token = token->next;
+	while (tmp_token && tmp_token->type == ARG)
 	{
 		count++;
 		tmp_token = tmp_token->next;
@@ -92,24 +93,78 @@ static char **create_exec_args(t_node *token)
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
 	{
-			perror("allocation failure"); // criar macro p/padronizar msgs de erro
+		perror("allocation failure"); // criar macro p/padronizar msgs de erro
 		return (NULL);
 	}
 	count = 0;
-	while (token)
+	tmp_token = token;
+	exec_args[count++] = tmp_token->value;
+	tmp_token = tmp_token->next;
+	while (tmp_token && tmp_token->type == ARG)
 	{
-		exec_args[count++] = token->value;
-		token = token->next;
+		exec_args[count++] = tmp_token->value;
+		tmp_token = tmp_token->next;
 	}
 	exec_args[count] = NULL;
 	return (exec_args);
 }
 
-void execute_external_command(t_node *token, char **envp)
+// void execute_external_command(t_list *cmdlist, char **envp)
+// {
+// 	pid_t	pid;
+// 	char	**exec_args;  // Array para armazenar os argumentos
+// 	char	*cmd_path;
+// 	t_node *token;
+//
+//
+// 	token = cmdlist->head;
+// 	if (!token || !token->value)
+// 	{
+// 		ft_putstr_fd("Error: command not found: %s\n", 2);
+// 		return ;
+// 	}
+//
+// 	// buscar o caminho completo do comando
+// 	cmd_path = find_command_path(token->value, envp);
+// 	if (!cmd_path)
+// 	{
+// 		ft_putstr_fd("Error: command not found in PATH\n", 2);
+// 		return ;
+// 	}
+//
+// 	exec_args = create_exec_args(token);
+// 	if (!exec_args)
+// 	{
+// 		free(cmd_path);
+// 		return ;
+// 	}
+// 	pid = fork();  // Criar processo filho p/ executar comando externo
+// 	if (pid == 0)  // tô no processo filho
+// 	{
+// 		if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
+// 		{
+// 			// salvar exit status no envp em $?
+// 			perror("Error: execve failed");
+// 			free(exec_args);
+// 			free(cmd_path);
+// 			exit(1);  // sair do processo filho
+// 		}
+// 	}
+// 	else if (pid > 0)  // tô no processo pai
+// 		wait(&pid);  // esperar qualquer processo filho terminar
+// 	else
+// 		perror("fork failed");
+// 	free(exec_args);
+// 	free(cmd_path);
+// }
+
+// fork esta sendo criado na execute_fork_commands, dentro do loop de execucao pois ha casos que builtins tbm sao executados em fork (casos de pipe ou comandos simples != de cd, export e unset)
+// -> versao da execute_external_commands sem fork
+void execute_external_command(t_list *cmdlist, char **envp)
 {
-	pid_t	pid;
 	char	**exec_args;  // Array para armazenar os argumentos
 	char	*cmd_path;
+	t_node	*token = get_cmd(cmdlist);
 
 	if (!token || !token->value)
 	{
@@ -129,24 +184,14 @@ void execute_external_command(t_node *token, char **envp)
 	if (!exec_args)
 	{
 		free(cmd_path);
-        return ;
+		return ;
 	}
-	pid = fork();  // Criar processo filho p/ executar comando externo
-	if (pid == 0)  // tô no processo filho
+	if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
 	{
-		if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
-		{
-			// salvar exit status no envp em $?
-			perror("Error: execve failed");
-			free(exec_args);
-			free(cmd_path);
-			exit(1);  // sair do processo filho
-		}
+		// salvar exit status no envp em $?
+		perror("Error: execve failed");
+		free(exec_args);
+		free(cmd_path);
+		exit(1);  // sair do processo filho
 	}
-	else if (pid > 0)  // tô no processo pai
-		wait(NULL);  // esperar qualquer processo filho terminar
-	else
-		perror("fork failed");
-	free(exec_args);
-	free(cmd_path);
 }

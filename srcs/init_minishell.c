@@ -6,23 +6,21 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/14 12:22:03 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/16 00:57:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-// rl_clear_history on exit
-// missing: signals on forks and heredoc
 void sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
-		rl_redisplay();
+		if (RL_ISSTATE(RL_STATE_READCMD))
+			rl_redisplay();
 	}
 }
 
@@ -33,6 +31,8 @@ void sig_handler(int sig)
 int	main(int argc, char **argv, char **envp)
 {
 	t_main	*main;
+	char	*input;
+	char	**split;
 
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -41,31 +41,37 @@ int	main(int argc, char **argv, char **envp)
 	//user_input = NULL;
 	// builds env linked list
 	main = malloc(sizeof(t_main));
-	main->envp = get_env_list(envp);
+	main->envp_list = get_env_list(envp);
+	main->envp = env_to_char_array(main->envp_list);
 	while (1) // or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
-		main->input = readline("minishell$ ");
-		if (!main->input)
+		input = readline("minishell$ ");
+		if (!input)
 			break; // Stop the loop if readline() returns NULL (EOF)
-		else if (main->input && !has_only_spaces(main->input))
+		else if (input && !has_only_spaces(input))
 		{
-			if (validate_input(main->input))
+			if (validate_input(input))
 			{
 				//printf("Valid input: %s\n", user_input);
-				add_history(main->input);
+				add_history(input);
 				//lexer
-				main->split = metachar_split(main->input);
-				free(main->input);
+				split = metachar_split(input);
+				free(input);
 				// free main->input??
 				//tokenizer
-				main->cmdtab = get_cmdtable(main->split, main->envp);
-				free(main->split);
-				//expand and remove quotes (work in progress)
-				execute_commands(main->cmdtab, main->envp); // call executor
+				main->cmdtab = get_cmdtable(split, main->envp_list);
+				free(split);
+				// pipe still not integrated:
+				execute_commands(main);
+				// else
 				free_table(main->cmdtab); // deallocate memory
+				// free all
 			}
 			// handle errors
 		}
 	}
+	free_split(main->envp);
+	free_env(main->envp_list);
+	free(main);
 	return (0);
 }
