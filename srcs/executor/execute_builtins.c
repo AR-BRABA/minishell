@@ -6,16 +6,17 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 11:54:10 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/10 19:08:20 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
+int execute_builtins(t_list *cmdlist, t_main *main)
 {
 	int	i;
 	char	**args;
+	t_node *token = get_cmd(cmdlist);
 
 	args = NULL;
 	if (!token || !token->value)
@@ -24,7 +25,7 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 	{
 		if (token->next)
 			args = list_to_char_array(token->next);
-		i = ft_cd(args, env);
+		i = ft_cd(args, main->envp_list);
 		if (args)
 			free(args);
 		return(i);
@@ -45,18 +46,18 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // se não tiver argumento chama exit sem argumento????
-		return (ft_exit(args, env, cmdtab)); // exit encerra o programa
+		return (ft_exit(args, main)); // exit encerra o programa
 	}
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		return (ft_pwd());
 	else if (ft_strncmp(token->value, "env", 4) == 0)
-		return (ft_env(env));
+		return (ft_env(main->envp_list));
 	else if (ft_strncmp(token->value, "unset", 6) == 0) // implement ft_unset
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // Qual erro retornar se não tiver argumentos mesmo?
-		i = ft_unset(args, env);
+		i = ft_unset(args, main->envp_list);
 		free(args);
 		return(i);
 	}
@@ -65,7 +66,7 @@ int execute_builtins(t_node *token, t_env *env, t_tab *cmdtab)
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0); // Qual erro retornar se não tiver argumentos mesmo?
-		i = ft_export(args, env);
+		i = ft_export(args, main->envp_list);
 		free(args);
 		return(i);
 	}

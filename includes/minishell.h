@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/11/10 16:29:53 by jgils            ###   ########.fr       */
+/*   Updated: 2024/12/11 00:11:42 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
+#include <fcntl.h>
 
 enum e_type {
 	COMMAND,
@@ -37,12 +38,6 @@ enum e_type {
 	HEREDOC,
 };
 
-enum e_std {
-	STD_IN,
-	STD_OUT,
-	STD_ERROR,
-};
-
 typedef struct	s_node {
 	char	*value;
 	int	type;
@@ -53,6 +48,7 @@ typedef struct	s_node {
 typedef struct	s_list {
 	int	len;
 	t_node	*head;
+	int	fd[2];
 	struct s_list	*prev;
 	struct s_list	*next;
 }	t_list;
@@ -60,8 +56,6 @@ typedef struct	s_list {
 typedef struct	s_tab {
 	t_list	*head;
 	int	len;
-	int	fd_in;
-	int	fd_out;
 }	t_tab;
 
 typedef struct	s_envnode {
@@ -78,9 +72,8 @@ typedef struct	s_env {
 } t_env;
 
 typedef struct	s_main {
-	char	*input;
-	char	**split;
-	t_env	*envp;
+	t_env	*envp_list;
+	char	**envp;
 	t_tab	*cmdtab;
 } t_main;
 
@@ -100,13 +93,17 @@ int	ft_env(t_env *env);
 int	ft_export(char **args, t_env *env);
 int	ft_unset(char **args, t_env *env);
 int	free_env(t_env *env);
-int	ft_exit(char **args, t_env *env, t_tab *cmdtab);
+int	ft_exit(char **args, t_main *main);
 int	str_isname(char *str);
+void	update_env(char *key, char *value, t_env *envp);
+void	update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void	execute_commands(t_tab *cmdtable, t_env *env, char **envp);
-int		execute_builtins(t_node *token, t_env *env, t_tab *cmdtab	);
-void	execute_external_command(t_node *token, char **envp);
+void	execute_commands(t_main *main);
+int execute_builtins(t_list *cmdlist, t_main *main);
+void	execute_external_command(t_list *cmdlist, char **envp);
+int	execute_fork_commands(t_main *main);
+t_node    *get_cmd(t_list *cmdlist);
 
 // PRINT.C ---------------------------------------------------------------------
 void	print_split(char **array);
@@ -118,6 +115,8 @@ void	free_split(char **array);
 void	free_table(t_tab *cmdtable);
 int	free_env(t_env *env);
 void	free_list(t_list *cmdline);
+void	free_envnode(t_envnode	*node);
+void	free_main(t_main *main);
 
 // IDENTIFY_CHAR.C ------------------------------------------------------------
 int	is_operator(char c);
@@ -153,9 +152,6 @@ int	split_len(char **split);
 */
 char	*substr_by_address(char *str, int len);
 
-// LIST_UTILS.C ---------------------------------------------------------------
-char	**list_to_char_array(t_node *token);
-
 // TOKENIZER.C ----------------------------------------------------------------
 t_tab	*get_cmdtable(char **input, t_env *env);
 void	identify_tokens(t_tab *cmdtable);
@@ -189,5 +185,12 @@ int	split_len(char **split);
 
 // ft_pwd.C -----------------------------------------------------------------------
 int	ft_pwd(void);
+
+// redirect.c
+void	redirect(t_list *cmdline);
+
+// convertions.c
+char	**env_to_char_array(t_env *envp);
+char	**list_to_char_array(t_node *token);
 
 #endif

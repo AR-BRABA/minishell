@@ -87,14 +87,3 @@ char	**metachar_split(char *user_input)
 	free(input);
 	return (array);
 }
-
-// int	main(void)
-// {
-// 	// int	i = 0;
-// 	char	*input = "token 1 2 '3' << | >| >> '    50 |>'";
-// 	char	**tokens;
-// 	
-// 	tokens = get_tokens(input);
-// 	free_split(tokens);
-// 	return (0);
-// }
