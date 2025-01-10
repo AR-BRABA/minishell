@@ -1,5 +1,0 @@
-1. leaks e fds
-4. fd heredoc
-. exit status e saidas
-. erros
-. refatorar main struct/ envp
