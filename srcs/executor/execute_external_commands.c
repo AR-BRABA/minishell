@@ -108,7 +108,7 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 {
 	char	*cmd_path;
 	t_node	*token;
-	char **exec_args; // Array para armazenar os argumentos
+	char **exec_args;
 
 	token = get_cmd(cmdlist);
 	if (!token || !token->value)
@@ -116,7 +116,6 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		return ;
 	}
-	// buscar o caminho completo do comando
 	cmd_path = find_command_path(token->value, envp);
 	if (!cmd_path)
 	{
@@ -134,6 +133,6 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		free(exec_args);
 		free(cmd_path);
-		exit(1); // sair do processo filho
+		exit(1);
 	}
 }
