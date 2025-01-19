@@ -119,6 +119,7 @@ void	execute_commands(t_main *main)
 			status = ft_itoa(execute_builtins(cmdlist, main));
 		dup2(main->fd[0], 0);
 		dup2(main->fd[1], 1);
+
 		close(main->fd[0]);
 		close(main->fd[1]);
 	}
