@@ -6,13 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 13:26:30 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 15:13:27 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// test
 t_node    *get_cmd(t_list *cmdlist)
 {
     t_node  *token;
@@ -27,9 +26,6 @@ t_node    *get_cmd(t_list *cmdlist)
 	return (NULL);
 }
 
-// tratar:
-// erros
-// leak? fds abertos
 int	execute_fork_commands(t_main *main)
 {
 	int	fd[2];
@@ -70,14 +66,14 @@ int	execute_fork_commands(t_main *main)
 			int ret;
 			// faz todos os redirects desse comando (dessa command list)
 			ret = redirect(cmdlist);
-			// if (ret == 1)
-				// exit(ret);
-			// tenta executar builtins, se nao conseguir, executa comando externo
-			ret = execute_builtins(cmdlist, main);
-			if (ret == -1)
-				execute_external_command(cmdlist, main->envp);
-			// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
-			exit(ret);
+			if (ret == 0)
+			{
+				ret = execute_builtins(cmdlist, main);
+				if (ret == -1)
+					execute_external_command(cmdlist, main->envp);
+				// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
+				exit(ret);
+			}
 		}
 		// fechando os fds no processo pai:
 		// fechamos o fd in do comando anterior, caso esteja salvo (caso haja comando anterior)
@@ -96,60 +92,46 @@ int	execute_fork_commands(t_main *main)
 	n = 0;
 	int count = 0;
 	int	status = 0;
-	int	stat = 0;
+	int	ret = 0;
 	while (n < main->cmdtab->len)
 	{
 		waitpid(pid[n++], &status, 0);
 		if (WIFEXITED(status))
-			stat = WEXITSTATUS(status);
+			ret = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			stat = WTERMSIG(status);
+			ret = WTERMSIG(status);
 		else if (WIFSTOPPED(status))
-			stat = WSTOPSIG(status);
+			ret = WSTOPSIG(status);
 		count++;
 	}
-	// printf("!%i!\n", stat);
-	return stat;
+	return ret;
 }
 
 void	execute_commands(t_main *main)
 {
-	char *exit;
+	int ret;
+	char *status;
 	t_list	*cmdlist;
 
 	cmdlist = main->cmdtab->head;
-	// exception: simple commands that should be executed on main process (cd, export, unset)
 	if ((main->cmdtab->len == 1) && 
 			(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
 			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
 			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
 	{
-
-		// TODO: check success on dups and fix open fds!!!
-
-		// save std in/out fds
 		main->fd[0] = dup(0);
 		main->fd[1] = dup(1);
-
-		// redirect fd in/out
-		redirect(cmdlist);
-		// if (redirect(cmdlist) == 1)
-			// pula pra fora do if
-
-		// execute
-		exit = ft_itoa(execute_builtins(cmdlist, main));
-		
-		// restore std in/out fd;
+		ret = redirect(cmdlist);
+		if (ret == 0)
+			status = ft_itoa(execute_builtins(cmdlist, main));
 		dup2(main->fd[0], 0);
 		dup2(main->fd[1], 1);
-
-		// close dup fds
 		close(main->fd[0]);
 		close(main->fd[1]);
 	}
 	else
-		exit = ft_itoa(execute_fork_commands(main));
-	update_env("?", exit, main->envp_list);
-	free(exit);
+		status = ft_itoa(execute_fork_commands(main));
+	update_env("?", status, main->envp_list);
+	free(status);
 }

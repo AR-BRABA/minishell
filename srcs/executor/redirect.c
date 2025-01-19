@@ -12,7 +12,6 @@ int	redirect(t_list *cmdlist)
 	// loop para percorrer a cmdlist
 	while (token != NULL && token->next != NULL)
 	{
-		// <
 		if (token->type == REDIRECT_IN)
 		{
 			// verificar se arquivo existe & se temos permissao de leitura
@@ -24,7 +23,8 @@ int	redirect(t_list *cmdlist)
 			// se nao houve nenhum erro no fd, dupa e substitui o std in 
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
 			{
-				perror(token->next->value);
+				perror("minishell: redirect");
+				close(fd[0]);
 				return (1);
 			}
 			// fechamos o fd gerado pelo open pois nao sera mais usado
@@ -54,7 +54,9 @@ int	redirect(t_list *cmdlist)
 			}
 			if (dup2(fd[0], 0) < 0)
 			{
-				perror(token->next->value);
+				perror("minishell");
+				close(fd[0]);
+				close(fd[1]);
 				return (1);
 			}
 			close(fd[0]);
@@ -70,7 +72,8 @@ int	redirect(t_list *cmdlist)
 			// se nao houver arquivo, cria. se houver conteudo, apaga. 0664 -> permissoes padroes de arquivos criados
 			if (fd[1] < 0 || dup2(fd[1], 1) < 0)
 			{
-				perror(token->next->value);
+				perror("minishell");
+				close(fd[1]);
 				return (1);
 			}
 			// close(fd[0]);
