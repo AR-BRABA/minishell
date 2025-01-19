@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 16:00:48 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 17:38:17 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	execute_builtins(t_list *cmdlist, t_main *main)
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
-			return (0); // Qual erro retornar se não tiver argumentos mesmo?
+			return (0);
 		i = ft_unset(args, main->envp_list);
 		free(args);
 		return (i);
@@ -66,7 +66,7 @@ int	execute_builtins(t_list *cmdlist, t_main *main)
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
-			return (0); // Qual erro retornar se não tiver argumentos mesmo?
+			return (0);
 		i = ft_export(args, main->envp_list);
 		free(args);
 		return (i);

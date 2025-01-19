@@ -6,11 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 15:45:14 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 17:53:40 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <readline/readline.h>
 
 void	sig_handler(int sig)
 {
@@ -42,30 +43,25 @@ int	main(int argc, char **argv, char **envp)
 	main->envp_list = get_env_list(envp);
 	main->envp = env_to_char_array(main->envp_list);
 	while (1)
-	// or could 'user_input = readline("minishell$ ")' be the while condition? check if this respects the 42 norm
 	{
 		input = readline("minishell$ ");
 		if (!input)
-			break ; // Stop the loop if readline() returns NULL (EOF)
+			break ;
 		else if (input && !has_only_spaces(input))
 		{
 			if (validate_input(input))
 			{
-				// printf("Valid input: %s\n", user_input);
 				add_history(input);
-				// lexer
 				split = metachar_split(input);
 				free(input);
-				// free main->input??
-				// tokenizer
 				main->cmdtab = get_cmdtable(split, main->envp_list);
 				free(split);
-				// pipe still not integrated:
 				execute_commands(main);
-				free_table(main->cmdtab); // deallocate memory
+				free_table(main->cmdtab);
 			}
 		}
 	}
+	rl_clear_history();
 	free_split(main->envp);
 	free_env(main->envp_list);
 	free(main);

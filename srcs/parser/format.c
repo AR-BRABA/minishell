@@ -117,7 +117,6 @@ t_envnode	*search_key(t_env *list, char *key)
 	env = list->head;
 	while (env != NULL)
 	{
-		//compare key with env variables on list
 		if (ft_strncmp(key, env->key, keylen + 1) == 0)
 			break ;
 		env = env->next;
@@ -210,25 +209,17 @@ void	expand(t_node *token, t_env *env)
 	expanded = NULL;
 	while (str)
 	{
-		//dol = index of next $ followed by a valid char. if not found, = -1
 		dol = strdol(str);
 		if (dol < 0)
 			break ;
-		// var = a pointer to '$' on str. (by incrementing str to '$' index)
 		var = str + dol;
-		// varlen = strlen while is a valid name, starting on '$'
 		varlen = strlen_isname(var);
-		// expanded = expanded + content before '$', if there is
 		expanded = ft_strnjoin(expanded, str, (var - str)); // free on
-		// node = node on env list matching var with node->key. if not found, NULL
 		node = search_key(env, strndup(var + 1, varlen - 1)); //free na key on
-		// if found, expanded = expanded + value of the matching key
 		if (node)
 			expanded = ft_strfjoin(expanded, node->value); // free on
-		// increments str pointer to after var ends
 		str += (var - str) + varlen;
 	}
-	// adds content that may be after expanding all existing variables
 	expanded = ft_strfjoin(expanded, str);
 	free(token->value);
 	token->value = expanded;
@@ -245,15 +236,11 @@ void	format(t_tab *cmdtable, t_env *env)
 	cmd = cmdtable->head;
 	token = cmd->head;
 	if (!token)
-		return ; //barrar na validacao inicial inputs vazios
-	// percorrendo cmd table
+		return ;
 	while (cmd != NULL && token != NULL)
 	{
-		// se nao for um delimitador de heredoc,
-		//	expande todas as variaveis desse token
 		if (token->type != HEREDOC_DELIMITER)
 			expand(token, env);
-		// removes outside quotes
 		rm_quote(token);
 		token = token->next;
 		if (token == NULL)

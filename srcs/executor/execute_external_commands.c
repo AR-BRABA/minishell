@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 16:03:18 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 17:44:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ char	*find_command_path(char *cmd, char **envp)
 	int		i;
 
 	i = 0;
-	// procura a var path no envp
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
 		return (NULL);
-	// remover "PATH=" p/ficar só c/os nomes dos diretórios
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
 	i = 0;
@@ -62,7 +60,7 @@ char	*find_command_path(char *cmd, char **envp)
 			free(absolute_path);
 			return (NULL);
 		}
-		if (access(absolute_path, X_OK) == 0) // O comando pode ser executado?
+		if (access(absolute_path, X_OK) == 0)
 		{
 			free_split(paths);
 			return (absolute_path);
@@ -110,7 +108,7 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 {
 	char	*cmd_path;
 	t_node	*token;
-	char **exec_args; // Array para armazenar os argumentos
+	char **exec_args;
 
 	token = get_cmd(cmdlist);
 	if (!token || !token->value)
@@ -118,7 +116,6 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		return ;
 	}
-	// buscar o caminho completo do comando
 	cmd_path = find_command_path(token->value, envp);
 	if (!cmd_path)
 	{
@@ -131,12 +128,11 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		free(cmd_path);
 		return ;
 	}
-	if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
+	if (execve(cmd_path, exec_args, envp) == -1)
 	{
-		// salvar exit status no envp em $?
 		perror(token->value);
 		free(exec_args);
 		free(cmd_path);
-		exit(1); // sair do processo filho
+		exit(1);
 	}
 }

@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <readline/readline.h>
 
 int	ft_atol(const char *nptr)
 {
@@ -25,7 +26,6 @@ int	ft_atol(const char *nptr)
 	return (convnum * sign);
 }
 
-// rl_clear_history on exit
 int	ft_exit(char **args, t_main *main)
 {
 	int		len;
@@ -66,6 +66,7 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
+	rl_clear_history();
 	close(main->fd[0]);
 	close(main->fd[1]);
 	free_main(main);
