@@ -20,21 +20,23 @@ int	ft_error(char *cmd, char *arg, char *message, int ret)
 
 int	str_isname(char *str)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (str[i] != '\0')
 	{
 		if (((i == 0 && ft_isdigit(str[i])) || !is_name(str[i])))
-			return(0);
+			return (0);
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
 int	split_len(char **split)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (split && split[i] != NULL)
 		i++;
 	return (i);

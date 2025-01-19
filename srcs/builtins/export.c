@@ -3,7 +3,7 @@
 void	update_env(char *key, char *value, t_env *envp)
 {
 	t_envnode	*node;
-	
+
 	node = search_key(envp, key);
 	free(node->value);
 	node->value = ft_strdup(value);
@@ -17,11 +17,13 @@ void	update_envnode(char *value, t_envnode *node)
 
 int	ft_export(char **args, t_env *envp)
 {
-	int	ret = 0;
-	int	count = 0;
+	int			ret;
+	int			count;
 	t_envnode	*new;
 	t_envnode	*old;
-	
+
+	ret = 0;
+	count = 0;
 	while (args && args[count] != NULL)
 	{
 		new = new_envnode(args[count++]);
@@ -42,5 +44,5 @@ int	ft_export(char **args, t_env *envp)
 			free_envnode(new);
 		}
 	}
-	return(ret);
+	return (ret);
 }

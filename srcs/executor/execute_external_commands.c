@@ -6,12 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/13 13:56:00 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 16:03:18 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 char	*build_binary_path(char const *directory, char slash, char const *cmd)
 {
@@ -23,8 +22,8 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 		return (NULL);
 	i = 0;
 	pos = 0;
-	bin_path = (char *)malloc(((ft_strlen(directory)
-				+ ft_strlen(cmd)) + 2) * sizeof(char));
+	bin_path = (char *)malloc(((ft_strlen(directory) + ft_strlen(cmd)) + 2)
+			* sizeof(char));
 	if (!bin_path)
 		return (NULL);
 	while (directory[i])
@@ -37,13 +36,12 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
-// invalid read of size 1
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
 	char	**paths;
 	char	*absolute_path;
-	int	i;
+	int		i;
 
 	i = 0;
 	// procura a var path no envp
@@ -51,7 +49,6 @@ char	*find_command_path(char *cmd, char **envp)
 		i++;
 	if (!envp[i])
 		return (NULL);
-
 	// remover "PATH=" p/ficar só c/os nomes dos diretórios
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
@@ -74,13 +71,13 @@ char	*find_command_path(char *cmd, char **envp)
 		i++;
 	}
 	free_split(paths);
-	return (NULL); // Se não achar o comando
+	return (NULL);
 }
 
-static char **create_exec_args(t_node *token)
+static char	**create_exec_args(t_node *token)
 {
 	char	**exec_args;
-	int	count;
+	int		count;
 	t_node	*tmp_token;
 
 	count = 1;
@@ -109,20 +106,18 @@ static char **create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-// fork esta sendo criado na execute_fork_commands, dentro do loop de execucao pois ha casos que builtins tbm sao executados em fork (casos de pipe ou comandos simples != de cd, export e unset)
-// -> versao da execute_external_commands sem fork
-void execute_external_command(t_list *cmdlist, char **envp)
+void	execute_external_command(t_list *cmdlist, char **envp)
 {
-	char	**exec_args;  // Array para armazenar os argumentos
 	char	*cmd_path;
-	t_node	*token = get_cmd(cmdlist);
+	t_node	*token;
+	char **exec_args; // Array para armazenar os argumentos
 
+	token = get_cmd(cmdlist);
 	if (!token || !token->value)
 	{
 		perror(token->value);
 		return ;
 	}
-
 	// buscar o caminho completo do comando
 	cmd_path = find_command_path(token->value, envp);
 	if (!cmd_path)
@@ -130,7 +125,6 @@ void execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		return ;
 	}
-
 	exec_args = create_exec_args(token);
 	if (!exec_args)
 	{
@@ -143,6 +137,6 @@ void execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		free(exec_args);
 		free(cmd_path);
-		exit(1);  // sair do processo filho
+		exit(1); // sair do processo filho
 	}
 }

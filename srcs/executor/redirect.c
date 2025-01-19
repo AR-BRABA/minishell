@@ -1,8 +1,5 @@
 #include "../../includes/minishell.h"
 
-// testcases not working:
-// << delimiter1 << delimiter2
-// << del > file
 int	redirect(t_list *cmdlist)
 {
 	int	fd[2];
@@ -76,13 +73,11 @@ int	redirect(t_list *cmdlist)
 				close(fd[1]);
 				return (1);
 			}
-			// close(fd[0]);
 			close(fd[1]);
 			token = token->next->next;
 		}
 		else
-			token = token->next; // se n for redirect, vai pro prox node
+			token = token->next;
 	}
 	return (0);
 }
-

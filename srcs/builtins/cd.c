@@ -2,8 +2,8 @@
 
 char	*get_key_value(t_env *list, char *key)
 {
-	char	*val;
-	t_envnode *node;
+	char		*val;
+	t_envnode	*node;
 
 	node = search_key(list, key);
 	if (node)
@@ -15,7 +15,7 @@ char	*get_key_value(t_env *list, char *key)
 
 void	update_key_value(t_env *list, char *key, char *new_val)
 {
-	t_envnode *node;
+	t_envnode	*node;
 
 	node = search_key(list, key);
 	if (node && node->value)
@@ -37,7 +37,7 @@ int	ft_cd(char **args, t_env *env)
 	{
 		path = get_key_value(env, "HOME");
 		if (args && args[0][1] != '\0')
-			path = ft_strfjoin(path, &args[0][1]);	
+			path = ft_strfjoin(path, &args[0][1]);
 	}
 	else if (ft_strncmp(args[0], "-", 2) == 0)
 		path = get_key_value(env, "OLDPWD");
