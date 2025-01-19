@@ -35,7 +35,10 @@ int	ft_export(char **args, t_env *envp)
 			if (old)
 				update_envnode(new->value, old);
 			else
-				ret = ft_error("export", new->key, "not a valid identifier", 1);
+			{
+				perror("export:");
+				ret = 1;
+			}
 			free_envnode(new);
 		}
 	}

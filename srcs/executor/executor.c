@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/20 15:57:57 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 13:26:30 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,13 @@ int	execute_fork_commands(t_main *main)
 					exit(1);
 				close(savefd);
 			}
+			int ret;
 			// faz todos os redirects desse comando (dessa command list)
-			redirect(cmdlist);
+			ret = redirect(cmdlist);
+			// if (ret == 1)
+				// exit(ret);
 			// tenta executar builtins, se nao conseguir, executa comando externo
-			int ret = execute_builtins(cmdlist, main);
+			ret = execute_builtins(cmdlist, main);
 			if (ret == -1)
 				execute_external_command(cmdlist, main->envp);
 			// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
@@ -126,58 +129,27 @@ void	execute_commands(t_main *main)
 		// TODO: check success on dups and fix open fds!!!
 
 		// save std in/out fds
-		int savefd[2];
-		savefd[0] = dup(0);
-		savefd[1] = dup(1);
+		main->fd[0] = dup(0);
+		main->fd[1] = dup(1);
 
 		// redirect fd in/out
 		redirect(cmdlist);
+		// if (redirect(cmdlist) == 1)
+			// pula pra fora do if
 
 		// execute
 		exit = ft_itoa(execute_builtins(cmdlist, main));
 		
 		// restore std in/out fd;
-		dup2(savefd[0], 0);
-		dup2(savefd[1], 1);
+		dup2(main->fd[0], 0);
+		dup2(main->fd[1], 1);
 
 		// close dup fds
-		close(savefd[0]);
-		close(savefd[1]);
+		close(main->fd[0]);
+		close(main->fd[1]);
 	}
 	else
 		exit = ft_itoa(execute_fork_commands(main));
 	update_env("?", exit, main->envp_list);
 	free(exit);
 }
-
-/*
-void	execute_commands(t_tab *cmdtable, t_env *env, char **envp)
-{
-	t_list	*cmdlist;
-	t_node	*token;
-
-	cmdlist = cmdtable->head;
-	while (cmdlist != NULL)
-	{
-		token = cmdlist->head; // 1º token do user_input é o comando
-		if (token != NULL) // DEBUG para saber se o token que tá chegando é inválido
-		{
-			int i = 0;
-			t_node *tmp_token = token;
-			while (tmp_token != NULL)
-        		{
-            			//printf("executor.c --> Token %d: %s\n", i, tmp_token->value);
-            			i++;
-            			tmp_token = tmp_token->next;
-        		}
-			if (execute_builtins(token, env, cmdtable) == -1) // trocar para is_builtin para poder chamar perror caso nao seja builtin ou external command
-				execute_external_command(cmdlist, envp);
-			//else
-				//perror("Error: Invalid command");
-		}
-		else
-			printf("executor.c --> comando inválido | token é NULL\n"); // DEBUG
-		cmdlist = cmdlist->next;
-	}
-}
-*/

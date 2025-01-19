@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
 // rl_clear_history on exit
 int	ft_exit(char **args, t_main *main)
@@ -21,11 +22,14 @@ int	ft_exit(char **args, t_main *main)
 		i++;
 	}
 	if (!nbr || i >= 20)
-		nbr = ft_error("exit", args[0], "numeric argument required", 2);
+	{
+		perror("exit:");
+		nbr = 2;
+	}
 	else
 	{
 		if (len > 1)
-			return (ft_error("exit", NULL, "too many arguments", 1));
+			return (perror("exit:"), 1);
 		if (len == 1)
 			nbr = ft_atoi(args[0]); // trocar por atol
 		else
@@ -35,7 +39,16 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
+	close(main->fd[0]);
+	close(main->fd[1]);
 	free_main(main);
 	free_split(args);
+	exit (nbr);
+}
+
+int	ft_exit_nbr(int nbr, t_main *main)
+{
+	ft_putstr_fd("exit\n", 1);
+	free_main(main);
 	exit (nbr);
 }

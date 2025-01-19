@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/11 00:11:42 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/19 13:25:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct	s_main {
 	t_env	*envp_list;
 	char	**envp;
 	t_tab	*cmdtab;
+	int		fd[2];
 } t_main;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
@@ -94,6 +95,7 @@ int	ft_export(char **args, t_env *env);
 int	ft_unset(char **args, t_env *env);
 int	free_env(t_env *env);
 int	ft_exit(char **args, t_main *main);
+int	ft_exit_nbr(int nbr, t_main *main);
 int	str_isname(char *str);
 void	update_env(char *key, char *value, t_env *envp);
 void	update_envnode(char *value, t_envnode *node);
@@ -187,7 +189,7 @@ int	split_len(char **split);
 int	ft_pwd(void);
 
 // redirect.c
-void	redirect(t_list *cmdline);
+int	redirect(t_list *cmdlist);
 
 // convertions.c
 char	**env_to_char_array(t_env *envp);

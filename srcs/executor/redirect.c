@@ -3,14 +3,14 @@
 // testcases not working:
 // << delimiter1 << delimiter2
 // << del > file
-void	redirect(t_list *cmdlist)
+int	redirect(t_list *cmdlist)
 {
 	int	fd[2];
 	t_node *token= cmdlist->head;
 	char *input;
 
 	// loop para percorrer a cmdlist
-	while (token != NULL)
+	while (token != NULL && token->next != NULL)
 	{
 		// <
 		if (token->type == REDIRECT_IN)
@@ -24,10 +24,8 @@ void	redirect(t_list *cmdlist)
 			// se nao houve nenhum erro no fd, dupa e substitui o std in 
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
 			{
-				// resolver mensagem
-				perror("minishell");
-				// ft_error("", token->next->value, " );
-				exit(1);
+				perror(token->next->value);
+				return (1);
 			}
 			// fechamos o fd gerado pelo open pois nao sera mais usado
 			close(fd[0]);
@@ -40,8 +38,8 @@ void	redirect(t_list *cmdlist)
 			// usamos um pipe para redirecionar o texto de input do heredoc
 			if (pipe(fd) < 0)
 			{
-				perror("minishell");
-				exit(1);
+				perror(token->next->value);
+				return (1);
 			}
 			// guardamos a saida da readline
 			input = readline("> ");
@@ -56,8 +54,8 @@ void	redirect(t_list *cmdlist)
 			}
 			if (dup2(fd[0], 0) < 0)
 			{
-				perror("minishell");
-				exit(1);
+				perror(token->next->value);
+				return (1);
 			}
 			close(fd[0]);
 			close(fd[1]);
@@ -72,15 +70,16 @@ void	redirect(t_list *cmdlist)
 			// se nao houver arquivo, cria. se houver conteudo, apaga. 0664 -> permissoes padroes de arquivos criados
 			if (fd[1] < 0 || dup2(fd[1], 1) < 0)
 			{
-				perror("minishell");
-				exit(1);
+				perror(token->next->value);
+				return (1);
 			}
-			close(fd[0]);
+			// close(fd[0]);
 			close(fd[1]);
 			token = token->next->next;
 		}
 		else
 			token = token->next; // se n for redirect, vai pro prox node
 	}
+	return (0);
 }
 

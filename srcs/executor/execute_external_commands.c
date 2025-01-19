@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/16 00:20:20 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/13 13:56:00 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char **create_exec_args(t_node *token)
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
 	{
-		perror("allocation failure"); // criar macro p/padronizar msgs de erro
+		perror("malloc:");
 		return (NULL);
 	}
 	count = 0;
@@ -109,55 +109,6 @@ static char **create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-// void execute_external_command(t_list *cmdlist, char **envp)
-// {
-// 	pid_t	pid;
-// 	char	**exec_args;  // Array para armazenar os argumentos
-// 	char	*cmd_path;
-// 	t_node *token;
-//
-//
-// 	token = cmdlist->head;
-// 	if (!token || !token->value)
-// 	{
-// 		ft_putstr_fd("Error: command not found: %s\n", 2);
-// 		return ;
-// 	}
-//
-// 	// buscar o caminho completo do comando
-// 	cmd_path = find_command_path(token->value, envp);
-// 	if (!cmd_path)
-// 	{
-// 		ft_putstr_fd("Error: command not found in PATH\n", 2);
-// 		return ;
-// 	}
-//
-// 	exec_args = create_exec_args(token);
-// 	if (!exec_args)
-// 	{
-// 		free(cmd_path);
-// 		return ;
-// 	}
-// 	pid = fork();  // Criar processo filho p/ executar comando externo
-// 	if (pid == 0)  // tô no processo filho
-// 	{
-// 		if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
-// 		{
-// 			// salvar exit status no envp em $?
-// 			perror("Error: execve failed");
-// 			free(exec_args);
-// 			free(cmd_path);
-// 			exit(1);  // sair do processo filho
-// 		}
-// 	}
-// 	else if (pid > 0)  // tô no processo pai
-// 		wait(&pid);  // esperar qualquer processo filho terminar
-// 	else
-// 		perror("fork failed");
-// 	free(exec_args);
-// 	free(cmd_path);
-// }
-
 // fork esta sendo criado na execute_fork_commands, dentro do loop de execucao pois ha casos que builtins tbm sao executados em fork (casos de pipe ou comandos simples != de cd, export e unset)
 // -> versao da execute_external_commands sem fork
 void execute_external_command(t_list *cmdlist, char **envp)
@@ -168,7 +119,7 @@ void execute_external_command(t_list *cmdlist, char **envp)
 
 	if (!token || !token->value)
 	{
-		ft_putstr_fd("Error: command not found: %s\n", 2);
+		perror(token->value);
 		return ;
 	}
 
@@ -176,7 +127,7 @@ void execute_external_command(t_list *cmdlist, char **envp)
 	cmd_path = find_command_path(token->value, envp);
 	if (!cmd_path)
 	{
-		ft_putstr_fd("Error: command not found in PATH\n", 2);
+		perror(token->value);
 		return ;
 	}
 
@@ -189,7 +140,7 @@ void execute_external_command(t_list *cmdlist, char **envp)
 	if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
 	{
 		// salvar exit status no envp em $?
-		perror("Error: execve failed");
+		perror(token->value);
 		free(exec_args);
 		free(cmd_path);
 		exit(1);  // sair do processo filho

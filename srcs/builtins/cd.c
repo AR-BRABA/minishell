@@ -32,7 +32,7 @@ int	ft_cd(char **args, t_env *env)
 	char	buf[PATH_MAX + 1];
 
 	if (split_len(args) > 1)
-		return (ft_error("cd", NULL, "too many arguments", 1));
+		return (perror("cd:"), 1);
 	if (!args || ft_strncmp(args[0], "~", 1) == 0)
 	{
 		path = get_key_value(env, "HOME");
@@ -46,7 +46,7 @@ int	ft_cd(char **args, t_env *env)
 	origin = getcwd(buf, PATH_MAX + 1);
 	if (chdir(path) == -1 || !origin)
 	{
-		ft_error("cd", path, "No such file or directory", 1);
+		perror("cd:");
 		free(path);
 		return (1);
 	}
