@@ -105,3 +105,35 @@ static char	**create_exec_args(t_node *token)
 }
 
 void	execute_external_command(t_list *cmdlist, char **envp)
+{
+	char	*cmd_path;
+	t_node	*token;
+	char **exec_args; // Array para armazenar os argumentos
+
+	token = get_cmd(cmdlist);
+	if (!token || !token->value)
+	{
+		perror(token->value);
+		return ;
+	}
+	// buscar o caminho completo do comando
+	cmd_path = find_command_path(token->value, envp);
+	if (!cmd_path)
+	{
+		perror(token->value);
+		return ;
+	}
+	exec_args = create_exec_args(token);
+	if (!exec_args)
+	{
+		free(cmd_path);
+		return ;
+	}
+	if (execve(cmd_path, exec_args, envp) == -1)
+	{
+		perror(token->value);
+		free(exec_args);
+		free(cmd_path);
+		exit(1); // sair do processo filho
+	}
+}

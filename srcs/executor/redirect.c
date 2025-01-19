@@ -1,8 +1,5 @@
 #include "../../includes/minishell.h"
 
-// testcases not working:
-// << delimiter1 << delimiter2
-// << del > file
 int	redirect(t_list *cmdlist)
 {
 	int	fd[2];
