@@ -13,7 +13,7 @@
 #include "../../includes/minishell.h"
 
 /**
- * Checks if all quotes in a string are properly closed
+ * Validates if all quotes in a string are properly closed
  *
  * This function goes trough the given string and verifies if all single and
  * double quotes have matching pairs. It returns true if all quotes are
