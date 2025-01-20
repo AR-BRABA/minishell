@@ -43,10 +43,15 @@ bool	check_unclosed_quotes(char *input)
 }
 
 /**
- * Checks if user input is an empty string or contains only spaces
+ * Validates if the user input is an empty string or consists only of spaces.
+ * 
+ * This function goes trough the given string and checks if it is either an 
+ * empty string or contains only whitespace characters. It returns 'true' if
+ * the input matches either of these conditions; otherwise, it returns 'false'.
  *
- * @param input - user input
- * @return true - if input is empty or contains only spaces, false otherwise
+ * @param input - The user input string to be checked
+ * @return true - If input is empty or contains only spaces
+ * @return false - If the input contains any non-space characters
  */
 bool	check_empty_input(char *input)
 {
