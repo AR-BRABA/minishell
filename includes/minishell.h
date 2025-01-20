@@ -83,7 +83,7 @@ char	*read_input(char *user_input);
 // VALIDATE_INPUT.C -----------------------------------------------------------
 bool	validate_input(char *input);
 bool    check_unclosed_quotes(char *s);
-bool    has_only_spaces(char *input);
+bool    check_empty_input(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode	*new_envnode(char *envp);

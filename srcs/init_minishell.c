@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("minishell$ ");
 		if (!input)
 			break; // Stop the loop if readline() returns NULL (EOF)
-		else if (input && !has_only_spaces(input))
+		else if (input && !check_empty_input(input))
 		{
 			if (validate_input(input))
 			{

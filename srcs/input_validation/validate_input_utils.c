@@ -43,12 +43,12 @@ bool	check_unclosed_quotes(char *input)
 }
 
 /**
- * Checks if user input contains only spaces
+ * Checks if user input is an empty string or contains only spaces
  *
  * @param input - user input
- * @return true - if input contains only spaces, false otherwise
+ * @return true - if input is empty or contains only spaces, false otherwise
  */
-bool	has_only_spaces(char *input)
+bool	check_empty_input(char *input)
 {
 	while (*input)
 	{

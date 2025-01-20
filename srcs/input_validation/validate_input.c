@@ -62,23 +62,6 @@ bool	check_redirection_syntax(char *input)
 }*/
 
 /**
- * Checks if user input is an empty string or contains only spaces
- *
- * @param input - user input
- * @return true - if input is empty or contains only spaces, false otherwise
- */
-bool	check_empty_input(char *input)
-{
-	while (*input)
-	{
-		if (!ft_isspace(*input))
-			return (false);
-		input++;
-	}
-	return (true);
-}
-
-/**
  * Validates user input by checking various conditions
  *
  * @param input (user input)
