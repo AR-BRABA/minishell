@@ -13,62 +13,33 @@
 #include "../../includes/minishell.h"
 
 /**
- * Checks for unclosed quotes in user input
+ * Checks if all quotes in a string are properly closed
  *
- * @param input - user input
- * @return -1 - if there are unclosed quotes, otherwise returns the position of
- * the char after the quotes close
+ * This function goes trough the given string and verifies if all single and
+ * double quotes have matching pairs. It returns true if all quotes are
+ * properly closed. If any unclosed quote is found, it returns false ('\0').
+ *
+ * @param input - The user input string to be checked for unclosed quotes
+ * @return true - If all quotes are closed properly
+ * @return false ('\0) - If there is any unclosed quote in the input string
  */
-/*int	check_unclosed_quotes(char *input)
+bool	check_unclosed_quotes(char *input)
 {
-	bool	single_quote_open;
-	bool	double_quote_open;
-	int		pos;
+	char current_quote;
+	
+	current_quote = '\0';
 
-	single_quote_open = false;
-	double_quote_open = false;
-	pos = 0;
-	while (input[pos])
-	{
-		if (input[pos] == '\'' && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (input[pos] == '\"' && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		pos++;
-	}
-	if (single_quote_open || double_quote_open)
-		return (-1);
-	return (pos);
-}*/
-
-bool	check_unclosed_quotes(char *s)
-{
-	bool	unclosed_single_quotes;
-	bool	unclosed_double_quotes;
-
-	unclosed_single_quotes = false;
-	unclosed_double_quotes = false;
-	while (*s)
-	{
-		if (*s == '\"')
-		{
-			while (*s && *s != '\"')
-				s++;
-			if (*s == '\"')
-				unclosed_double_quotes = !unclosed_double_quotes;
-			check_unclosed_quotes(s + 1);
-		}
-		else if (*s == '\'')
-		{
-			while (*s && *s != '\'')
-				s++;
-			if (*s == '\'')
-				unclosed_single_quotes = !unclosed_single_quotes;
-			check_unclosed_quotes(s + 1);
-		}
-		s++;
-	}
-	return (unclosed_single_quotes || unclosed_double_quotes);
+    while (*input) {
+        if ((*input == '\'' || *input == '"')) {
+            if (current_quote == '\0') {
+                current_quote = *input;
+            } else if (*input == current_quote) {
+                current_quote = '\0';
+            }
+        }
+        input++;
+    }
+    return (current_quote == '\0');
 }
 
 /**
@@ -108,40 +79,3 @@ bool	dollar_within_quotes(char *input, int *pos, char quote_char)
 	(*pos)++;
 	return (true);
 }
-/*
-int	check_unclosed_quotes(char *input)
-{
-	char	*str;
-
-	str = input;
-	while (*str)
-	{
-		if (*str == '\'')
-		{
-			str++;
-			while (*str && *str != '\'')
-				str++;
-			if (*str != '\'')
-				return (-1);
-			str++;
-		}
-		else if (*str == '\"')
-		{
-			str++;
-			while (*str && *str != '\"')
-			{
-				if (*str == '$')
-				{
-					// How to handle '$' within double quotes?
-				}
-				str++;
-			}
-			if (*str != '\"')
-				return (-1);
-			str++;
-		}
-		else
-			str++;
-	}
-	return (str - input);
-}*/
