@@ -195,7 +195,7 @@ int				split_len(char **split);
 int				ft_pwd(void);
 
 // redirect.c
-void			redirect(t_list *cmdline);
+int			redirect(t_list *cmdline);
 
 // convertions.c
 char			**env_to_char_array(t_env *envp);
