@@ -92,6 +92,7 @@ char					*read_input(char *user_input);
 bool					validate_input(char *input);
 bool					check_unclosed_quotes(char *s);
 bool					check_empty_input(char *input);
+bool					check_border_special_chars(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode				*new_envnode(char *envp);

@@ -31,33 +31,46 @@ bool	check_redirection_syntax(char *input)
 		}
 	}
 }*/
-/**
- * Checks if user input starts or ends with '|', '<' or '>'
+
+/*
+ * Validates if the input starts or ends with special characters:
+ * '|', '<', '>', '<<' or '>>'
  *
- * @param input - user input
- * @return true - if input starts or ends with '|', '<' or '>', false otherwise
+ * This function checks the user's input to ensure it doesn't start or
+ * end with special characters that would make the command invalid.
+ *
+ * @param input - The user input string to validate
+ * @return true - If input doesn't start/end with special characters
+ * @return false - If input starts/ends with '|', '<', '>', '<<' or '>>'
  */
-/*bool	check_border_special_chars(char *input)
+ bool	check_border_special_chars(char *input)
 {
-	special_chars = "|<>";
-	
-	while(*input && (*input != '|' && *input != '<' && *input != '>'))
-		input++;
-	if (*input == '<' && *(input + 1) == '<')
-	// check here-doc syntax (move to utils?)
-	{
-		input += 2;
-		while (*input && ft_isspace(*input))
-			input++;
-		if (!*input)
-			return (true);
+	char *end;
+
+	end = input;
+	if (!input || *input == '\0')
 		return (false);
-	}
-	else if (ft_strchr(special_chars, input[0])
-		|| ft_strchr(special_chars, input[ft_strlen(input) - 1]))
+
+	while (*input && ft_isspace(*input))
+		input++;
+
+	if (*input == '|' || *input == '<' || *input == '>')
 		return (true);
+
+	// ir pro fim da str
+	while (*end)
+		end++;
+
+	// pular espaços do final
+	while (end > input && ft_isspace(*(end - 1)))
+		end--;
+
+	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
+		return (true);
+
 	return (false);
-}*/
+}
+
 /**
  * Checks if user input is an empty string or contains only spaces
  *
@@ -85,8 +98,8 @@ bool	validate_input(char *input)
 {
 	if (check_empty_input(input))
 		return (false);
-	if (check_unclosed_quotes(input))
-	//|| check_border_special_chars(input))
+	if (check_unclosed_quotes(input)
+		|| check_border_special_chars(input))
 	{
 		write(STDERR_FILENO, "Error\n", 6);
 		return (false);
