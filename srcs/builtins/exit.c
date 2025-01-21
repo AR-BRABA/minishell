@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
 
 int	ft_atou(const char *nptr)
 {
@@ -53,20 +52,18 @@ int	check_digits(char** args)
 
 int	ft_exit(char **args, t_main *main)
 {
-	int		len;
 	int		nbr;
 	char	*tmp;
 
-	len = split_len(args);
 	ft_putstr_fd("exit\n", 1);
 	nbr = check_digits(args);
 	if (nbr == 2)
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 	else
 	{
-		if (len > 1)
+		if (split_len(args) > 1)
 			return(ft_putstr_fd("minishell: exit: too many arguments\n", 2), 1);
-		if (len == 1)
+		if (split_len(args) == 1)
 			nbr = ft_atou(args[0]);
 		else
 		{
@@ -75,6 +72,8 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
+	close(main->fd[0]);
+	close(main->fd[1]);
 	free_main(main);
 	free_split(args);
 	exit(nbr);

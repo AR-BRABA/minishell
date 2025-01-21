@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 14:58:30 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 19:23:55 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	main(int argc, char **argv, char **envp)
 	main = malloc(sizeof(t_main));
 	main->envp_list = get_env_list(envp);
 	main->envp = env_to_char_array(main->envp_list);
+	main->fd[0] = -1;
+	main->fd[1] = -1;
 	while (1)
 	{
 		input = readline("minishell$ ");

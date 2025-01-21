@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 void	free_main(t_main *main)
 {
@@ -40,41 +41,29 @@ void	free_table(t_tab *cmdtable)
 	if (!cmdtable)
 		return ;
 	cmdline = cmdtable->head;
-	nextline = cmdline->next;
 	while (cmdline != NULL)
 	{
+		nextline = cmdline->next;
 		free_list(cmdline);
 		cmdline = nextline;
-		if (cmdline)
-			nextline = cmdline->next;
 	}
 	free(cmdtable);
 }
 
 void	free_list(t_list *cmdline)
 {
-	t_list	*tmpline;
 	t_node	*token;
 	t_node	*tmptoken;
 
 	token = cmdline->head;
-	while (cmdline != NULL && token != NULL)
+	while (token != NULL)
 	{
 		tmptoken = token->next;
 		free(token->value);
 		free(token);
-		if (tmptoken == NULL)
-		{
-			tmpline = cmdline->next;
-			free(cmdline);
-			if (tmpline == NULL)
-				break ;
-			cmdline = tmpline;
-			token = tmpline->head;
-		}
-		else
-			token = tmptoken;
+		token = tmptoken;
 	}
+	free(cmdline);
 }
 
 int	free_env(t_env *env)
