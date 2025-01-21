@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:53:40 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 14:58:30 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	sig_handler(int sig)
 {
+	//add to env
 	if (sig == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
@@ -58,6 +59,7 @@ int	main(int argc, char **argv, char **envp)
 				free(split);
 				execute_commands(main);
 				free_table(main->cmdtab);
+				main->cmdtab = NULL;
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 11:06:10 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 14:58:11 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void					update_envnode(char *value, t_envnode *node);
 // EXECUTOR.C ------------------------------------------------------------------
 void					execute_commands(t_main *main);
 int						execute_builtins(t_list *cmdlist, t_main *main);
-void					execute_external_command(t_list *cmdlist, char **envp);
+void					execute_external_command(t_list *cmdlist, t_main *main);
 int						execute_fork_commands(t_main *main);
 t_node					*get_cmd(t_list *cmdlist);
 

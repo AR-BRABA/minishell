@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 11:56:56 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 15:06:11 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	execute_fork_commands(t_main *main)
 			{
 				ret = execute_builtins(cmdlist, main);
 				if (ret == -1)
-					execute_external_command(cmdlist, main->envp);
+					execute_external_command(cmdlist, main);
 				exit(ret);
 			}
 		}

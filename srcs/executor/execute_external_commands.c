@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 11:39:50 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 15:05:01 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char	**create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-void	execute_external_command(t_list *cmdlist, char **envp)
+void	execute_external_command(t_list *cmdlist, t_main *main)
 {
 	char	*cmd_path;
 	t_node	*token;
@@ -119,18 +119,22 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 	if (access(token->value, X_OK) == 0)
 		cmd_path = ft_strdup(token->value);
 	else
-		cmd_path = find_command_path(token->value, envp);
+		cmd_path = find_command_path(token->value, main->envp);
 	exec_args = create_exec_args(token);
 	if (!exec_args)
 	{
 		free(cmd_path);
 		return ;
 	}
-	if (execve(cmd_path, exec_args, envp) == -1)
+	if (!cmd_path || execve(cmd_path, exec_args, main->envp) == -1)
 	{
-		ft_putstr_fd("minishell: command not found\n", 2);
+		if (!cmd_path)
+			ft_putstr_fd("minishell: command not found\n", 2);
+		else
+			perror(token->value);
 		free(exec_args);
 		free(cmd_path);
+		free_main(main);
 		exit(127);
 	}
 }
