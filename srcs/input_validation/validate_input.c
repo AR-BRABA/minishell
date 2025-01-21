@@ -99,7 +99,8 @@ bool	validate_input(char *input)
 	if (check_empty_input(input))
 		return (false);
 	if (check_unclosed_quotes(input)
-		|| check_border_special_chars(input))
+		|| check_border_special_chars(input)
+		|| !check_invalid_sequences(input))
 	{
 		write(STDERR_FILENO, "Error\n", 6);
 		return (false);

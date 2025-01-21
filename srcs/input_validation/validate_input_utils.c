@@ -12,6 +12,42 @@
 
 #include "../../includes/minishell.h"
 
+/**
+ * Validates the input to ensure '<' or '>' is not followed by '|'
+ * and '|' is not followed by '<' or '>', ignoring spaces in between.
+ *
+ * @param input - The user input string to validate
+ * @return true - If no invalid sequences is found
+ * @return false - If an invalid sequence is detected
+ */
+ bool check_invalid_sequences(char *input)
+{
+    while (*input)
+    {
+        if (*input == '<' || *input == '>')
+        {
+            input++;
+            while (*input && ft_isspace(*input))
+                input++;
+            if (*input == '|')
+                return false;
+        }
+        else if (*input == '|')
+        {
+            input++;
+            while (*input && ft_isspace(*input))
+                input++;
+            if (*input == '<' || *input == '>')
+                return false;
+        }
+        else
+        {
+            input++;
+        }
+    }
+    return true;
+}
+
 bool	check_unclosed_quotes(char *s)
 {
 	bool	unclosed_single_quotes;
