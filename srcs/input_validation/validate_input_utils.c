@@ -71,23 +71,6 @@ bool	check_unclosed_quotes(char *s)
 	return (unclosed_single_quotes || unclosed_double_quotes);
 }
 
-/**
- * Checks if user input contains only spaces
- *
- * @param input - user input
- * @return true - if input contains only spaces, false otherwise
- */
-bool	has_only_spaces(char *input)
-{
-	while (*input)
-	{
-		if (!ft_isspace(*input))
-			return (false);
-		input++;
-	}
-	return (true);
-}
-
 bool	dollar_within_quotes(char *input, int *pos, char quote_char)
 {
 	while (input[*pos] && input[*pos] == '$')
