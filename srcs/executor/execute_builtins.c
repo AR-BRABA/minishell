@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:38:17 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 11:11:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,14 @@ int	execute_builtins(t_list *cmdlist, t_main *main)
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		return (ft_pwd());
 	else if (ft_strncmp(token->value, "env", 4) == 0)
-		return (ft_env(main->envp_list));
+	{
+		args = list_to_char_array(token->next);
+		if (!args)
+			args = NULL;
+		i = ft_env(args, main->envp_list);
+		free(args);
+		return (i);
+	}
 	else if (ft_strncmp(token->value, "unset", 6) == 0)
 	{
 		args = list_to_char_array(token->next);

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:44:58 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 11:39:50 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static char	**create_exec_args(t_node *token)
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
 	{
-		perror("malloc:");
+		perror("minishell: malloc");
 		return (NULL);
 	}
 	count = 0;
@@ -116,12 +116,10 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		return ;
 	}
-	cmd_path = find_command_path(token->value, envp);
-	if (!cmd_path)
-	{
-		perror(token->value);
-		return ;
-	}
+	if (access(token->value, X_OK) == 0)
+		cmd_path = ft_strdup(token->value);
+	else
+		cmd_path = find_command_path(token->value, envp);
 	exec_args = create_exec_args(token);
 	if (!exec_args)
 	{
@@ -130,9 +128,9 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 	}
 	if (execve(cmd_path, exec_args, envp) == -1)
 	{
-		perror(token->value);
+		ft_putstr_fd("minishell: command not found\n", 2);
 		free(exec_args);
 		free(cmd_path);
-		exit(1);
+		exit(127);
 	}
 }

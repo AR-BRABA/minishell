@@ -32,7 +32,7 @@ int	ft_cd(char **args, t_env *env)
 	char	buf[PATH_MAX + 1];
 
 	if (split_len(args) > 1)
-		return (perror("cd:"), 1);
+		return (ft_putstr_fd("minishell: cd: too many arguments", 2), 2);
 	if (!args || ft_strncmp(args[0], "~", 1) == 0)
 	{
 		path = get_key_value(env, "HOME");
@@ -46,7 +46,7 @@ int	ft_cd(char **args, t_env *env)
 	origin = getcwd(buf, PATH_MAX + 1);
 	if (chdir(path) == -1 || !origin)
 	{
-		perror("cd:");
+		perror("minishell: cd: No such file or directory");
 		free(path);
 		return (1);
 	}
