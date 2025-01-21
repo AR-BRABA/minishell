@@ -25,14 +25,10 @@ void	update_key_value(t_env *list, char *key, char *new_val)
 	}
 }
 
-int	ft_cd(char **args, t_env *env)
+char	*get_path(char **args, t_env *env)
 {
-	char	*origin;
 	char	*path;
-	char	buf[PATH_MAX + 1];
 
-	if (split_len(args) > 1)
-		return (ft_putstr_fd("minishell: cd: too many arguments", 2), 2);
 	if (!args || ft_strncmp(args[0], "~", 1) == 0)
 	{
 		path = get_key_value(env, "HOME");
@@ -43,10 +39,22 @@ int	ft_cd(char **args, t_env *env)
 		path = get_key_value(env, "OLDPWD");
 	else
 		path = ft_strdup(args[0]);
+	return (path);
+}
+
+int	ft_cd(char **args, t_env *env)
+{
+	char	*origin;
+	char	*path;
+	char	buf[PATH_MAX + 1];
+
+	if (split_len(args) > 1)
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 2);
+	path = get_path(args, env);
 	origin = getcwd(buf, PATH_MAX + 1);
 	if (chdir(path) == -1 || !origin)
 	{
-		perror("minishell: cd: No such file or directory");
+		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
 		free(path);
 		return (1);
 	}
