@@ -28,17 +28,13 @@ int	ft_atou(const char *nptr)
 	return (ret);
 }
 
-int	ft_exit(char **args, t_main *main)
+int	check_digits(char** args)
 {
-	int		len;
 	int		i;
 	int		nbr;
-	char	*tmp;
 
-	len = split_len(args);
 	i = 0;
 	nbr = 1;
-	ft_putstr_fd("exit\n", 1);
 	if (args && args[0] && args[0][i] == '-')
 		i++;
 	while (args && args[0] && args[0][i] != '\0')
@@ -51,10 +47,21 @@ int	ft_exit(char **args, t_main *main)
 		i++;
 	}
 	if (!nbr || i >= 20)
-	{
+		return 2;
+	return 1;
+}
+
+int	ft_exit(char **args, t_main *main)
+{
+	int		len;
+	int		nbr;
+	char	*tmp;
+
+	len = split_len(args);
+	ft_putstr_fd("exit\n", 1);
+	nbr = check_digits(args);
+	if (nbr == 2)
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		nbr = 2;
-	}
 	else
 	{
 		if (len > 1)
@@ -68,9 +75,6 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
-	rl_clear_history();
-	close(main->fd[0]);
-	close(main->fd[1]);
 	free_main(main);
 	free_split(args);
 	exit(nbr);

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:48:21 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 17:40:42 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	**list_to_char_array(t_node *token)
 			free(args);
 			return (0);
 		}
-		args[i++] = arg_token->value;
+		args[i++] = ft_strdup(arg_token->value);
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
