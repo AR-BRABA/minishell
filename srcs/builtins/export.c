@@ -38,7 +38,7 @@ int	ft_export(char **args, t_env *envp)
 				update_envnode(new->value, old);
 			else
 			{
-				perror("export:");
+				ft_putstr_fd("minishell: export: not a valid identifier", 2);
 				ret = 1;
 			}
 			free_envnode(new);

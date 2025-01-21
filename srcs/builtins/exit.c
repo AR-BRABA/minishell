@@ -1,10 +1,11 @@
 #include "../../includes/minishell.h"
 #include <readline/readline.h>
 
-int	ft_atol(const char *nptr)
+int	ft_atou(const char *nptr)
 {
 	int		i;
 	long		convnum;
+	unsigned	ret;
 	int		sign;
 
 	i = 0;
@@ -23,7 +24,8 @@ int	ft_atol(const char *nptr)
 		convnum = convnum * 10 + (nptr[i] - 48);
 		i++;
 	}
-	return (convnum * sign);
+	ret = convnum *sign;
+	return (ret);
 }
 
 int	ft_exit(char **args, t_main *main)
@@ -50,19 +52,19 @@ int	ft_exit(char **args, t_main *main)
 	}
 	if (!nbr || i >= 20)
 	{
-		perror("exit:");
+		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 		nbr = 2;
 	}
 	else
 	{
 		if (len > 1)
-			return (perror("exit:"), 1);
+			return(ft_putstr_fd("minishell: exit: too many arguments\n", 2), 1);
 		if (len == 1)
-			nbr = ft_atol(args[0]);
+			nbr = ft_atou(args[0]);
 		else
 		{
 			tmp = get_key_value(main->envp_list, "?");
-			nbr = ft_atol(tmp);
+			nbr = ft_atou(tmp);
 			free(tmp);
 		}
 	}

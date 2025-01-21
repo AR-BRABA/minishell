@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 03:28:20 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:06:10 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,18 @@ bool			check_unclosed_quotes(char *s);
 bool			check_empty_input(char *input);
 
 // ENV.C -----------------------------------------------------------------------
-t_envnode		*new_envnode(char *envp);
-void			addback_env(t_envnode *newnode, t_env *list);
-t_env			*get_env_list(char **envp);
-int				ft_env(t_env *env);
-int				ft_export(char **args, t_env *env);
-int				ft_unset(char **args, t_env *env);
-int				free_env(t_env *env);
-int				ft_exit(char **args, t_main *main);
-int				str_isname(char *str);
-void			update_env(char *key, char *value, t_env *envp);
-void			update_envnode(char *value, t_envnode *node);
+t_envnode				*new_envnode(char *envp);
+void					addback_env(t_envnode *newnode, t_env *list);
+t_env					*get_env_list(char **envp);
+int						ft_env(char **args, t_env *env);
+int						ft_export(char **args, t_env *env);
+int						ft_unset(char **args, t_env *env);
+int						free_env(t_env *env);
+int						ft_exit(char **args, t_main *main);
+int						ft_exit_nbr(int nbr, t_main *main);
+int						str_isname(char *str);
+void					update_env(char *key, char *value, t_env *envp);
+void					update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void			execute_commands(t_main *main);
