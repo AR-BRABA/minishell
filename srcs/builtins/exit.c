@@ -2,10 +2,10 @@
 
 int	ft_atou(const char *nptr)
 {
-	int		i;
+	int			i;
 	long		convnum;
 	unsigned	ret;
-	int		sign;
+	int			sign;
 
 	i = 0;
 	convnum = 0;
@@ -23,14 +23,14 @@ int	ft_atou(const char *nptr)
 		convnum = convnum * 10 + (nptr[i] - 48);
 		i++;
 	}
-	ret = convnum *sign;
+	ret = convnum * sign;
 	return (ret);
 }
 
-int	check_digits(char** args)
+int	check_digits(char **args)
 {
-	int		i;
-	int		nbr;
+	int	i;
+	int	nbr;
 
 	i = 0;
 	nbr = 1;
@@ -46,8 +46,8 @@ int	check_digits(char** args)
 		i++;
 	}
 	if (!nbr || i >= 20)
-		return 2;
-	return 1;
+		return (2);
+	return (1);
 }
 
 int	ft_exit(char **args, t_main *main)
@@ -62,7 +62,8 @@ int	ft_exit(char **args, t_main *main)
 	else
 	{
 		if (split_len(args) > 1)
-			return(ft_putstr_fd("minishell: exit: too many arguments\n", 2), 1);
+			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2),
+				1);
 		if (split_len(args) == 1)
 			nbr = ft_atou(args[0]);
 		else
