@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:44:58 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/20 17:12:34 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 		perror(token->value);
 		return ;
 	}
-	cmd_path = find_command_path(token->value, envp);
+	if (access(token->value, X_OK) == 0)
+		cmd_path = ft_strdup(token->value);
+	else
+		cmd_path = find_command_path(token->value, envp);
 	if (!cmd_path)
 	{
 		perror(token->value);
