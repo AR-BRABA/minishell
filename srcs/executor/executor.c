@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/20 15:21:10 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 11:56:56 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	execute_fork_commands(t_main *main)
 			ret = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			ret = 128 + WTERMSIG(status);
-		else if (WIFSTOPPED(status))
-			ret = 128 + WSTOPSIG(status);
+		// else if (WIFSTOPPED(status))
+		// 	ret = 128 + WSTOPSIG(status);
 		count++;
 	}
 	return (ret);

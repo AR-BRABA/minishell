@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <signal.h>
 
 int	redirect(t_list *cmdlist)
 {
@@ -13,7 +14,7 @@ int	redirect(t_list *cmdlist)
 			fd[0] = open(token->next->value, O_RDONLY);
 			if (fd[0] < 0 || dup2(fd[0], 0) < 0)
 			{
-				perror("minishell: redirect");
+				perror(token->next->value);
 				close(fd[0]);
 				return (1);
 			}
@@ -37,7 +38,7 @@ int	redirect(t_list *cmdlist)
 			}
 			if (dup2(fd[0], 0) < 0)
 			{
-				perror("minishell");
+				perror(token->next->value);
 				close(fd[0]);
 				close(fd[1]);
 				return (1);
@@ -54,7 +55,7 @@ int	redirect(t_list *cmdlist)
 				fd[1] = open(token->next->value, O_CREAT | O_TRUNC | O_RDWR, 0664);
 			if (fd[1] < 0 || dup2(fd[1], 1) < 0)
 			{
-				perror("minishell");
+				perror(token->next->value);
 				close(fd[1]);
 				return (1);
 			}
