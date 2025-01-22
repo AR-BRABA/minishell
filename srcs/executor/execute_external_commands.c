@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 15:05:01 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 21:06:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
-char	*find_command_path(char *cmd, char **envp)
+char	**get_paths(char **envp)
 {
 	char	*path_env;
 	char	**paths;
-	char	*absolute_path;
 	int		i;
 
 	i = 0;
@@ -50,10 +49,20 @@ char	*find_command_path(char *cmd, char **envp)
 		return (NULL);
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
+	return (paths);
+}
+
+char	*find_command_path(char *cmd, char **envp)
+{
+	char	**paths;
+	char	*absolute_path;
+	int		i;
+
+	paths = get_paths(envp);
 	i = 0;
 	while (paths[i])
 	{
-		absolute_path = build_binary_path(paths[i], '/', cmd);
+		absolute_path = build_binary_path(paths[i++], '/', cmd);
 		if (!absolute_path)
 		{
 			free_split(paths);
@@ -66,7 +75,6 @@ char	*find_command_path(char *cmd, char **envp)
 			return (absolute_path);
 		}
 		free(absolute_path);
-		i++;
 	}
 	free_split(paths);
 	return (NULL);
@@ -80,11 +88,8 @@ static char	**create_exec_args(t_node *token)
 
 	count = 1;
 	tmp_token = token->next;
-	while (tmp_token && tmp_token->type == ARG)
-	{
-		count++;
+	while (tmp_token && tmp_token->type == ARG && count++)
 		tmp_token = tmp_token->next;
-	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
 	{
@@ -108,24 +113,18 @@ void	execute_external_command(t_list *cmdlist, t_main *main)
 {
 	char	*cmd_path;
 	t_node	*token;
-	char **exec_args;
+	char	**exec_args;
 
 	token = get_cmd(cmdlist);
 	if (!token || !token->value)
-	{
-		perror(token->value);
-		return ;
-	}
+		return (perror(token->value));
 	if (access(token->value, X_OK) == 0)
 		cmd_path = ft_strdup(token->value);
 	else
 		cmd_path = find_command_path(token->value, main->envp);
 	exec_args = create_exec_args(token);
 	if (!exec_args)
-	{
-		free(cmd_path);
-		return ;
-	}
+		return (free(cmd_path));
 	if (!cmd_path || execve(cmd_path, exec_args, main->envp) == -1)
 	{
 		if (!cmd_path)
