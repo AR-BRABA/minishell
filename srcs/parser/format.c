@@ -1,54 +1,99 @@
 #include "../../includes/minishell.h"
 
-/* tira aspas externas do token->value */
-void	rm_quote(t_node *token)
+void	build_unquoted(int len, char *quoted, char *unquoted)
 {
-	int		squote;
-	int		dquote;
-	int		i;
-	int		q;
-	int		new_len;
-	int		len;
-	char	*unquoted;
+	int	squote;
+	int	dquote;
+	int	i;
+	int	q;
 
 	squote = 0;
 	dquote = 0;
 	i = 0;
 	q = 0;
+	while (quoted[i] != '\0')
+	{
+		if ((quoted[i] == '\'' && dquote % 2 == 0) || (quoted[i] == '\"'
+				&& squote % 2 == 0))
+		{
+			if (quoted[i] == '\'')
+				squote++;
+			else
+				dquote++;
+			i++;
+		}
+		else
+			unquoted[q++] = quoted[i++];
+	}
+	unquoted[q] = '\0';
+}
+
+/* tira aspas externas do token->value */
+void	rm_quote(t_node *token)
+{
+	int		new_len;
+	int		len;
+	char	*unquoted;
+
 	new_len = strlen_unquote(token->value);
 	len = ft_strlen(token->value);
 	if (len == new_len)
 		return ;
-	unquoted = malloc((new_len + 1) * sizeof(char));
-	while (token->value[i] != '\0')
-	{
-		if (token->value[i] == '\'')
-		{
-			if (dquote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				squote++;
-				i++;
-			}
-		}
-		else if (token->value[i] == '\"')
-		{
-			if (squote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				dquote++;
-				i++;
-			}
-		}
-		else
-			unquoted[q++] = token->value[i++];
-	}
-	unquoted[q] = '\0';
+	unquoted = malloc((len + 1) * sizeof(char));
+	build_unquoted(new_len, token->value, unquoted);
 	free(token->value);
 	token->value = unquoted;
 }
+
+/* tira aspas externas do token->value */
+/* void	rm_quote(t_node *token) */
+/* { */
+/* 	int		squote; */
+/* 	int		dquote; */
+/* 	int		i; */
+/* 	int		q; */
+/* 	int		new_len; */
+/* 	int		len; */
+/* 	char	*unquoted; */
+/**/
+/* 	squote = 0; */
+/* 	dquote = 0; */
+/* 	i = 0; */
+/* 	q = 0; */
+/* 	new_len = strlen_unquote(token->value); */
+/* 	len = ft_strlen(token->value); */
+/* 	if (len == new_len) */
+/* 		return ; */
+/* 	unquoted = malloc((new_len + 1) * sizeof(char)); */
+/* 	while (token->value[i] != '\0') */
+/* 	{ */
+/* 		if (token->value[i] == '\'') */
+/* 		{ */
+/* 			if (dquote % 2 != 0) */
+/* 				unquoted[q++] = token->value[i++]; */
+/* 			else */
+/* 			{ */
+/* 				squote++; */
+/* 				i++; */
+/* 			} */
+/* 		} */
+/* 		else if (token->value[i] == '\"') */
+/* 		{ */
+/* 			if (squote % 2 != 0) */
+/* 				unquoted[q++] = token->value[i++]; */
+/* 			else */
+/* 			{ */
+/* 				dquote++; */
+/* 				i++; */
+/* 			} */
+/* 		} */
+/* 		else */
+/* 			unquoted[q++] = token->value[i++]; */
+/* 	} */
+/* 	unquoted[q] = '\0'; */
+/* 	free(token->value); */
+/* 	token->value = unquoted; */
+/* } */
 
 /* join s1 and s2 into return string until n bytes and free s1*/
 char	*ft_strnjoin(char *s1, char *s2, int n)
