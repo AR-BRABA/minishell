@@ -27,7 +27,8 @@ PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
-				  $(PARSER_DIR)/format.c
+				  $(PARSER_DIR)/format.c \
+				  $(PARSER_DIR)/format_utils.c
 BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/env.c \
 					  $(BUILTINS_DIR)/cd.c \

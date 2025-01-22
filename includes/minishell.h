@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 14:58:11 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 21:31:57 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ int						ft_exit_nbr(int nbr, t_main *main);
 int						str_isname(char *str);
 void					update_env(char *key, char *value, t_env *envp);
 void					update_envnode(char *value, t_envnode *node);
+t_envnode				*search_key(t_env *list, char *key);
+int						strdol(char *str);
+int						strlen_isname(char *str);
+int						strquote(char *str, int start);
+int						strlen_unquote(char *quotestr);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void					execute_commands(t_main *main);
