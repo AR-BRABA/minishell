@@ -45,80 +45,6 @@ void	rm_quote(t_node *token)
 	token->value = unquoted;
 }
 
-/* tira aspas externas do token->value */
-/* void	rm_quote(t_node *token) */
-/* { */
-/* 	int		squote; */
-/* 	int		dquote; */
-/* 	int		i; */
-/* 	int		q; */
-/* 	int		new_len; */
-/* 	int		len; */
-/* 	char	*unquoted; */
-/**/
-/* 	squote = 0; */
-/* 	dquote = 0; */
-/* 	i = 0; */
-/* 	q = 0; */
-/* 	new_len = strlen_unquote(token->value); */
-/* 	len = ft_strlen(token->value); */
-/* 	if (len == new_len) */
-/* 		return ; */
-/* 	unquoted = malloc((new_len + 1) * sizeof(char)); */
-/* 	while (token->value[i] != '\0') */
-/* 	{ */
-/* 		if (token->value[i] == '\'') */
-/* 		{ */
-/* 			if (dquote % 2 != 0) */
-/* 				unquoted[q++] = token->value[i++]; */
-/* 			else */
-/* 			{ */
-/* 				squote++; */
-/* 				i++; */
-/* 			} */
-/* 		} */
-/* 		else if (token->value[i] == '\"') */
-/* 		{ */
-/* 			if (squote % 2 != 0) */
-/* 				unquoted[q++] = token->value[i++]; */
-/* 			else */
-/* 			{ */
-/* 				dquote++; */
-/* 				i++; */
-/* 			} */
-/* 		} */
-/* 		else */
-/* 			unquoted[q++] = token->value[i++]; */
-/* 	} */
-/* 	unquoted[q] = '\0'; */
-/* 	free(token->value); */
-/* 	token->value = unquoted; */
-/* } */
-
-/* join s1 and s2 into return string until n bytes and free s1*/
-char	*ft_strnjoin(char *s1, char *s2, int n)
-{
-	char	*s;
-	int		i;
-	int		s_pos;
-
-	if (!s1 && !s2)
-		return (NULL);
-	i = 0;
-	s_pos = 0;
-	s = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (s == NULL)
-		return (NULL);
-	while (s1 && s1[i] != '\0')
-		s[i++] = s1[s_pos++];
-	s_pos = 0;
-	while (s2 && s2[s_pos] != '\0' && s_pos < n)
-		s[i++] = s2[s_pos++];
-	s[i] = '\0';
-	free(s1);
-	return (s);
-}
-
 /* join s1 and s2 into return string and free s1*/
 char	*ft_strfjoin(char *s1, char *s2)
 {
@@ -162,7 +88,6 @@ void	expand(t_node *token, t_env *env)
 		if (dol < 0)
 			break ;
 		var = str + dol;
-		// expanded = ft_strnjoin(expanded, str, (var - str)); // free on
 		expanded = ft_substr(str, 0, (var - str));
 		node = search_key(env, strndup(var + 1, strlen_isname(var) - 1));
 		if (node)
