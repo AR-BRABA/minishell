@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 19:23:55 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/21 23:08:12 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char **envp)
 				free(input);
 				main->cmdtab = get_cmdtable(split, main->envp_list);
 				free(split);
+				print_tab(main->cmdtab);
 				execute_commands(main);
 				free_table(main->cmdtab);
 				main->cmdtab = NULL;

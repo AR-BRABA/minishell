@@ -1,10 +1,37 @@
 #include "../../includes/minishell.h"
 
+int	get_count(char *input, int count)
+{
+	int		start;
+	int		quote;
+
+	quote = 0;
+	start = count;
+	if (is_operator(input[start]))
+	{
+		count++;
+		if (is_operator(input[count]) && input[count] == input[start])
+			count++;
+	}
+	else if (!is_metachar(input[start]))
+	{
+		while (input[count] != '\0' && !is_metachar(input[count]))
+		{
+			if (is_quote(input[count]))
+			{
+				quote = count++;
+				while (input[count] != input[quote])
+					count++;
+			}
+			count++;
+		}
+	}
+	return (count);
+}
+
 int	count_tokens(char *user_input)
 {
 	int		count;
-	int		start;
-	int		quote;
 	int		tokens;
 	char	*input;
 
@@ -13,26 +40,7 @@ int	count_tokens(char *user_input)
 	input = strtrim_space(user_input);
 	while (input && input[count] != '\0')
 	{
-		start = count;
-		if (is_operator(input[start]))
-		{
-			count++;
-			if (is_operator(input[count]) && input[count] == input[start])
-				count++;
-		}
-		else if (!is_metachar(input[start]))
-		{
-			while (input[count] != '\0' && !is_metachar(input[count]))
-			{
-				if (is_quote(input[count]))
-				{
-					quote = count++;
-					while (input[count] != input[quote])
-						count++;
-				}
-				count++;
-			}
-		}
+		count = get_count(input, count);
 		tokens++;
 		if (is_space(input[count]))
 			while (is_space(input[count]))

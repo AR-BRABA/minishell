@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	build_unquoted(int len, char *quoted, char *unquoted)
+void	build_unquoted(char *quoted, char *unquoted)
 {
 	int	squote;
 	int	dquote;
@@ -40,7 +40,7 @@ void	rm_quote(t_node *token)
 	if (len == new_len)
 		return ;
 	unquoted = malloc((len + 1) * sizeof(char));
-	build_unquoted(new_len, token->value, unquoted);
+	build_unquoted(token->value, unquoted);
 	free(token->value);
 	token->value = unquoted;
 }
