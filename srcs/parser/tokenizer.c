@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	get_redirect_type(t_node *token)
+void	set_redirect_type(t_node *token)
 {
 	if (token->value[0] == '<' && token->value[1] == '<')
 		token->type = HEREDOC;
@@ -18,19 +18,19 @@ void	get_redirect_type(t_node *token)
 		token->next->type = HEREDOC_DELIMITER;
 }
 
-void	get_type(t_node *token)
+void	set_type(t_node *token)
 {
 	if (token->prev == NULL || token->prev->value[0] == '|')
 	{
 		if (token->value[0] == '<' || token->value[0] == '>')
-			get_redirect_type(token);
+			set_redirect_type(token);
 		else
 			token->type = COMMAND;
 	}
 	else if (token->value[0] == '|')
 		token->type = PIPE;
 	else if (token->value[0] == '<' || token->value[0] == '>')
-		get_redirect_type(token);
+		set_redirect_type(token);
 	else
 		token->type = ARG;
 }
@@ -45,7 +45,7 @@ void	identify_tokens(t_tab *cmdtable)
 	while (cmdline != NULL && token != NULL)
 	{
 		if (token->type == -1)
-			get_type(token);
+			set_type(token);
 		token = token->next;
 		if (token == NULL)
 		{
@@ -77,33 +77,5 @@ t_tab	*init_cmdtab(char **input)
 	}
 	cmdtable->head = list;
 	cmdtable->len = 1;
-	return (cmdtable);
-}
-
-t_tab	*get_cmdtable(char **input, t_env *env)
-{
-	int		i;
-	t_list	*list;
-	t_tab	*cmdtable;
-
-	i = 0;
-	cmdtable = init_cmdtab(input);
-	if (!cmdtable)
-		return (NULL);
-	i += cmdlen(input);
-	while (input[i] != NULL)
-	{
-		list = new_list(&input[i]);
-		if (!list)
-		{
-			free_list(list);
-			free_table(cmdtable);
-			return (NULL);
-		}
-		add_list(list, cmdtable);
-		i += cmdlen(&input[i]);
-	}
-	identify_tokens(cmdtable);
-	format(cmdtable, env);
 	return (cmdtable);
 }
