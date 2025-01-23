@@ -89,11 +89,13 @@ typedef struct s_main
 char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C -----------------------------------------------------------
-bool					validate_input(char *input);
-bool					check_unclosed_quotes(char *s);
-bool					check_empty_input(char *input);
 bool					check_border_special_chars(char *input);
+bool					check_empty_input(char *input);
 bool					check_invalid_sequences(char *input);
+bool					check_pipe_redirect_sequences(char *input);
+bool					check_unclosed_quotes(char *s);
+void					skip_spaces(char **input);
+bool					validate_input(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode				*new_envnode(char *envp);
@@ -110,8 +112,8 @@ void					update_env(char *key, char *value, t_env *envp);
 void					update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
-void					execute_commands(t_main *main);
 int						execute_builtins(t_list *cmdlist, t_main *main);
+void					execute_commands(t_main *main);
 void					execute_external_command(t_list *cmdlist, char **envp);
 int						execute_fork_commands(t_main *main);
 t_node					*get_cmd(t_list *cmdlist);
