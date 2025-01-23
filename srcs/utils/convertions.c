@@ -6,16 +6,31 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 17:40:42 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/23 09:42:34 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int	count_list(t_node *head)
+{
+	int		count;
+	t_node	*token;
+
+	count = 0;
+	token = head;
+	while (token)
+	{
+		if (token->type == ARG)
+			count++;
+		token = token->next;
+	}
+	return (count);
+}
+
 /*
  ** Converts the token linked list into a array of strings (char **) 
  */
-
 char	**list_to_char_array(t_node *token)
 {
 	int		count;
@@ -31,7 +46,7 @@ char	**list_to_char_array(t_node *token)
 		count++;
 		arg_token = arg_token->next;
 	}
-	args = (char **)malloc(sizeof(char *) * (count + 1));
+	args = (char **)malloc(sizeof(char *) * (count_list(token) + 1));
 	if (!args)
 	{
 		perror("Error: memory allocation failure!\n");
@@ -55,20 +70,11 @@ char	**list_to_char_array(t_node *token)
 
 char	**get_args_array(t_list *cmdlist)
 {
-	int		count;
 	int		i;
 	char	**args;
 	t_node	*token;
 
-	count = 0;
-	token = cmdlist->head;
-	while (token)
-	{
-		if (token->type == ARG)
-			count++;
-		token = token->next;
-	}
-	args = (char **)malloc(sizeof(char *) * (count + 1));
+	args = (char **)malloc(sizeof(char *) * (count_list(cmdlist->head) + 1));
 	if (!args)
 	{
 		perror("Error: memory allocation failure!\n");
