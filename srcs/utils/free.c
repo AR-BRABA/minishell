@@ -1,15 +1,5 @@
 #include "../../includes/minishell.h"
 
-void	free_main(t_main *main)
-{
-	rl_clear_history();
-	free_split(main->envp);
-	free_env(main->envp_list);
-	if (main->cmdtab)
-		free_table(main->cmdtab);
-	free(main);
-}
-
 void	free_envnode(t_envnode *node)
 {
 	free(node->key);

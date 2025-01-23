@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/23 09:34:35 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/23 09:45:40 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ t_main	*init_main(int argc, char **argv, char **envp)
 	main->fd[0] = -1;
 	main->fd[1] = -1;
 	return (main);
+}
+
+void	free_main(t_main *main)
+{
+	rl_clear_history();
+	free_split(main->envp);
+	free_env(main->envp_list);
+	if (main->cmdtab)
+		free_table(main->cmdtab);
+	free(main);
 }
 
 /**
