@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 void	free_main(t_main *main)
 {
@@ -33,13 +32,13 @@ void	free_split(char **array)
 	free(array);
 }
 
-void	free_table(t_tab *cmdtable)
+t_tab	*free_table(t_tab *cmdtable)
 {
 	t_list	*cmdline;
 	t_list	*nextline;
 
 	if (!cmdtable)
-		return ;
+		return (NULL);
 	cmdline = cmdtable->head;
 	while (cmdline != NULL)
 	{
@@ -48,6 +47,8 @@ void	free_table(t_tab *cmdtable)
 		cmdline = nextline;
 	}
 	free(cmdtable);
+	cmdtable = NULL;
+	return (NULL);
 }
 
 void	free_list(t_list *cmdline)

@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/23 09:01:44 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/23 09:33:06 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void					print_tab(t_tab *table);
 
 // FREE.C ---------------------------------------------------------------------
 void					free_split(char **array);
-void					free_table(t_tab *cmdtable);
+t_tab					*free_table(t_tab *cmdtable);
 int						free_env(t_env *env);
 void					free_list(t_list *cmdline);
 void					free_envnode(t_envnode *node);
