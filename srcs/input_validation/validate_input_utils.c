@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 06:03:53 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/09/27 09:12:44 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:49:15 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
  */
 void	skip_spaces(char **input)
 {
-    while (**input && ft_isspace(**input))
-        (*input)++;
+	while (**input && ft_isspace(**input))
+		(*input)++;
 }
 
 bool	check_unclosed_quotes(char *s)
@@ -64,7 +64,7 @@ bool	dollar_within_quotes(char *input, int *pos, char quote_char)
 		else
 		{
 			check_unclosed_quotes(input);
-			break;
+			break ;
 		}
 	}
 	(*pos)++;

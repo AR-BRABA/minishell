@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:17:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 17:22:12 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:47:48 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,23 @@
  * @return true - If input doesn't start/end with special characters
  * @return false - If input starts/ends with '|', '<', '>', '<<' or '>>'
  */
- bool	check_border_special_chars(char *input)
+bool	check_border_special_chars(char *input)
 {
-	char *end;
+	char	*end;
 
 	end = input;
 	if (!input || *input == '\0')
 		return (false);
-
 	while (*input && ft_isspace(*input))
 		input++;
-
 	if (*input == '|' || *input == '<' || *input == '>')
 		return (true);
-
-	// ir pro fim da str
-	while (*end)
+	while (*end) // ir pro fim da str
 		end++;
-
-	// pular espaços do final
-	while (end > input && ft_isspace(*(end - 1)))
+	while (end > input && ft_isspace(*(end - 1))) // pular espaços do final
 		end--;
-
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
 		return (true);
-
 	return (false);
 }
 
@@ -59,32 +51,30 @@
  * @return true - If no invalid sequences is found
  * @return false - If an invalid sequence is detected
  */
- bool check_invalid_sequences(char *input)
+bool	check_invalid_sequences(char *input)
 {
-    while (*input)
-    {
-        if (*input == '<' || *input == '>')
-        {
-            input++;
-            while (*input && ft_isspace(*input))
-                input++;
-            if (*input == '|')
-                return false;
-        }
-        else if (*input == '|')
-        {
-            input++;
-            while (*input && ft_isspace(*input))
-                input++;
-            if (*input == '<' || *input == '>')
-                return false;
-        }
-        else
-        {
-            input++;
-        }
-    }
-    return true;
+	while (*input)
+	{
+		if (*input == '<' || *input == '>')
+		{
+			input++;
+			while (*input && ft_isspace(*input))
+				input++;
+			if (*input == '|')
+				return (false);
+		}
+		else if (*input == '|')
+		{
+			input++;
+			while (*input && ft_isspace(*input))
+				input++;
+			if (*input == '<' || *input == '>')
+				return (false);
+		}
+		else
+			input++;
+	}
+	return (true);
 }
 
 /**
@@ -101,39 +91,34 @@
  * @return true - If the sequence is valid
  * @return false - If the sequence is invalid
  */
-bool check_pipe_redirect_sequences(char *input)
+bool	check_pipe_redirect_sequences(char *input)
 {
-    char    current;
-    int     count;
-    
-    current = *input;
-    count = 0;
-    while (*input)
-    {
-        if (*input == '|' || *input == '<' || *input == '>')
-        {
-            count = 1; //pra contar o char atual
-            input++;
-            skip_spaces(&input);
-            while (*input == current) // ver chars iguais em sequÊncia
-            {
-                count++;
-                input++;
-                skip_spaces(&input);
-                if ((current == '>' || current == '<') && count > 2) // mais de 2 > ou <
-                    return false;
-                if (current == '|' && count > 1) // mais de um |
-                    return false;
-            }
-            if ((current == '>' || current == '<') && *input == '|')
-                return false;
-            if (current == '|' && (*input == '>' || *input == '<'))
-                return true;
-        }
-        else
-            input++;
-    }
-    return true;
+	//printf("\n\n\nDEBUG: Iniciando validação para input: '%s'\n", input); // DEBUG
+	if (!redirects_followed_by_pipe(input))
+	{
+		//printf("DEBUG: redirects_followed_by_pipe falhou!\n"); // DEBUG
+		return (false);
+	}
+	//printf("DEBUG: redirects_followed_by_pipe passou!\n"); // DEBUG
+	if (!consecutive_pipes(input))
+	{
+		//printf("DEBUG: consecutive_pipes falhou!\n"); // DEBUG
+		return (false);
+	}
+	//printf("DEBUG: consecutive_pipes passou!\n"); // DEBUG
+	if (!pipe_followed_by_redirects(input))
+	{
+		//printf("DEBUG: pipe_followed_by_redirects falhou!\n"); // DEBUG
+		return (false);
+	}
+	//printf("DEBUG: pipe_followed_by_redirects passou!\n"); // DEBUG
+	if (!consecutive_redirects(input))
+	{
+		//printf("DEBUG: consecutive_redirects falhou!\n"); // DEBUG
+		return (false);
+	}
+	//printf("DEBUG: consecutive_redirects passou!\n"); // DEBUG
+	return (true);
 }
 
 /*
