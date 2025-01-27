@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <signal.h>
 
 int	redirect(t_list *cmdlist)
 {
