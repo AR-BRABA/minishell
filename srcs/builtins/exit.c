@@ -73,8 +73,6 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
-	close(main->fd[0]);
-	close(main->fd[1]);
 	free_main(main);
 	free_split(args);
 	exit(nbr);
@@ -82,7 +80,10 @@ int	ft_exit(char **args, t_main *main)
 
 int	ft_exit_nbr(int nbr, t_main *main)
 {
-	ft_putstr_fd("exit\n", 1);
+	if (main->fd[0] != -1)
+		close(main->fd[0]);
+	if (main->fd[1] != -1)
+		close(main->fd[1]);
 	free_main(main);
 	exit(nbr);
 }

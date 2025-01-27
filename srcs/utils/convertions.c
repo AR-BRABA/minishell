@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/27 15:23:16 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/27 18:20:48 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int	count_list(t_node *head)
 
 	count = 0;
 	token = head;
-	while (token && token->type == ARG)
+	while (token)
 	{
-		count++;
+		if (token->type == ARG)
+			count++;
 		token = token->next;
 	}
 	return (count);
@@ -36,14 +37,20 @@ char	**build_arg_split(t_node *token)
 	i = 0;
 	arg_token = token;
 	args = (char **)malloc(sizeof(char *) * (count_list(token) + 1));
-	while (arg_token && arg_token->type == ARG)
+	if (!args)
+	{
+		perror("Error: memory allocation failure!\n");
+		return (NULL);
+	}
+	while (arg_token)
 	{
 		if (!arg_token->value)
 		{
 			free(args);
 			return (0);
 		}
-		args[i++] = ft_strdup(arg_token->value);
+		else if (token->type == ARG)
+			args[i++] = ft_strdup(arg_token->value);
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
@@ -57,14 +64,9 @@ char	**list_to_char_array(t_node *token)
 {
 	char	**args;
 
-	if (token->type != ARG)
+	if (!count_list(token))
 		return (NULL);
 	args = build_arg_split(token);
-	if (!args)
-	{
-		perror("Error: memory allocation failure!\n");
-		return (NULL);
-	}
 	return (args);
 }
 

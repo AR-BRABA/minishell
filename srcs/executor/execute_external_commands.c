@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 21:06:13 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/27 17:11:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char	*find_command_path(char *cmd, char **envp)
 	return (NULL);
 }
 
+// mudar loop/ args
 static char	**create_exec_args(t_node *token)
 {
 	char	**exec_args;
