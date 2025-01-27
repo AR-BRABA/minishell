@@ -29,15 +29,16 @@ char	*get_path(char **args, t_env *env)
 {
 	char	*path;
 
-	if (!args || ft_strncmp(args[0], "~", 1) == 0)
+	path = NULL;
+	if (!args || (args && ft_strncmp(args[0], "~", 1) == 0))
 	{
 		path = get_key_value(env, "HOME");
 		if (args && args[0][1] != '\0')
 			path = ft_strfjoin(path, &args[0][1]);
 	}
-	else if (ft_strncmp(args[0], "-", 2) == 0)
+	else if (args && ft_strncmp(args[0], "-", 2) == 0)
 		path = get_key_value(env, "OLDPWD");
-	else
+	else if (args)
 		path = ft_strdup(args[0]);
 	return (path);
 }

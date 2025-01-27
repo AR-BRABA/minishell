@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/23 09:42:34 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/27 15:23:16 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,23 @@ int	count_list(t_node *head)
 
 	count = 0;
 	token = head;
-	while (token)
+	while (token && token->type == ARG)
 	{
-		if (token->type == ARG)
-			count++;
+		count++;
 		token = token->next;
 	}
 	return (count);
 }
 
-/*
- ** Converts the token linked list into a array of strings (char **) 
- */
-char	**list_to_char_array(t_node *token)
+char	**build_arg_split(t_node *token)
 {
-	int		count;
 	int		i;
 	char	**args;
 	t_node	*arg_token;
 
-	count = 0;
 	i = 0;
 	arg_token = token;
-	while (arg_token && arg_token->type == ARG)
-	{
-		count++;
-		arg_token = arg_token->next;
-	}
 	args = (char **)malloc(sizeof(char *) * (count_list(token) + 1));
-	if (!args)
-	{
-		perror("Error: memory allocation failure!\n");
-		return (0);
-	}
-	arg_token = token;
-	i = 0;
 	while (arg_token && arg_token->type == ARG)
 	{
 		if (!arg_token->value)
@@ -65,6 +47,24 @@ char	**list_to_char_array(t_node *token)
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
+	return (args);
+}
+
+/*
+ ** Converts the token linked list into a array of strings (char **) 
+ */
+char	**list_to_char_array(t_node *token)
+{
+	char	**args;
+
+	if (token->type != ARG)
+		return (NULL);
+	args = build_arg_split(token);
+	if (!args)
+	{
+		perror("Error: memory allocation failure!\n");
+		return (NULL);
+	}
 	return (args);
 }
 

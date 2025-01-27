@@ -6,11 +6,42 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 20:17:05 by jgils            ###   ########.fr       */
+/*   Updated: 2025/01/27 15:23:29 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	print_split(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		printf("%d: <%s>\n", i, array[i]);
+		i++;
+	}
+}
+
+void	print_list(t_list *list)
+{
+	t_node	*node;
+
+	node = list->head;
+	if (!node)
+	{
+		printf("no list!!\n\n");
+		return ;
+	}
+	node = list->head;
+	while (node != NULL)
+	{
+		printf("{value = !%s! \\ type = %i}->", node->value, node->type);
+		node = node->next;
+	}
+	printf("NULL\n");
+}
 
 int	execute_builtins(t_list *cmdlist, t_main *main)
 {
@@ -35,7 +66,7 @@ int	execute_builtins(t_list *cmdlist, t_main *main)
 		return (ft_unset(args, main->envp_list));
 	else if (ft_strncmp(token->value, "export", 7) == 0)
 		return (ft_export(args, main->envp_list));
-	if (args)
+	if (token->next && args)
 		free(args);
 	return (-1);
 }
