@@ -15,6 +15,19 @@ void	update_envnode(char *value, t_envnode *node)
 	node->value = ft_strdup(value);
 }
 
+int	handle_existing_key(t_envnode *new, t_envnode *old)
+{
+	if (old)
+		update_envnode(new->value, old);
+	else
+	{
+		perror("export:");
+		return (1);
+	}
+	free_envnode(new);
+	return (0);
+}
+
 int	ft_export(char **args, t_env *envp)
 {
 	int	ret = 0;
@@ -31,16 +44,7 @@ int	ft_export(char **args, t_env *envp)
 		if (!old && str_isname(new->key) && !ft_isdigit(new->key[0]))
 			addback_env(new, envp);
 		else
-		{
-			if (old)
-				update_envnode(new->value, old);
-			else
-			{
-				perror("export:");
-				ret = 1;
-			}
-			free_envnode(new);
-		}
+			ret = handle_existing_key(new, old);
 	}
 	return(ret);
 }
