@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 char	*build_binary_path(char const *directory, char slash, char const *cmd)
 {
@@ -37,7 +36,6 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
-// invalid read of size 1
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
@@ -46,13 +44,11 @@ char	*find_command_path(char *cmd, char **envp)
 	int	i;
 
 	i = 0;
-	// procura a var path no envp
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
 		return (NULL);
 
-	// remover "PATH=" p/ficar só c/os nomes dos diretórios
 	path_env = envp[i] + 5;
 	paths = ft_split(path_env, ':');
 	i = 0;
@@ -65,7 +61,7 @@ char	*find_command_path(char *cmd, char **envp)
 			free(absolute_path);
 			return (NULL);
 		}
-		if (access(absolute_path, X_OK) == 0) // O comando pode ser executado?
+		if (access(absolute_path, X_OK) == 0)
 		{
 			free_split(paths);
 			return (absolute_path);
@@ -74,7 +70,7 @@ char	*find_command_path(char *cmd, char **envp)
 		i++;
 	}
 	free_split(paths);
-	return (NULL); // Se não achar o comando
+	return (NULL);
 }
 
 static char **create_exec_args(t_node *token)
@@ -109,11 +105,9 @@ static char **create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-// fork esta sendo criado na execute_fork_commands, dentro do loop de execucao pois ha casos que builtins tbm sao executados em fork (casos de pipe ou comandos simples != de cd, export e unset)
-// -> versao da execute_external_commands sem fork
-void execute_external_command(t_list *cmdlist, char **envp)
+void execute_external_command(t_list *cmdlist, t_main *main)
 {
-	char	**exec_args;  // Array para armazenar os argumentos
+	char	**exec_args;
 	char	*cmd_path;
 	t_node	*token = get_cmd(cmdlist);
 
@@ -123,26 +117,23 @@ void execute_external_command(t_list *cmdlist, char **envp)
 		return ;
 	}
 
-	// buscar o caminho completo do comando
-	cmd_path = find_command_path(token->value, envp);
+	cmd_path = find_command_path(token->value, main->envp);
 	if (!cmd_path)
 	{
-		perror(token->value);
-		return ;
+		ft_putstr_fd("minishell: command not found\n", 2);
+		free(cmd_path);
+		free_main(main);
+		exit(127) ;
 	}
-
 	exec_args = create_exec_args(token);
 	if (!exec_args)
-	{
 		free(cmd_path);
-		return ;
-	}
-	if (execve(cmd_path, exec_args, envp) == -1) // ver o errno
+	if (execve(cmd_path, exec_args, main->envp) == -1)
 	{
-		// salvar exit status no envp em $?
 		perror(token->value);
+		free_main(main);
 		free(exec_args);
 		free(cmd_path);
-		exit(1);  // sair do processo filho
+		exit(127);
 	}
 }

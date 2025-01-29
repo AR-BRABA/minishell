@@ -18,10 +18,10 @@ run_test() {
         echo "Test passed: $command"
     else
         echo "Test failed: $command"
-        echo "Expected output:"
-        cat bash_output.txt
-        echo "Got:"
-        cat minishell_output.txt
+        # echo "Expected output:"
+        # cat bash_output.txt
+        # echo "Got:"
+        # cat minishell_output.txt
         echo "Expected status: $bash_status, Got: $minishell_status"
     fi
 

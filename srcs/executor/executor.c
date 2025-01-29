@@ -62,7 +62,7 @@ int	execute_fork_commands(t_main *main)
 				ft_exit_nbr(ret, main);
 			ret = execute_builtins(cmdlist, main);
 			if (ret == -1)
-				execute_external_command(cmdlist, main->envp);
+				execute_external_command(cmdlist, main);
 			ft_exit_nbr(ret, main);
 		}
 		if (cmdlist->prev)

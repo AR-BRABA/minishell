@@ -103,7 +103,7 @@ void	update_envnode(char *value, t_envnode *node);
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_main *main);
 int execute_builtins(t_list *cmdlist, t_main *main);
-void	execute_external_command(t_list *cmdlist, char **envp);
+void	execute_external_command(t_list *cmdlist, t_main *main);
 int	execute_fork_commands(t_main *main);
 t_node    *get_cmd(t_list *cmdlist);
 
