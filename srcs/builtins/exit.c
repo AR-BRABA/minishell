@@ -1,7 +1,5 @@
 #include "../../includes/minishell.h"
-#include <unistd.h>
 
-// rl_clear_history on exit
 int	ft_exit(char **args, t_main *main)
 {
 	int	len = split_len(args);
@@ -39,6 +37,7 @@ int	ft_exit(char **args, t_main *main)
 			free(tmp);
 		}
 	}
+	rl_clear_history();
 	close(main->fd[0]);
 	close(main->fd[1]);
 	free_main(main);
@@ -48,7 +47,6 @@ int	ft_exit(char **args, t_main *main)
 
 int	ft_exit_nbr(int nbr, t_main *main)
 {
-	ft_putstr_fd("exit\n", 1);
 	free_main(main);
 	exit (nbr);
 }

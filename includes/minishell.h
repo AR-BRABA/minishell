@@ -194,5 +194,6 @@ int	redirect(t_list *cmdlist);
 // convertions.c
 char	**env_to_char_array(t_env *envp);
 char	**list_to_char_array(t_node *token);
+int	ft_exit_nbr(int nbr, t_main *main);
 
 #endif

@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-// test
 t_node    *get_cmd(t_list *cmdlist)
 {
     t_node  *token;
@@ -26,10 +25,6 @@ t_node    *get_cmd(t_list *cmdlist)
 	}
 	return (NULL);
 }
-
-// tratar:
-// erros
-// leak? fds abertos
 int	execute_fork_commands(t_main *main)
 {
 	int	fd[2];
@@ -40,27 +35,21 @@ int	execute_fork_commands(t_main *main)
 
 	while (cmdlist != NULL)
 	{
-		// caso exista +1 comando(+ 1 cmdlist), cria 1 pipe com fd[2]
 		if (cmdlist->next)
 			if (pipe(fd) < 0)
 				exit(1);
-		// independente de quantos comandos, forka
 		pid[++n] = fork();
 		if (pid[n] < 0)
 			return(1);
 		if (pid[n] == 0)
 		{
-			// caso exista +1 comando, dup no fd out, que guardamos em fd[1]
 			if (cmdlist->next)
 			{
 				if (dup2(fd[1], 1) < 0)
 					exit(1);
-				// fecha os fds que fizemos dup pois nao vamos mais nesse processo filho
 				close(fd[0]);
 				close(fd[1]);
 			}
-			// caso tenha 1 comando antes, dup no fd in do ->comando anterior,
-			// que salvamos no fim do looping anterior
 			if (cmdlist->prev)
 			{
 				if (dup2(savefd, 0) < 0)
@@ -68,31 +57,23 @@ int	execute_fork_commands(t_main *main)
 				close(savefd);
 			}
 			int ret;
-			// faz todos os redirects desse comando (dessa command list)
 			ret = redirect(cmdlist);
-			// if (ret == 1)
-				// exit(ret);
-			// tenta executar builtins, se nao conseguir, executa comando externo
+			if (ret == 1)
+				ft_exit_nbr(ret, main);
 			ret = execute_builtins(cmdlist, main);
 			if (ret == -1)
 				execute_external_command(cmdlist, main->envp);
-			// como estamos no processo filho, caso nao seja comando externo, precisamos encerrar o processo, assim como o execve
-			exit(ret);
+			ft_exit_nbr(ret, main);
 		}
-		// fechando os fds no processo pai:
-		// fechamos o fd in do comando anterior, caso esteja salvo (caso haja comando anterior)
 		if (cmdlist->prev)
 			close(savefd);
-		// se ha um proximo comando, quer dizer que foi aberto um pipe nesse loop,
 		if (cmdlist->next)
 		{
-			// entao temos que fechar o fd[1] e salvar o fd[0] pro prox comando
 			close(fd[1]);
 			savefd = fd[0];
 		}
 		cmdlist = cmdlist->next;
 	}
-	// exit status
 	n = 0;
 	int count = 0;
 	int	status = 0;
@@ -108,7 +89,6 @@ int	execute_fork_commands(t_main *main)
 			stat = WSTOPSIG(status);
 		count++;
 	}
-	// printf("!%i!\n", stat);
 	return stat;
 }
 
@@ -118,33 +98,18 @@ void	execute_commands(t_main *main)
 	t_list	*cmdlist;
 
 	cmdlist = main->cmdtab->head;
-	// exception: simple commands that should be executed on main process (cd, export, unset)
 	if ((main->cmdtab->len == 1) && 
 			(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
 			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
 			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
 	{
-
-		// TODO: check success on dups and fix open fds!!!
-
-		// save std in/out fds
 		main->fd[0] = dup(0);
 		main->fd[1] = dup(1);
-
-		// redirect fd in/out
 		redirect(cmdlist);
-		// if (redirect(cmdlist) == 1)
-			// pula pra fora do if
-
-		// execute
 		exit = ft_itoa(execute_builtins(cmdlist, main));
-		
-		// restore std in/out fd;
 		dup2(main->fd[0], 0);
 		dup2(main->fd[1], 1);
-
-		// close dup fds
 		close(main->fd[0]);
 		close(main->fd[1]);
 	}
