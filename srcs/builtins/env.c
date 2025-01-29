@@ -1,5 +1,22 @@
 #include "../../includes/minishell.h"
 
+/* search key on env list. returna an env node with key and value, if found. else: NULL. free key*/
+t_envnode	*search_key(t_env *list, char *key)
+{
+	int	keylen = ft_strlen(key);
+	t_envnode	*env;
+
+	env = list->head;
+	while (env != NULL)
+	{
+		//compare key with env variables on list
+		if (ft_strncmp(key, env->key, keylen + 1) == 0)
+			break ;
+		env = env->next;
+	}
+	return (env);
+}
+
 t_envnode	*new_envnode(char *str)
 {
 	int	pos;

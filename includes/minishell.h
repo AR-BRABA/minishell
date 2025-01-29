@@ -99,6 +99,7 @@ int	ft_exit_nbr(int nbr, t_main *main);
 int	str_isname(char *str);
 void	update_env(char *key, char *value, t_env *envp);
 void	update_envnode(char *value, t_envnode *node);
+t_envnode	*search_key(t_env *list, char *key);
 
 // EXECUTOR.C ------------------------------------------------------------------
 void	execute_commands(t_main *main);
@@ -194,5 +195,10 @@ int	redirect(t_list *cmdlist);
 // convertions.c
 char	**env_to_char_array(t_env *envp);
 char	**list_to_char_array(t_node *token);
+
+// format_utils.c -----------------------------------------------------------------
+int	strlen_isname(char *str);
+int	strquote(char *str, int start);
+int	strlen_unquote(char *quotestr);
 
 #endif

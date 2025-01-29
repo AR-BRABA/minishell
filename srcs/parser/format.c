@@ -1,135 +1,31 @@
 #include "../../includes/minishell.h"
 
-/* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9] except on index 0, '?') */
-int	strlen_isname(char *str)
-{
-	int	i = 1;
-	//
-	if (!str || str[0] == '\0')
-		return (0);
-	if (str[i] == '?')
-		return (++i);
-	while (str[i] && is_name(str[i]))
-		i++;
-	return (i);
-}
-
-/* returns index of the first quote found. if not found, returns -1 */
-int	strquote(char *str, int start)
-{
-	int	i = start;
-//
-	while(str && str[i] != '\0')
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return(i);
-		i++;
-	}
-	return (-1);
-}
-
-/* takes a quoted str as parameter and returns it's len without outside quotes */
-int	strlen_unquote(char *quotestr)
-{
-	int	i = 0;
-	int	start = 0;
-	int	quote = 0;
-//
-	while (quotestr && quotestr[i] != '\0')
-	{
-		if (quotestr[i] == '\'' || quotestr[i] == '"')
-		{
-			quote++;
-			start = i++;
-			while (quotestr[i] && quotestr[i] != quotestr[start])
-				i++;
-			quote++;
-		}
-		i++;
-	}
-	return (i - quote);
-}
-
-/* tira aspas externas do token->value */
 void	rm_quote(t_node *token)
 {
-	int	squote = 0;
-	int	dquote = 0;
 	int	i = 0;
 	int	q = 0;
-	int	new_len = strlen_unquote(token->value);
-	int	len = ft_strlen(token->value);
 	char	*unquoted;
-//
-	if (len == new_len)
+	int	len[2] = {ft_strlen(token->value), strlen_unquote(token->value)};
+	int	quote[2] = {0, 0};
+
+	if (len[0] == len[1])
 		return ;
-	unquoted = malloc((new_len + 1) * sizeof(char));
+	unquoted = malloc((len[1] + 1) * sizeof(char));
 	while (token->value[i] != '\0')
 	{
-		if (token->value[i] == '\'')
-		{
-			if (dquote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				squote++;
-				i++;
-			}
-		}	
-		else if (token->value[i] == '\"')
-		{
-			if (squote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				dquote++;
-				i++;
-			}
-		}
+		if (token->value[i] == '\'' && quote[1] % 2 == 0)
+			quote[0]++;
+		else if (token->value[i] == '\"' && quote[0] % 2 == 0)
+			quote[1]++;
 		else
-			unquoted[q++] = token->value[i++];
+			unquoted[q++] = token->value[i];
+		i++;
 	}
 	unquoted[q] = '\0';
 	free(token->value);
 	token->value = unquoted;
 }
 
-/* search key on env list. returna an env node with key and value, if found. else: NULL. free key*/
-t_envnode	*search_key(t_env *list, char *key)
-{
-	int	keylen = ft_strlen(key);
-	t_envnode	*env;
-
-	env = list->head;
-	while (env != NULL)
-	{
-		//compare key with env variables on list
-		if (ft_strncmp(key, env->key, keylen + 1) == 0)
-			break ;
-		env = env->next;
-	}
-	return (env);
-}
-
-/* returns $ position if found outside simple quote. else: -1 */
-int	strdol(char *str)
-{
-	int	squote = 0;
-	int	i = 0;
-//
-	while(str && str[i] != '\0')
-	{
-		if (str[i] == '\'')
-			squote++;
-		else if (str[i] == '$' && squote % 2 == 0)
-			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i + 1])))
-				return (i) ;
-		i++;
-	}
-	return (-1);
-}
-
-/* join s1 and s2 into return string until n bytes and free s1*/
 char	*ft_strnjoin(char *s1, char *s2, int n)
 {
 	char	*s;
@@ -180,59 +76,44 @@ char	*ft_strfjoin(char *s1, char *s2)
 /* search for '$' outside single quotes, if whats next is a valid env var name, searchs for it on env list. if found: the key is replaced by its value, else: its expanded to nothing. */
 void	expand(t_node *token, t_env *env)
 {
-	int	varlen;
-	char	*expanded;
-	t_envnode	*node;
-	char	*str;
+	char	*expanded = NULL;
+	char	*str = token->value;
 	char	*var;
-	int	dol;
-// //
-	str = token->value;
-	expanded = NULL;
-	while (str)
+	t_envnode	*node;
+
+	while ((var = strchr(str, '$')))
 	{
-		//dol = index of next $ followed by a valid char. if not found, = -1
-		dol = strdol(str);
-		if (dol < 0)
-			break ;
-		// var = a pointer to '$' on str. (by incrementing str to '$' index)
-		var = str + dol;
-		// varlen = strlen while is a valid name, starting on '$'
-		varlen = strlen_isname(var);
-		// expanded = expanded + content before '$', if there is
-		expanded = ft_strnjoin(expanded, str, (var - str)); // free on
-		// node = node on env list matching var with node->key. if not found, NULL
-		node = search_key(env, strndup(var + 1, varlen - 1)); //free na key on
-		// if found, expanded = expanded + value of the matching key
+		expanded = ft_strnjoin(expanded, str, var - str);
+		var++;
+		char *end = var;
+		while (*end && (ft_isalnum(*end) || *end == '_'))
+			end++;
+		char *key = strndup(var, end - var);
+		node = search_key(env, key);
+		free(key);
 		if (node)
-			expanded = ft_strfjoin(expanded, node->value); // free on
-		// increments str pointer to after var ends
-		str += (var - str) + varlen;
+			expanded = ft_strfjoin(expanded, node->value);
+		str = end;
 	}
-	// adds content that may be after expanding all existing variables
-	expanded = ft_strfjoin(expanded, str); // leak aq
+	expanded = ft_strfjoin(expanded, str);
 	free(token->value);
 	token->value = expanded;
 }
 
-/* if not a heredoc delimiter, expands all variables that may exist. next, removes outside quotes that may exist */
 void	format(t_tab *cmdtable, t_env *env)
 {
 	t_list	*cmd;
 	t_node	*token;
-	//
+
 	(void)env;
 	cmd = cmdtable->head;
 	token = cmd->head;
 	if (!token)
-		return ; //barrar na validacao inicial inputs vazios
-	// percorrendo cmd table
+		return ;
 	while (cmd != NULL && token != NULL)
 	{
-		// se nao for um delimitador de heredoc, expande todas as variaveis desse token
 		if (token->type != HEREDOC_DELIMITER)
 			expand(token, env);
-		// removes outside quotes
 		rm_quote(token);
 		token = token->next;
 		if (token == NULL)
