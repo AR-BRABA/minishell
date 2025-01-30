@@ -37,7 +37,7 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 		args = list_to_char_array(token->next);
 		if (!args)
 			return (0);
-		i = ft_echo(args); // chamar ft_echo c/o array de argumentos
+		i = ft_echo(args);
 		free(args);
 		return (i);
 	}
@@ -45,30 +45,30 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
-			return (0); // se não tiver argumento chama exit sem argumento????
-		return (ft_exit(args, main)); // exit encerra o programa
+			return (0);
+		return (ft_exit(args, main));
 	}
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		return (ft_pwd());
 	else if (ft_strncmp(token->value, "env", 4) == 0)
 		return (ft_env(main->envp_list));
-	else if (ft_strncmp(token->value, "unset", 6) == 0) // implement ft_unset
+	else if (ft_strncmp(token->value, "unset", 6) == 0)
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
-			return (0); // Qual erro retornar se não tiver argumentos mesmo?
+			return (0);
 		i = ft_unset(args, main->envp_list);
 		free(args);
 		return(i);
 	}
-	else if (ft_strncmp(token->value, "export", 7) == 0) // implement ft_unset
+	else if (ft_strncmp(token->value, "export", 7) == 0)
 	{
 		args = list_to_char_array(token->next);
 		if (!args)
-			return (0); // Qual erro retornar se não tiver argumentos mesmo?
+			return (0);
 		i = ft_export(args, main->envp_list);
 		free(args);
 		return(i);
 	}
-	return (-1); // Se não for built-in, retornar -1
+	return (-1);
 }

@@ -4,7 +4,7 @@
 int	strlen_isname(char *str)
 {
 	int	i = 1;
-	//
+
 	if (!str || str[0] == '\0')
 		return (0);
 	if (str[i] == '?')
@@ -18,7 +18,7 @@ int	strlen_isname(char *str)
 int	strquote(char *str, int start)
 {
 	int	i = start;
-//
+
 	while(str && str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
@@ -60,7 +60,7 @@ void	rm_quote(t_node *token)
 	int	new_len = strlen_unquote(token->value);
 	int	len = ft_strlen(token->value);
 	char	*unquoted;
-//
+
 	if (len == new_len)
 		return ;
 	unquoted = malloc((new_len + 1) * sizeof(char));
@@ -116,7 +116,7 @@ int	strdol(char *str)
 {
 	int	squote = 0;
 	int	i = 0;
-//
+
 	while(str && str[i] != '\0')
 	{
 		if (str[i] == '\'')
@@ -186,31 +186,23 @@ void	expand(t_node *token, t_env *env)
 	char	*str;
 	char	*var;
 	int	dol;
-// //
+
 	str = token->value;
 	expanded = NULL;
 	while (str)
 	{
-		//dol = index of next $ followed by a valid char. if not found, = -1
 		dol = strdol(str);
 		if (dol < 0)
-			break ;
-		// var = a pointer to '$' on str. (by incrementing str to '$' index)
+			break;
 		var = str + dol;
-		// varlen = strlen while is a valid name, starting on '$'
 		varlen = strlen_isname(var);
-		// expanded = expanded + content before '$', if there is
-		expanded = ft_strnjoin(expanded, str, (var - str)); // free on
-		// node = node on env list matching var with node->key. if not found, NULL
-		node = search_key(env, strndup(var + 1, varlen - 1)); //free na key on
-		// if found, expanded = expanded + value of the matching key
+		expanded = ft_strnjoin(expanded, str, (var - str));
+		node = search_key(env, strndup(var + 1, varlen - 1));
 		if (node)
-			expanded = ft_strfjoin(expanded, node->value); // free on
-		// increments str pointer to after var ends
+			expanded = ft_strfjoin(expanded, node->value);
 		str += (var - str) + varlen;
 	}
-	// adds content that may be after expanding all existing variables
-	expanded = ft_strfjoin(expanded, str); // leak aq
+	expanded = ft_strfjoin(expanded, str);
 	free(token->value);
 	token->value = expanded;
 }
@@ -220,19 +212,15 @@ void	format(t_tab *cmdtable, t_env *env)
 {
 	t_list	*cmd;
 	t_node	*token;
-	//
 	(void)env;
 	cmd = cmdtable->head;
 	token = cmd->head;
 	if (!token)
-		return ; //barrar na validacao inicial inputs vazios
-	// percorrendo cmd table
+		return ;
 	while (cmd != NULL && token != NULL)
 	{
-		// se nao for um delimitador de heredoc, expande todas as variaveis desse token
 		if (token->type != HEREDOC_DELIMITER)
 			expand(token, env);
-		// removes outside quotes
 		rm_quote(token);
 		token = token->next;
 		if (token == NULL)
