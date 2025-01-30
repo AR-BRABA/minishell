@@ -85,8 +85,8 @@ int	execute_fork_commands(t_main *main)
 			stat = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			stat = WTERMSIG(status);
-		else if (WIFSTOPPED(status))
-			stat = WSTOPSIG(status);
+		// else if (WIFSTOPPED(status))
+			// stat = WSTOPSIG(status);
 		count++;
 	}
 	return stat;

@@ -114,7 +114,7 @@ void	print_tab(t_tab	*table);
 
 // FREE.C ---------------------------------------------------------------------
 void	free_split(char **array);
-void	free_table(t_tab *cmdtable);
+t_tab	*free_table(t_tab *cmdtable);
 int	free_env(t_env *env);
 void	free_list(t_list *cmdline);
 void	free_envnode(t_envnode	*node);

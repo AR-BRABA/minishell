@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 				// pipe still not integrated:
 				execute_commands(main);
 				// else
-				free_table(main->cmdtab); // deallocate memory
+				main->cmdtab = free_table(main->cmdtab); // deallocate memory
 				// free all
 			}
 			// handle errors

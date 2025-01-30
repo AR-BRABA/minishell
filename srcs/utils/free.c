@@ -4,7 +4,8 @@ void	free_main(t_main *main)
 {
 	free_split(main->envp);
 	free_env(main->envp_list);
-	free_table(main->cmdtab);
+	if (main->cmdtab)
+		free_table(main->cmdtab);
 	free(main);
 }
 
@@ -30,66 +31,46 @@ void	free_split(char **array)
 	free(array);
 }
 
-void	free_table(t_tab *cmdtable)
+t_tab	*free_table(t_tab *cmdtable)
 {
 	t_list	*cmdline;
-	t_list	*keepline;
-	t_node	*token;
-	t_node	*keeptoken;
-	
+	t_list	*nextline;
+
+	if (!cmdtable)
+		return (NULL);
 	cmdline = cmdtable->head;
-	token = cmdline->head;
-	while (cmdline != NULL && token != NULL)
+	while (cmdline != NULL)
 	{
-		keeptoken = token->next;
-		free(token->value);
-		free(token);
-		if (keeptoken == NULL)
-		{
-			keepline = cmdline->next;
-			free(cmdline);
-			if (keepline == NULL)
-				break ;
-			cmdline = keepline;
-			token = keepline->head;
-		}
-		else
-			token = keeptoken;
+		nextline = cmdline->next;
+		free_list(cmdline);
+		cmdline = nextline;
 	}
 	free(cmdtable);
+	cmdtable = NULL;
+	return (NULL);
 }
 
 void	free_list(t_list *cmdline)
 {
-	t_list	*tmpline;
 	t_node	*token;
 	t_node	*tmptoken;
-	
+
 	token = cmdline->head;
-	while (cmdline != NULL && token != NULL)
+	while (token != NULL)
 	{
 		tmptoken = token->next;
 		free(token->value);
 		free(token);
-		if (tmptoken == NULL)
-		{
-			tmpline = cmdline->next;
-			free(cmdline);
-			if (tmpline == NULL)
-				break ;
-			cmdline = tmpline;
-			token = tmpline->head;
-		}
-		else
-			token = tmptoken;
+		token = tmptoken;
 	}
+	free(cmdline);
 }
 
 int	free_env(t_env *env)
 {
 	t_envnode	*node;
 	t_envnode	*temp;
-	
+
 	if (!env || !env->head)
 		return (1);
 	node = env->head;

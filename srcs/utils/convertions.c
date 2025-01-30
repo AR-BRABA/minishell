@@ -46,7 +46,7 @@ char    **list_to_char_array(t_node *token)
 			free(args);
 			return (0);
 		}
-		args[i++] = arg_token->value;
+		args[i++] = ft_strdup(arg_token->value);
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
