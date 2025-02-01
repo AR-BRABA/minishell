@@ -69,37 +69,23 @@ char    **list_to_char_array(t_node *token)
 
 char    **get_args_array(t_list *cmdlist)
 {
-    int     count;
-    int     i;
-    char    **args;
-    t_node  *token;
+	int     i;
+	char    **args;
+	t_node  *token;
 
-    count = 0;
-    token = cmdlist->head;
-    while(token)
-    {
-	    if(token->type == ARG)
-		    count++;
+	args = get_args(cmdlist->head);
+	if (!args)
+		return (NULL);
+	token = cmdlist->head;
+	i = 0;
+	while(token)
+	{
+		if(token->type == ARG)
+			args[i++] = ft_strdup(token->value);
 		token = token->next;
-		}
-		args = (char **)malloc(sizeof(char *) * (count + 1));
-		if (!args)
-		{
-			perror("Error: memory allocation failure!\n");
-			return (0);
-		}
-		token = cmdlist->head;
-		i = 0;
-		while(token)
-		{
-			if(token->type == ARG)
-			{
-				args[i++] = ft_strdup(token->value);
-			}
-			token = token->next;
-    }
-    args[i] = NULL;
-    return (args);
+	}
+	args[i] = NULL;
+	return (args);
 }
 
 char	**env_to_char_array(t_env *envp)
