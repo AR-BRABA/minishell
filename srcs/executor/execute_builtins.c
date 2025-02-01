@@ -27,7 +27,7 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 			args = list_to_char_array(token->next);
 		i = ft_cd(args, main->envp_list);
 		if (args)
-			free(args);
+			free_split(args);
 		return(i);
 	}
 	else if (ft_strncmp(token->value, "echo", 5) == 0)
@@ -38,7 +38,7 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 		if (!args)
 			return (0);
 		i = ft_echo(args);
-		free(args);
+		free_split(args);
 		return (i);
 	}
 	else if (ft_strncmp(token->value, "exit", 5) == 0)
@@ -58,7 +58,7 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 		if (!args)
 			return (0);
 		i = ft_unset(args, main->envp_list);
-		free(args);
+		free_split(args);
 		return(i);
 	}
 	else if (ft_strncmp(token->value, "export", 7) == 0)
@@ -67,7 +67,7 @@ int execute_builtins(t_list *cmdlist, t_main *main)
 		if (!args)
 			return (0);
 		i = ft_export(args, main->envp_list);
-		free(args);
+		free_split(args);
 		return(i);
 	}
 	return (-1);

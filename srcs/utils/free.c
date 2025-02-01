@@ -2,6 +2,7 @@
 
 void	free_main(t_main *main)
 {
+	rl_clear_history();
 	free_split(main->envp);
 	free_env(main->envp_list);
 	if (main->cmdtab)
@@ -31,13 +32,13 @@ void	free_split(char **array)
 	free(array);
 }
 
-t_tab	*free_table(t_tab *cmdtable)
+void	free_table(t_tab *cmdtable)
 {
 	t_list	*cmdline;
 	t_list	*nextline;
 
 	if (!cmdtable)
-		return (NULL);
+		return;
 	cmdline = cmdtable->head;
 	while (cmdline != NULL)
 	{
@@ -46,8 +47,6 @@ t_tab	*free_table(t_tab *cmdtable)
 		cmdline = nextline;
 	}
 	free(cmdtable);
-	cmdtable = NULL;
-	return (NULL);
 }
 
 void	free_list(t_list *cmdline)

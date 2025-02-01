@@ -16,37 +16,51 @@
  ** Converts the token linked list into a array of strings (char **) 
  */
 
-char    **list_to_char_array(t_node *token)
+char **get_args(t_node *token)
 {
     int     count;
-    int     i;
     char    **args;
     t_node  *arg_token;
 
     count = 0;
-    i = 0;
     arg_token = token;
     while(arg_token && arg_token->type == ARG)
 	{
-		count++;
+		if (arg_token->type == ARG)
+			count++;
 		arg_token = arg_token->next;
 	}
+	if (!count)
+		return (NULL);
 	args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!args)
 	{
 		perror("Error: memory allocation failure!\n");
-		return (0);
+		return (NULL);
 	}
-	arg_token = token;
+	return (args);
+}
+
+char    **list_to_char_array(t_node *token)
+{
+	char **args;
+    t_node  *arg_token;
+	int	i;
+
 	i = 0;
-	while (arg_token && arg_token->type == ARG)
+	args = get_args(token);
+	arg_token = token;
+	if (!args)
+		return (NULL);
+	while (arg_token)
 	{
 		if (!arg_token->value)
 		{
 			free(args);
 			return (0);
 		}
-		args[i++] = ft_strdup(arg_token->value);
+		if (arg_token->type == ARG)
+			args[i++] = ft_strdup(arg_token->value);
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
