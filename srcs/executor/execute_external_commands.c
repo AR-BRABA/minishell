@@ -78,6 +78,12 @@ char	*find_command_path(char *cmd, char **envp)
 	return (NULL);
 }
 
+void *merror(char *msg, void *ret)
+{
+	perror(msg);
+	return (ret);
+}
+
 static char **create_exec_args(t_node *token)
 {
 	char	**exec_args;
@@ -93,10 +99,7 @@ static char **create_exec_args(t_node *token)
 	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
-	{
-		perror("malloc:");
-		return (NULL);
-	}
+		return (merror("malloc:", NULL));
 	count = 0;
 	tmp_token = token;
 	exec_args[count++] = tmp_token->value;
@@ -110,6 +113,15 @@ static char **create_exec_args(t_node *token)
 	return (exec_args);
 }
 
+void	execve_error(t_node *token, t_main *main, char **exec_args, char *cmd_path)
+{
+	perror(token->value);
+	free_main(main);
+	free(exec_args);
+	free(cmd_path);
+	exit(127);
+}
+
 void execute_external_command(t_list *cmdlist, t_main *main)
 {
 	char	**exec_args;
@@ -121,7 +133,6 @@ void execute_external_command(t_list *cmdlist, t_main *main)
 		perror(token->value);
 		return ;
 	}
-
 	cmd_path = find_command_path(token->value, main->envp);
 	if (!cmd_path)
 	{
@@ -134,11 +145,5 @@ void execute_external_command(t_list *cmdlist, t_main *main)
 	if (!exec_args)
 		free(cmd_path);
 	if (execve(cmd_path, exec_args, main->envp) == -1)
-	{
-		perror(token->value);
-		free_main(main);
-		free(exec_args);
-		free(cmd_path);
-		exit(127);
-	}
+		execve_error(token, main, exec_args, cmd_path);
 }
