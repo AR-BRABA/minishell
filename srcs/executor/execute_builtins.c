@@ -12,63 +12,39 @@
 
 #include "../../includes/minishell.h"
 
-int execute_builtins(t_list *cmdlist, t_main *main)
+int exec_cmd(t_node *token, char **args, t_main *main)
 {
-	int	i;
-	char	**args;
-	t_node *token = get_cmd(cmdlist);
-
-	args = NULL;
-	if (!token || !token->value)
-		return (0);
 	if (ft_strncmp(token->value, "cd", 3) == 0)
-	{
-		if (token->next)
-			args = list_to_char_array(token->next);
-		i = ft_cd(args, main->envp_list);
-		if (args)
-			free_split(args);
-		return(i);
-	}
+		return (ft_cd(args, main->envp_list));
 	else if (ft_strncmp(token->value, "echo", 5) == 0)
-	{
-		if (!token->next)
-			return (ft_echo(NULL));
-		args = list_to_char_array(token->next);
-		if (!args)
-			return (0);
-		i = ft_echo(args);
-		free_split(args);
-		return (i);
-	}
+		return (ft_echo(args));
 	else if (ft_strncmp(token->value, "exit", 5) == 0)
-	{
-		args = list_to_char_array(token->next);
-		if (!args)
-			return (0);
 		return (ft_exit(args, main));
-	}
 	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		return (ft_pwd());
 	else if (ft_strncmp(token->value, "env", 4) == 0)
 		return (ft_env(main->envp_list));
 	else if (ft_strncmp(token->value, "unset", 6) == 0)
-	{
-		args = list_to_char_array(token->next);
-		if (!args)
-			return (0);
-		i = ft_unset(args, main->envp_list);
-		free_split(args);
-		return(i);
-	}
+		return (ft_unset(args, main->envp_list));
 	else if (ft_strncmp(token->value, "export", 7) == 0)
-	{
-		args = list_to_char_array(token->next);
-		if (!args)
-			return (0);
-		i = ft_export(args, main->envp_list);
-		free_split(args);
-		return(i);
-	}
+		return (ft_export(args, main->envp_list));
 	return (-1);
+}
+
+int execute_builtins(t_list *cmdlist, t_main *main)
+{
+	int i;
+	char	**args;
+	t_node *token;
+
+	i = -1;
+	token = get_cmd(cmdlist);
+	args = NULL;
+	if (!token || !token->value)
+		return (0);
+	if (token->next)
+		args = list_to_char_array(token->next);
+	i = exec_cmd(token, args, main);
+	free_split(args);
+	return (i);
 }
