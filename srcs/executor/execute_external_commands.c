@@ -36,6 +36,19 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
+char *no_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	free(absolute_path);
+	return (NULL);
+}
+
+char *found_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	return (absolute_path);
+}
+
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
@@ -54,20 +67,12 @@ char	*find_command_path(char *cmd, char **envp)
 	i = 0;
 	while (paths[i])
 	{
-		absolute_path = build_binary_path(paths[i], '/', cmd);
+		absolute_path = build_binary_path(paths[i++], '/', cmd);
 		if (!absolute_path)
-		{
-			free_split(paths);
-			free(absolute_path);
-			return (NULL);
-		}
+			return (no_path(paths, absolute_path));
 		if (access(absolute_path, X_OK) == 0)
-		{
-			free_split(paths);
-			return (absolute_path);
-		}
+			return (found_path(paths, absolute_path));
 		free(absolute_path);
-		i++;
 	}
 	free_split(paths);
 	return (NULL);
