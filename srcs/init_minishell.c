@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("minishell$ ");
 		if (!input)
 			break;
-		else if (has_only_spaces(input) || !validate_input(input))
+		else if (has_only_spaces(input) ) //|| !validate_input(input))
 			continue;
 		add_history(input);
 		split = metachar_split(input);

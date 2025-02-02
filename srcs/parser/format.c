@@ -51,48 +51,105 @@ int	strlen_unquote(char *quotestr)
 }
 
 /* tira aspas externas do token->value */
-void	rm_quote(t_node *token)
-{
-	int	squote = 0;
-	int	dquote = 0;
-	int	i = 0;
-	int	q = 0;
-	int	new_len = strlen_unquote(token->value);
-	int	len = ft_strlen(token->value);
-	char	*unquoted;
+// void	rm_quote(t_node *token)
+// {
+// 	int	squote;
+// 	int	dquote;
+// 	int	i;
+// 	int	q;
+// 	int	new_len;
+// 	int	len;
+// 	char	*unquoted;
+//
+// 	squote = 0;
+// 	dquote = 0;
+// 	i = 0;
+// 	q = 0;
+// 	new_len = strlen_unquote(token->value);
+// 	len = ft_strlen(token->value);
+// 	if (len == new_len)
+// 		return ;
+// 	unquoted = malloc((new_len + 1) * sizeof(char));
+// 	while (token->value[i] != '\0')
+// 	{
+// 		if (token->value[i] == '\'')
+// 		{
+// 			if (dquote % 2 != 0)
+// 				unquoted[q++] = token->value[i++];
+// 			else
+// 			{
+// 				squote++;
+// 				i++;
+// 			}
+// 		}	
+// 		else if (token->value[i] == '\"')
+// 		{
+// 			if (squote % 2 != 0)
+// 				unquoted[q++] = token->value[i++];
+// 			else
+// 			{
+// 				dquote++;
+// 				i++;
+// 			}
+// 		}
+// 		else
+// 			unquoted[q++] = token->value[i++];
+// 	}
+// 	unquoted[q] = '\0';
+// 	free(token->value);
+// 	token->value = unquoted;
+// }
+/* tira aspas externas do token->value */
+/* tira aspas externas do token->value */
 
-	if (len == new_len)
-		return ;
-	unquoted = malloc((new_len + 1) * sizeof(char));
-	while (token->value[i] != '\0')
+
+
+void	build_unquoted(char *quoted, char *unquoted)
+{
+	int	squote;
+	int	dquote;
+	int	i;
+	int	q;
+
+	squote = 0;
+	dquote = 0;
+	i = 0;
+	q = 0;
+	while (quoted[i] != '\0')
 	{
-		if (token->value[i] == '\'')
+		if ((quoted[i] == '\'' && dquote % 2 == 0) || (quoted[i] == '\"'
+				&& squote % 2 == 0))
 		{
-			if (dquote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
+			if (quoted[i] == '\'')
 				squote++;
-				i++;
-			}
-		}	
-		else if (token->value[i] == '\"')
-		{
-			if (squote % 2 != 0)
-				unquoted[q++] = token->value[i++];
 			else
-			{
 				dquote++;
-				i++;
-			}
+			i++;
 		}
 		else
-			unquoted[q++] = token->value[i++];
+			unquoted[q++] = quoted[i++];
 	}
 	unquoted[q] = '\0';
+}
+
+/* tira aspas externas do token->value */
+void	rm_quote(t_node *token)
+{
+	int		new_len;
+	int		len;
+	char	*unquoted;
+
+	new_len = strlen_unquote(token->value);
+	len = ft_strlen(token->value);
+	if (len == new_len)
+		return ;
+	unquoted = malloc((len + 1) * sizeof(char));
+	build_unquoted(token->value, unquoted);
 	free(token->value);
 	token->value = unquoted;
 }
+
+
 
 /* search key on env list. returna an env node with key and value, if found. else: NULL. free key*/
 t_envnode	*search_key(t_env *list, char *key)
@@ -186,6 +243,7 @@ void	expand(t_node *token, t_env *env)
 	char	*str;
 	char	*var;
 	int	dol;
+	char *hold;
 
 	str = token->value;
 	expanded = NULL;
@@ -197,7 +255,9 @@ void	expand(t_node *token, t_env *env)
 		var = str + dol;
 		varlen = strlen_isname(var);
 		expanded = ft_strnjoin(expanded, str, (var - str));
-		node = search_key(env, strndup(var + 1, varlen - 1));
+		hold = strndup(var + 1, varlen - 1);
+		node = search_key(env, hold);
+		free(hold);
 		if (node)
 			expanded = ft_strfjoin(expanded, node->value);
 		str += (var - str) + varlen;
