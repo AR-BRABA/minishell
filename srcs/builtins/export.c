@@ -17,9 +17,11 @@ void	update_envnode(char *value, t_envnode *node)
 
 static int	handle_export_arg(char *arg, t_env *envp)
 {
-    t_envnode	*new = new_envnode(arg);
+    t_envnode	*new;
     t_envnode	*old;
 
+
+    new = new_envnode(arg);
     if (!new)
         return (1);
     old = search_key(envp, new->key);
@@ -42,9 +44,11 @@ static int	handle_export_arg(char *arg, t_env *envp)
 
 int	ft_export(char **args, t_env *envp)
 {
-    int	ret = 0;
-    int	count = 0;
+    int	ret;
+    int	count;
 
+    ret = 0;
+    count = 0;
     while (args && args[count] != NULL)
     {
         if (handle_export_arg(args[count++], envp))

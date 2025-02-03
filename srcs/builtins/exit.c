@@ -128,8 +128,9 @@ int	ft_exit(char **args, t_main *main)
 */
 static int	is_valid_exit_arg(char *arg)
 {
-    int	i = 0;
+    int	i;
 
+	i = 0;
     if (arg && arg[i] == '-')
         i++;
     while (arg && arg[i] != '\0')
@@ -144,12 +145,13 @@ static int	is_valid_exit_arg(char *arg)
 static int	get_exit_status(char **args, t_main *main)
 {
     int	nbr;
+	char *tmp;
 
     if (split_len(args) == 1)
         nbr = ft_atou(args[0]);
     else
     {
-        char *tmp = get_key_value(main->envp_list, "?");
+        tmp = get_key_value(main->envp_list, "?");
         nbr = ft_atou(tmp);
         free(tmp);
     }

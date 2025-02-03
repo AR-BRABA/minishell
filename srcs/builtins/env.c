@@ -41,10 +41,11 @@ void	addback_env(t_envnode *newnode, t_env *list)
 
 t_env	*get_env_list(char **envp)
 {
-	int	i = 0;
+	int	i;
 	t_env	*env;
 	t_envnode	*node;
 
+	i = 0;
 	if (!envp)
 		return (NULL);
 	env = malloc(sizeof(t_env));
