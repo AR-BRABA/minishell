@@ -164,7 +164,9 @@ int	ft_exit(char **args, t_main *main)
 
 	nbr = 1;
     ft_putstr_fd("exit\n", 1);
-    if (args && split_len(args) > 0 && !is_valid_exit_arg(args[0]))
+    if (sigint != -24)
+        nbr = sigint;
+    else if (args && split_len(args) > 0 && !is_valid_exit_arg(args[0]))
     {
         ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
         nbr = 2;
@@ -178,7 +180,7 @@ int	ft_exit(char **args, t_main *main)
     close(main->fd[1]);
     free_main(main);
     free_split(args);
-    exit(nbr); //not returning nbr!!
+    exit(nbr);
 }
 
 int	ft_exit_nbr(int nbr, t_main *main)

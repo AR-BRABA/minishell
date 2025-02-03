@@ -256,9 +256,14 @@ char *expand_variable(char *expanded, char *str, t_env *env)
         var = str + dol;
         varlen = strlen_isname(var);
         expanded = ft_strnjoin(expanded, str, (var - str));
-        value = get_variable_value(env, var, varlen);
+		if (sigint != -24)
+			value = ft_itoa(sigint);
+		else
+			value = get_variable_value(env, var, varlen);
         if (value)
             expanded = ft_strfjoin(expanded, value);
+		if (sigint != -24)
+			free(value);
         str += (var - str) + varlen;
     }
     return ft_strfjoin(expanded, str);

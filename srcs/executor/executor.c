@@ -6,11 +6,12 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 13:26:30 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/03 17:22:15 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 t_node    *get_cmd(t_list *cmdlist)
 {
@@ -43,8 +44,8 @@ int get_exit_status(t_main *main, int *pid)
 			stat = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			stat = WTERMSIG(status);
-		// else if (WIFSTOPPED(status))
-			// stat = WSTOPSIG(status);
+		else if (WIFSTOPPED(status))
+			stat = WSTOPSIG(status);
 	}
 	free(pid);
 	return stat;
@@ -160,6 +161,8 @@ void	execute_commands(t_main *main)
 	}
 	else
 		exit = ft_itoa(execute_fork_commands(main));
+	if (sigint != -24)
+		sigint = -24;
 	update_env("?", exit, main->envp_list);
 	free(exit);
 }

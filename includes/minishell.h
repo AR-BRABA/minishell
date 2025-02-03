@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 13:25:00 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/03 16:58:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ typedef struct s_main {
   t_tab *cmdtab;
   int fd[2];
 } t_main;
+
+extern int sigint;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char *read_input(char *user_input);
