@@ -67,26 +67,26 @@ char    **list_to_char_array(t_node *token)
     return (args);
 }
 
-char    **get_args_array(t_list *cmdlist)
-{
-	int     i;
-	char    **args;
-	t_node  *token;
-
-	args = get_args(cmdlist->head);
-	if (!args)
-		return (NULL);
-	token = cmdlist->head;
-	i = 0;
-	while(token)
-	{
-		if(token->type == ARG)
-			args[i++] = ft_strdup(token->value);
-		token = token->next;
-	}
-	args[i] = NULL;
-	return (args);
-}
+// char    **get_args_array(t_list *cmdlist)
+// {
+// 	int     i;
+// 	char    **args;
+// 	t_node  *token;
+//
+// 	args = get_args(cmdlist->head);
+// 	if (!args)
+// 		return (NULL);
+// 	token = cmdlist->head;
+// 	i = 0;
+// 	while(token)
+// 	{
+// 		if(token->type == ARG)
+// 			args[i++] = ft_strdup(token->value);
+// 		token = token->next;
+// 	}
+// 	args[i] = NULL;
+// 	return (args);
+// }
 
 char	**env_to_char_array(t_env *envp)
 {

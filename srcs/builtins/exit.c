@@ -158,20 +158,19 @@ static int	get_exit_status(char **args, t_main *main)
 
 int	ft_exit(char **args, t_main *main)
 {
-    int	len = split_len(args);
-    int	nbr = 1;
+    int	nbr;
 
+	nbr = 1;
     ft_putstr_fd("exit\n", 1);
-    if (!is_valid_exit_arg(args[0]))
+    if (args && split_len(args) > 0 && !is_valid_exit_arg(args[0]))
     {
         ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
         nbr = 2;
     }
-    else if (len > 1)
+    else if (args && split_len(args) > 1)
         return (ft_putstr_fd("minishell: exit: too many arguments\n", 2), 1);
     else
         nbr = get_exit_status(args, main);
-
     rl_clear_history();
     close(main->fd[0]);
     close(main->fd[1]);
