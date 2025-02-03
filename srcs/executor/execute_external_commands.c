@@ -133,7 +133,10 @@ void execute_external_command(t_list *cmdlist, t_main *main)
 		perror(token->value);
 		return ;
 	}
-	cmd_path = find_command_path(token->value, main->envp);
+	if (access(token->value, X_OK) == 0)
+		cmd_path = ft_strdup(token->value);
+	else
+		cmd_path = find_command_path(token->value, main->envp);
 	if (!cmd_path)
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
