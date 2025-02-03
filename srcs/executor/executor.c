@@ -25,59 +25,17 @@ t_node    *get_cmd(t_list *cmdlist)
 	}
 	return (NULL);
 }
-int	execute_fork_commands(t_main *main)
-{
-	int	fd[2];
-	int	savefd = -1;
-	t_list *cmdlist = main->cmdtab->head;
-	int pid[main->cmdtab->len];
-	int	n = -1;
 
-	while (cmdlist != NULL)
-	{
-		if (cmdlist->next)
-			if (pipe(fd) < 0)
-				exit(1);
-		pid[++n] = fork();
-		if (pid[n] < 0)
-			return(1);
-		if (pid[n] == 0)
-		{
-			if (cmdlist->next)
-			{
-				if (dup2(fd[1], 1) < 0)
-					exit(1);
-				close(fd[0]);
-				close(fd[1]);
-			}
-			if (cmdlist->prev)
-			{
-				if (dup2(savefd, 0) < 0)
-					exit(1);
-				close(savefd);
-			}
-			int ret;
-			ret = redirect(cmdlist);
-			if (ret == 1)
-				ft_exit_nbr(ret, main);
-			ret = execute_builtins(cmdlist, main);
-			if (ret == -1)
-				execute_external_command(cmdlist, main);
-			ft_exit_nbr(ret, main);
-		}
-		if (cmdlist->prev)
-			close(savefd);
-		if (cmdlist->next)
-		{
-			close(fd[1]);
-			savefd = fd[0];
-		}
-		cmdlist = cmdlist->next;
-	}
+
+int get_exit_status(t_main *main, int *pid)
+{
+	int	status;
+	int	stat;
+	int n;
+
 	n = 0;
-	int count = 0;
-	int	status = 0;
-	int	stat = 0;
+	status = 0;
+	stat = 0;
 	while (n < main->cmdtab->len)
 	{
 		waitpid(pid[n++], &status, 0);
@@ -87,9 +45,96 @@ int	execute_fork_commands(t_main *main)
 			stat = WTERMSIG(status);
 		// else if (WIFSTOPPED(status))
 			// stat = WSTOPSIG(status);
-		count++;
 	}
+	free(pid);
 	return stat;
+}
+
+void try_exec(t_list *cmdlist, t_main *main)
+{
+	int ret;
+
+	ret = redirect(cmdlist);
+	if (ret == 1)
+		ft_exit_nbr(ret, main);
+	ret = execute_builtins(cmdlist, main);
+	if (ret == -1)
+		execute_external_command(cmdlist, main);
+	ft_exit_nbr(ret, main);
+}
+
+void manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
+{
+	free(pid);
+	if (cmdlist->next)
+	{
+		if (dup2(fd[1], 1) < 0)
+			exit(1);
+		close(fd[0]);
+		close(fd[1]);
+	}
+	if (cmdlist->prev)
+	{
+		if (dup2(*savefd, 0) < 0)
+			exit(1);
+		close(*savefd);
+	}
+}
+
+void parent(t_list *cmdlist, int *fd, int *savefd)
+{
+	if (cmdlist->prev)
+		close(*savefd);
+	if (cmdlist->next)
+	{
+		close(fd[1]);
+		*savefd = fd[0];
+	}
+}
+
+int *init_execute_fork_commands(int *savefd, int *n, t_main *main)
+{
+	*n = -1;
+	*savefd = -1;
+	int *pid;
+
+	pid = malloc(sizeof(int) * main->cmdtab->len);
+	return (pid);
+}
+
+int freeturn(void *obj, int ret)
+{
+	free(obj);
+	return (ret);
+}
+
+int	execute_fork_commands(t_main *main)
+{
+	int	fd[2];
+	int	savefd;
+	t_list *cmdlist;
+	int *pid;
+	int	n;
+
+	cmdlist = main->cmdtab->head;
+	pid = init_execute_fork_commands(&savefd, &n, main);
+	while (cmdlist != NULL)
+	{
+		if (cmdlist->next)
+			if (pipe(fd) < 0)
+				exit(1);
+		pid[++n] = fork();
+		if (pid[n] < 0)
+			return (freeturn(pid, 1));
+		if (pid[n] == 0)
+		{
+			manipulate_fd(cmdlist, fd, &savefd, pid);
+			try_exec(cmdlist, main);
+		}
+		parent(cmdlist, fd, &savefd);
+		cmdlist = cmdlist->next;
+	}
+	return (get_exit_status(main, pid));
 }
 
 void	execute_commands(t_main *main)
