@@ -52,7 +52,7 @@ bool	check_border_special_chars(char *input)
  * @return true  - If no invalid sequences is found
  * @return false - If an invalid sequence is detected
  */
-/*bool	check_invalid_sequences(char *input)
+bool	check_invalid_sequences(char *input)
 {
 	while (*input)
 	{
@@ -76,7 +76,7 @@ bool	check_border_special_chars(char *input)
 			input++;
 	}
 	return (true);
-}*/
+}
 
 /**
  * Validates sequences involving the '|' operator combined with '<' or '>'
