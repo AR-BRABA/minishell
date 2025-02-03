@@ -1,4 +1,5 @@
 #include "../../includes/minishell.h"
+#include <fcntl.h>
 
 int	redirect(t_list *cmdlist)
 {
@@ -46,7 +47,7 @@ int	redirect(t_list *cmdlist)
 		else if (token->type == REDIRECT_OUT || token->type == APPEND)
 		{
 			if (token->type == APPEND)
-				fd[1] = open(token->next->value, O_CREAT | O_RDWR, 0664);
+				fd[1] = open(token->next->value, O_CREAT | O_APPEND | O_RDWR, 0664);
 			else
 				fd[1] = open(token->next->value, O_CREAT | O_TRUNC | O_RDWR, 0664);
 			if (fd[1] < 0 || dup2(fd[1], 1) < 0)
