@@ -107,7 +107,7 @@ bool					validate_input(char *input);
 t_envnode				*new_envnode(char *envp);
 void					addback_env(t_envnode *newnode, t_env *list);
 t_env					*get_env_list(char **envp);
-int						ft_env(t_env *env);
+int						ft_env(char **args, t_env *env);
 int						ft_export(char **args, t_env *env);
 int						ft_unset(char **args, t_env *env);
 int						free_env(t_env *env);
