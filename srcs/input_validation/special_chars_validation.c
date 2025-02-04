@@ -33,7 +33,7 @@ bool	check_border_special_chars(char *input)
 		return (false);
 	while (*input && ft_isspace(*input))
 		input++;
-	if (*input == '|' || *input == '<' || *input == '>')
+	if (*input == '|')
 		return (true);
 	while (*end) // ir pro fim da str
 		end++;
