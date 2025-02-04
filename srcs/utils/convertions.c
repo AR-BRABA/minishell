@@ -86,6 +86,7 @@ char	**list_to_char_array(t_node *token)
 // 	args[i] = NULL;
 // 	return (args);
 // }
+
 char	**env_to_char_array(t_env *envp)
 {
 	int			count;

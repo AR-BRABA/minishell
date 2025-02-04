@@ -91,23 +91,15 @@ extern int				sigint;
 char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C -----------------------------------------------------------
-bool					check_border_special_chars(char *input);
-bool					check_empty_input(char *input);
-bool					check_invalid_sequences(char *input);
-bool					check_pipe_redirect_sequences(char *input);
-bool					check_unclosed_quotes(char *s);
-bool					consecutive_pipes(char *input);
-bool					consecutive_redirects(char *input);
-bool					pipe_followed_by_redirects(char *input);
-bool					redirects_followed_by_pipe(char *input);
-void					skip_spaces(char **input);
 bool					validate_input(char *input);
+bool					check_unclosed_quotes(char *s);
+bool					has_only_spaces(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode				*new_envnode(char *envp);
 void					addback_env(t_envnode *newnode, t_env *list);
 t_env					*get_env_list(char **envp);
-int						ft_env(char **args, t_env *env);
+int						ft_env(t_env *env);
 int						ft_export(char **args, t_env *env);
 int						ft_unset(char **args, t_env *env);
 int						free_env(t_env *env);
