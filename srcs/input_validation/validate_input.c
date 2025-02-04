@@ -6,66 +6,18 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 00:15:09 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/09/27 09:12:24 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:26:58 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-/*
-bool	check_redirection_syntax(char *input)
-{
-	char	*redirections;
-
-	redirections = "<>";
-	// check_uclosed_quotes
-	while (*input)
-	{
-		if (ft_strchr(redirections, *input))
-		{
-			input++;
-			while (*input && ft_isspace(*input))
-				input++;
-			// check_unclosed_quotes
-		}
-	}
-}*/
-
 /**
- * Checks if user input starts or ends with '|', '<' or '>'
+ * Checks if user input is empty or contains only whitespace
  *
- * @param input - user input
- * @return true - if input starts or ends with '|', '<' or '>', false otherwise
- */
-/*bool	check_border_special_chars(char *input)
-{
-	char	*special_chars;
-
-	special_chars = "|<>";
-	
-	while(*input && (*input != '|' && *input != '<' && *input != '>'))
-		input++;
-	if (*input == '<' && *(input + 1) == '<') // check here-doc syntax (move to utils?)
-	{
-		input += 2;
-		while (*input && ft_isspace(*input))
-			input++;
-		if (!*input)
-			return (true);
-		return (false);
-	}
-	else if (ft_strchr(special_chars, input[0])
-		|| ft_strchr(special_chars, input[ft_strlen(input) - 1]))
-		return (true);
-	return (false);
-}*/
-
-/**
- * Checks if user input is an empty string or contains only spaces
- *
- * @param input - user input
- * @return true - if input is empty or contains only spaces, false otherwise
+ * @param input  - The user's input string to check
+ * @return true  - If the input is empty or contains only whitespaces
+ * @return false - If the input contains any non-whitespace characters
  */
 bool	check_empty_input(char *input)
 {
@@ -79,20 +31,31 @@ bool	check_empty_input(char *input)
 }
 
 /**
- * Validates user input by checking various conditions
+ * Validates the user's input by checking for syntax issues
  *
- * @param input (user input)
- * @return true (if user input is valid, false otherwise)
+ * This function performs a series of checks to ensure the user's input is 
+ * valid before further processing. It verifies:
+ *   - the input is not empty or composed only of whitespace
+ *   - there are no unclosed quotes in the input
+ *   - the input does not start or end with invalid special characters
+ *   - there are no invalid operator sequences (e.g., '<<<', '>>>', '||')
+ *   - pipe and redirection sequences are used correctly
+ *
+ * @param input  - The user's input string to validate
+ * @return true  - If the input passes all validation checks
+ * @return false - If the input fails any of the validation checks
  */
 bool	validate_input(char *input)
 {
 	if (check_empty_input(input))
 		return (false);
-	if (check_unclosed_quotes(input))
-		//|| check_border_special_chars(input))
+	if (check_unclosed_quotes(input)
+		|| check_border_special_chars(input)
+		|| !check_invalid_sequences(input)
+		|| !check_pipe_redirect_sequences(input))
 	{
-			write (STDERR_FILENO, "Error\n", 6);
-			return (false);
+		write(STDERR_FILENO, "Error\n", 6);
+		return (false);
 	}
 	return (true);
 }

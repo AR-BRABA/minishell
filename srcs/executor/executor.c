@@ -39,7 +39,7 @@ int	get_exit_status(t_main *main, int *pid)
 	{
 		waitpid(pid[n++], &status, 0);
 		if (WIFEXITED(status))
-			stat = WEXITSTATUS(status);
+			ret = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			stat = WTERMSIG(status);
 		else if (WIFSTOPPED(status))
