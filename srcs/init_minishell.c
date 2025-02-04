@@ -6,12 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:13:21 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 15:59:19 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <readline/readline.h>
 
 int		sigint = -24;
 
@@ -58,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("minishell$ ");
 		if (!input)
 			break ;
-		else if (has_only_spaces(input) || !validate_input(input))
+		else if (check_empty_input(input) || !validate_input(input))
 			continue ;
 		add_history(input);
 		split = metachar_split(input);

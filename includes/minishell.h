@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:13:38 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 16:07:52 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,17 @@ extern int				sigint;
 char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C -----------------------------------------------------------
-bool					validate_input(char *input);
+bool					check_border_special_chars(char *input);
+bool					check_empty_input(char *input);
+bool					check_invalid_sequences(char *input);
+bool					check_pipe_redirect_sequences(char *input);
 bool					check_unclosed_quotes(char *s);
-bool					has_only_spaces(char *input);
+bool					consecutive_pipes(char *input);
+bool					consecutive_redirects(char *input);
+bool					pipe_followed_by_redirects(char *input);
+bool					redirects_followed_by_pipe(char *input);
+void					skip_spaces(char **input);
+bool					validate_input(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode				*new_envnode(char *envp);
@@ -139,6 +147,7 @@ int						is_metachar(char c);
 /*
  * count the amount of tokens in an input
  */
+int						skip_spacesc(char *input, int count);
 int						count_tokens(char *input);
 char					**metachar_split(char *user_input);
 

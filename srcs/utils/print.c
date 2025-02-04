@@ -2,9 +2,8 @@
 
 void	print_split(char **array)
 {
-	int	i;
+	int	i = 0;
 
-	i = 0;
 	while (array[i] != NULL)
 	{
 		printf("%d: <%s>\n", i, array[i]);
@@ -17,7 +16,7 @@ void	print_list(t_list *list)
 	t_node	*node;
 
 	node = list->head;
-	if (!node)
+	if(!node)
 	{
 		printf("no list!!\n\n");
 		return ;
@@ -31,19 +30,19 @@ void	print_list(t_list *list)
 	printf("NULL\n");
 }
 
-void	print_tab(t_tab *table)
+void	print_tab(t_tab	*table)
 {
 	t_list	*list;
-	int		size;
-	int		count;
+	int	size;
+	int	count;
 
-	if (!table)
+	if(!table)
 	{
 		printf("No tabLe!!\n");
 		return ;
 	}
 	list = table->head;
-	if (!list)
+	if(!list)
 	{
 		printf("Head empty!!\n");
 		return ;

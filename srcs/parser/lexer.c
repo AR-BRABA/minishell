@@ -28,7 +28,7 @@ int	handle_non_metachar(char *input, int count)
 	return (count);
 }
 
-int	skip_spaces(char *input, int count)
+int	skip_spacesc(char *input, int count)
 {
 	while (is_space(input[count]))
 		count++;
@@ -50,7 +50,7 @@ int	count_tokens(char *user_input)
 		if (!is_metachar(input[count]))
 			count = handle_non_metachar(input, count);
 		tokens++;
-		count = skip_spaces(input, count);
+		count = skip_spacesc(input, count);
 	}
 	free(input);
 	return (tokens);
@@ -176,7 +176,7 @@ char	**metachar_split(char *user_input)
 		else if (!is_space(input[start]))
 			count = handle_non_space_split(input, count);
 		array[token++] = substr_by_address(&input[start], (count - start));
-		count = skip_spaces(input, count);
+		count = skip_spacesc(input, count);
 	}
 	array[token] = NULL;
 	free(input);

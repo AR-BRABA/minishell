@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <signal.h>
 
 int	do_redirect_out(t_node *token, int *fd)
 {
