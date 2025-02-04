@@ -2,9 +2,9 @@
 
 int	ft_unset(char **args, t_env *env)
 {
-	int	count;
+	int			count;
 	t_envnode	*node;
-	
+
 	count = 0;
 	while (args && args[count] != NULL)
 	{

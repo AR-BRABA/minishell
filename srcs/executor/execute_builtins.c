@@ -6,13 +6,13 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/10 19:08:20 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 12:09:36 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int exec_cmd(t_node *token, char **args, t_main *main)
+int	exec_cmd(t_node *token, char **args, t_main *main)
 {
 	if (ft_strncmp(token->value, "cd", 3) == 0)
 		return (ft_cd(args, main->envp_list));
@@ -31,11 +31,11 @@ int exec_cmd(t_node *token, char **args, t_main *main)
 	return (-1);
 }
 
-int execute_builtins(t_list *cmdlist, t_main *main)
+int	execute_builtins(t_list *cmdlist, t_main *main)
 {
-	int i;
+	int		i;
 	char	**args;
-	t_node *token;
+	t_node	*token;
 
 	i = -1;
 	token = get_cmd(cmdlist);

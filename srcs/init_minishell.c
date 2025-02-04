@@ -6,15 +6,15 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/03 17:23:40 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 12:13:21 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int sigint = -24;
+int		sigint = -24;
 
-void sig_handler(int sig)
+void	sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -27,7 +27,7 @@ void sig_handler(int sig)
 	}
 }
 
-t_main *init_main(int argc, char **argv, char **envp)
+t_main	*init_main(int argc, char **argv, char **envp)
 {
 	t_main	*main;
 
@@ -56,9 +56,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		input = readline("minishell$ ");
 		if (!input)
-			break;
-		else if (has_only_spaces(input) ) //|| !validate_input(input))
-			continue;
+			break ;
+		else if (has_only_spaces(input) || !validate_input(input))
+			continue ;
 		add_history(input);
 		split = metachar_split(input);
 		free(input);

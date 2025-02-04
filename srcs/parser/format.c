@@ -1,10 +1,12 @@
 #include "../../includes/minishell.h"
 
-/* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_', [0-9] except on index 0, '?') */
+/* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_',
+		[0-9] except on index 0, '?') */
 int	strlen_isname(char *str)
 {
-	int	i = 1;
+	int	i;
 
+	i = 1;
 	if (!str || str[0] == '\0')
 		return (0);
 	if (str[i] == '?')
@@ -17,12 +19,13 @@ int	strlen_isname(char *str)
 /* returns index of the first quote found. if not found, returns -1 */
 int	strquote(char *str, int start)
 {
-	int	i = start;
+	int	i;
 
-	while(str && str[i] != '\0')
+	i = start;
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
-			return(i);
+			return (i);
 		i++;
 	}
 	return (-1);
@@ -31,10 +34,14 @@ int	strquote(char *str, int start)
 /* takes a quoted str as parameter and returns it's len without outside quotes */
 int	strlen_unquote(char *quotestr)
 {
-	int	i = 0;
-	int	start = 0;
-	int	quote = 0;
-//
+	int	i;
+	int	start;
+	int	quote;
+
+	i = 0;
+	start = 0;
+	quote = 0;
+	//
 	while (quotestr && quotestr[i] != '\0')
 	{
 		if (quotestr[i] == '\'' || quotestr[i] == '"')
@@ -81,7 +88,7 @@ int	strlen_unquote(char *quotestr)
 // 				squote++;
 // 				i++;
 // 			}
-// 		}	
+// 		}
 // 		else if (token->value[i] == '\"')
 // 		{
 // 			if (squote % 2 != 0)
@@ -101,8 +108,6 @@ int	strlen_unquote(char *quotestr)
 // }
 /* tira aspas externas do token->value */
 /* tira aspas externas do token->value */
-
-
 
 void	build_unquoted(char *quoted, char *unquoted)
 {
@@ -149,18 +154,17 @@ void	rm_quote(t_node *token)
 	token->value = unquoted;
 }
 
-
-
-/* search key on env list. returna an env node with key and value, if found. else: NULL. free key*/
+/* search key on env list. returna an env node with key and value,
+	if found. else: NULL. free key*/
 t_envnode	*search_key(t_env *list, char *key)
 {
-	int	keylen = ft_strlen(key);
+	int			keylen;
 	t_envnode	*env;
 
+	keylen = ft_strlen(key);
 	env = list->head;
 	while (env != NULL)
 	{
-		//compare key with env variables on list
 		if (ft_strncmp(key, env->key, keylen + 1) == 0)
 			break ;
 		env = env->next;
@@ -171,16 +175,19 @@ t_envnode	*search_key(t_env *list, char *key)
 /* returns $ position if found outside simple quote. else: -1 */
 int	strdol(char *str)
 {
-	int	squote = 0;
-	int	i = 0;
+	int	squote;
+	int	i;
 
-	while(str && str[i] != '\0')
+	squote = 0;
+	i = 0;
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\'')
 			squote++;
 		else if (str[i] == '$' && squote % 2 == 0)
-			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i + 1])))
-				return (i) ;
+			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i
+						+ 1])))
+				return (i);
 		i++;
 	}
 	return (-1);
@@ -219,7 +226,7 @@ char	*ft_strfjoin(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char)); // leak
+	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
 	if (s == NULL)
 		return (NULL);
 	i = 0;
@@ -234,52 +241,56 @@ char	*ft_strfjoin(char *s1, char *s2)
 	return (s);
 }
 
-char *get_variable_value(t_env *env, char *var, int varlen)
+char	*get_variable_value(t_env *env, char *var, int varlen)
 {
-    char *hold = strndup(var + 1, varlen - 1);
-    t_envnode *node = search_key(env, hold);
-    free(hold);
+	char		*hold;
+	t_envnode	*node;
+
+	hold = strndup(var + 1, varlen - 1);
+	node = search_key(env, hold);
+	free(hold);
 	if (node)
-		return node->value;
-	return NULL;
+		return (node->value);
+	return (NULL);
 }
 
-char *expand_variable(char *expanded, char *str, t_env *env)
+char	*expand_variable(char *expanded, char *str, t_env *env)
 {
-    int dol;
-    int varlen;
-    char *var;
-    char *value;
+	int		dol;
+	int		varlen;
+	char	*var;
+	char	*value;
 
-    while (str && (dol = strdol(str)) >= 0)
-    {
-        var = str + dol;
-        varlen = strlen_isname(var);
-        expanded = ft_strnjoin(expanded, str, (var - str));
+	while (str && (dol = strdol(str)) >= 0)
+	{
+		var = str + dol;
+		varlen = strlen_isname(var);
+		expanded = ft_strnjoin(expanded, str, (var - str));
 		if (sigint != -24)
 			value = ft_itoa(sigint);
 		else
 			value = get_variable_value(env, var, varlen);
-        if (value)
-            expanded = ft_strfjoin(expanded, value);
+		if (value)
+			expanded = ft_strfjoin(expanded, value);
 		if (sigint != -24)
 			free(value);
-        str += (var - str) + varlen;
-    }
-    return ft_strfjoin(expanded, str);
+		str += (var - str) + varlen;
+	}
+	return (ft_strfjoin(expanded, str));
 }
 
-void expand(t_node *token, t_env *env)
+void	expand(t_node *token, t_env *env)
 {
-    char *expanded;
+	char	*expanded;
 
-    expanded = expand_variable(NULL, token->value, env);
-    free(token->value);
-    token->value = expanded;
+	expanded = expand_variable(NULL, token->value, env);
+	free(token->value);
+	token->value = expanded;
 }
 
-
-/* search for '$' outside single quotes, if whats next is a valid env var name, searchs for it on env list. if found: the key is replaced by its value, else: its expanded to nothing. */
+/* search for '$' outside single quotes, if whats next is a valid env var name,
+	searchs for it on env list. if found: the key is replaced by its value,
+	else: its expanded to nothing. */
 // void	expand(t_node *token, t_env *env)
 // {
 // 	int	varlen;
@@ -296,7 +307,7 @@ void expand(t_node *token, t_env *env)
 // 	{
 // 		dol = strdol(str);
 // 		if (dol < 0)
-// 			break;
+// 			break ;
 // 		var = str + dol;
 // 		varlen = strlen_isname(var);
 // 		expanded = ft_strnjoin(expanded, str, (var - str));
@@ -312,11 +323,13 @@ void expand(t_node *token, t_env *env)
 // 	token->value = expanded;
 // }
 
-/* if not a heredoc delimiter, expands all variables that may exist. next, removes outside quotes that may exist */
+/* if not a heredoc delimiter, expands all variables that may exist. next,
+	removes outside quotes that may exist */
 void	format(t_tab *cmdtable, t_env *env)
 {
 	t_list	*cmd;
 	t_node	*token;
+
 	(void)env;
 	cmd = cmdtable->head;
 	token = cmd->head;

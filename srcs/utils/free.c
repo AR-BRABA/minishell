@@ -10,7 +10,7 @@ void	free_main(t_main *main)
 	free(main);
 }
 
-void	free_envnode(t_envnode	*node)
+void	free_envnode(t_envnode *node)
 {
 	free(node->key);
 	free(node->value);
@@ -38,7 +38,7 @@ void	free_table(t_tab *cmdtable)
 	t_list	*nextline;
 
 	if (!cmdtable)
-		return;
+		return ;
 	cmdline = cmdtable->head;
 	while (cmdline != NULL)
 	{

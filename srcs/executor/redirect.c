@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int do_redirect_out(t_node *token, int *fd)
+int	do_redirect_out(t_node *token, int *fd)
 {
 	if (token->type == APPEND)
 		fd[1] = open(token->next->value, O_CREAT | O_APPEND | O_RDWR, 0664);
@@ -15,9 +15,9 @@ int do_redirect_out(t_node *token, int *fd)
 	return (0);
 }
 
-int do_heredoc(t_node *token, int *fd)
+int	do_heredoc(t_node *token, int *fd)
 {
-	char *input;
+	char	*input;
 
 	if (pipe(fd) < 0)
 	{
@@ -25,7 +25,8 @@ int do_heredoc(t_node *token, int *fd)
 		return (1);
 	}
 	input = readline("> ");
-	while (ft_strncmp(input, token->next->value, ft_strlen(token->next->value) + 1) != 0) 
+	while (ft_strncmp(input, token->next->value, ft_strlen(token->next->value)
+			+ 1) != 0)
 	{
 		write(fd[1], input, ft_strlen(input));
 		write(fd[1], "\n", 1);
@@ -42,7 +43,7 @@ int do_heredoc(t_node *token, int *fd)
 	return (0);
 }
 
-int do_redirect_in(t_node *token, int *fd)
+int	do_redirect_in(t_node *token, int *fd)
 {
 	fd[0] = open(token->next->value, O_RDONLY);
 	if (fd[0] < 0 || dup2(fd[0], 0) < 0)
@@ -57,8 +58,8 @@ int do_redirect_in(t_node *token, int *fd)
 
 int	redirect(t_list *cmdlist)
 {
-	int	fd[2];
-	t_node *token;
+	int		fd[2];
+	t_node	*token;
 
 	token = cmdlist->head;
 	while (token != NULL && token->next != NULL)
@@ -80,4 +81,3 @@ int	redirect(t_list *cmdlist)
 	}
 	return (0);
 }
-

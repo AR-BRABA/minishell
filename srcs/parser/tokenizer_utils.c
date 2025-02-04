@@ -2,19 +2,20 @@
 
 int	cmdlen(char **input)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (input[i] != NULL && input[i][0] != '|')
 		i++;
 	if (input[i] != NULL && input[i][0] == '|')
 		i++;
-	return(i);
+	return (i);
 }
 
 void	add_node(t_node *newnode, t_list *list)
 {
 	t_node	*node;
-	
+
 	node = list->head;
 	if (!node)
 		list->head = newnode;
@@ -30,7 +31,7 @@ void	add_node(t_node *newnode, t_list *list)
 void	add_list(t_list *newnode, t_tab *cmdtable)
 {
 	t_list	*list;
-	
+
 	list = cmdtable->head;
 	if (!list)
 		cmdtable->head = newnode;
@@ -55,11 +56,10 @@ t_node	*new_node(char *token)
 	cmd->type = -1;
 	cmd->prev = NULL;
 	cmd->next = NULL;
-
 	return (cmd);
 }
 
-t_list *init_cmdlist(char **input)
+t_list	*init_cmdlist(char **input)
 {
 	t_list	*cmdlist;
 	t_node	*cmd;
@@ -79,12 +79,12 @@ t_list *init_cmdlist(char **input)
 	}
 	cmdlist->head = cmd;
 	cmdlist->len = 1;
-	return cmdlist;
+	return (cmdlist);
 }
 
 t_list	*new_list(char **input)
 {
-	int	i;
+	int		i;
 	t_list	*cmdlist;
 	t_node	*cmd;
 

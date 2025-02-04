@@ -6,19 +6,18 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/03 17:22:15 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 12:09:49 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
-t_node    *get_cmd(t_list *cmdlist)
+t_node	*get_cmd(t_list *cmdlist)
 {
-    t_node  *token;
+	t_node	*token;
 
-    token = cmdlist->head;
-    while(token != NULL)
+	token = cmdlist->head;
+	while (token != NULL)
 	{
 		if (token->type == COMMAND)
 			return (token);
@@ -27,12 +26,11 @@ t_node    *get_cmd(t_list *cmdlist)
 	return (NULL);
 }
 
-
-int get_exit_status(t_main *main, int *pid)
+int	get_exit_status(t_main *main, int *pid)
 {
 	int	status;
 	int	stat;
-	int n;
+	int	n;
 
 	n = 0;
 	status = 0;
@@ -48,12 +46,12 @@ int get_exit_status(t_main *main, int *pid)
 			stat = WSTOPSIG(status);
 	}
 	free(pid);
-	return stat;
+	return (stat);
 }
 
-void try_exec(t_list *cmdlist, t_main *main)
+void	try_exec(t_list *cmdlist, t_main *main)
 {
-	int ret;
+	int	ret;
 
 	ret = redirect(cmdlist);
 	if (ret == 1)
@@ -64,7 +62,7 @@ void try_exec(t_list *cmdlist, t_main *main)
 	ft_exit_nbr(ret, main);
 }
 
-void manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
+void	manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
 {
 	free(pid);
 	if (cmdlist->next)
@@ -82,7 +80,7 @@ void manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
 	}
 }
 
-void parent(t_list *cmdlist, int *fd, int *savefd)
+void	parent(t_list *cmdlist, int *fd, int *savefd)
 {
 	if (cmdlist->prev)
 		close(*savefd);
@@ -93,17 +91,17 @@ void parent(t_list *cmdlist, int *fd, int *savefd)
 	}
 }
 
-int *init_execute_fork_commands(int *savefd, int *n, t_main *main)
+int	*init_execute_fork_commands(int *savefd, int *n, t_main *main)
 {
+	int	*pid;
+
 	*n = -1;
 	*savefd = -1;
-	int *pid;
-
 	pid = malloc(sizeof(int) * main->cmdtab->len);
 	return (pid);
 }
 
-int freeturn(void *obj, int ret)
+int	freeturn(void *obj, int ret)
 {
 	free(obj);
 	return (ret);
@@ -111,11 +109,11 @@ int freeturn(void *obj, int ret)
 
 int	execute_fork_commands(t_main *main)
 {
-	int	fd[2];
-	int	savefd;
-	t_list *cmdlist;
-	int *pid;
-	int	n;
+	int		fd[2];
+	int		savefd;
+	t_list	*cmdlist;
+	int		*pid;
+	int		n;
 
 	cmdlist = main->cmdtab->head;
 	pid = init_execute_fork_commands(&savefd, &n, main);
@@ -140,12 +138,12 @@ int	execute_fork_commands(t_main *main)
 
 void	execute_commands(t_main *main)
 {
-	char *exit;
+	char	*exit;
 	t_list	*cmdlist;
 
 	cmdlist = main->cmdtab->head;
-	if ((main->cmdtab->len == 1) && 
-			(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
+	if ((main->cmdtab->len == 1) &&
+		(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
 			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
 			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
 			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))

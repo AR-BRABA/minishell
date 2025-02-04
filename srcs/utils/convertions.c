@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2024/12/15 23:55:10 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 12:12:39 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,15 @@
 /*
  ** Converts the token linked list into a array of strings (char **) 
  */
-
-char **get_args(t_node *token)
+char	**get_args(t_node *token)
 {
-    int     count;
-    char    **args;
-    t_node  *arg_token;
+	int		count;
+	char	**args;
+	t_node	*arg_token;
 
-    count = 0;
-    arg_token = token;
-    while(arg_token && arg_token->type == ARG)
+	count = 0;
+	arg_token = token;
+	while (arg_token && arg_token->type == ARG)
 	{
 		if (arg_token->type == ARG)
 			count++;
@@ -41,11 +40,11 @@ char **get_args(t_node *token)
 	return (args);
 }
 
-char    **list_to_char_array(t_node *token)
+char	**list_to_char_array(t_node *token)
 {
-	char **args;
-    t_node  *arg_token;
-	int	i;
+	char	**args;
+	t_node	*arg_token;
+	int		i;
 
 	i = 0;
 	args = get_args(token);
@@ -64,7 +63,7 @@ char    **list_to_char_array(t_node *token)
 		arg_token = arg_token->next;
 	}
 	args[i] = NULL;
-    return (args);
+	return (args);
 }
 
 // char    **get_args_array(t_list *cmdlist)
@@ -90,13 +89,14 @@ char    **list_to_char_array(t_node *token)
 
 char	**env_to_char_array(t_env *envp)
 {
-	int	count = 0;
+	int			count;
 	t_envnode	*node;
-	char **array;
-	
+	char		**array;
+
+	count = 0;
 	if (!envp || !envp->head)
 		return (NULL);
-	array = malloc((envp->len + 1) * sizeof (char *));
+	array = malloc((envp->len + 1) * sizeof(char *));
 	node = envp->head;
 	while (node != NULL)
 	{

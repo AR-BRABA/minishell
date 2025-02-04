@@ -2,10 +2,10 @@
 
 t_envnode	*new_envnode(char *str)
 {
-	int	pos;
-	char *split;
+	int			pos;
+	char		*split;
 	t_envnode	*node;
-	
+
 	split = ft_strchr(str, '=');
 	if (!split || str - split == 0)
 		return (NULL);
@@ -41,8 +41,8 @@ void	addback_env(t_envnode *newnode, t_env *list)
 
 t_env	*get_env_list(char **envp)
 {
-	int	i;
-	t_env	*env;
+	int			i;
+	t_env		*env;
 	t_envnode	*node;
 
 	i = 0;
@@ -67,7 +67,7 @@ t_env	*get_env_list(char **envp)
 int	ft_env(t_env *env)
 {
 	t_envnode	*node;
-	
+
 	if (!env || !env->head)
 		return (1);
 	node = env->head;
