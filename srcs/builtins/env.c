@@ -64,7 +64,7 @@ t_env	*get_env_list(char **envp)
 	return (env);
 }
 
-int	ft_env(t_env *env)
+int	ft_env(char **args, t_env *env)
 {
 	int	i = 0;
 	t_envnode	*node;
