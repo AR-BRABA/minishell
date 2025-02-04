@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <readline/readline.h>
 
 int		sigint = -24;
 

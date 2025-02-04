@@ -91,9 +91,17 @@ extern int				sigint;
 char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C -----------------------------------------------------------
-bool					validate_input(char *input);
+bool					check_border_special_chars(char *input);
+bool					check_empty_input(char *input);
+bool					check_invalid_sequences(char *input);
+bool					check_pipe_redirect_sequences(char *input);
 bool					check_unclosed_quotes(char *s);
-bool					has_only_spaces(char *input);
+bool					consecutive_pipes(char *input);
+bool					consecutive_redirects(char *input);
+bool					pipe_followed_by_redirects(char *input);
+bool					redirects_followed_by_pipe(char *input);
+void					skip_spaces(char **input);
+bool					validate_input(char *input);
 
 // ENV.C -----------------------------------------------------------------------
 t_envnode				*new_envnode(char *envp);

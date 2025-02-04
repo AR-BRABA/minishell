@@ -1,23 +1,5 @@
 #include "../../includes/minishell.h"
 
-int	ft_error(char *cmd, char *arg, char *message, int ret)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	if (arg)
-	{
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(arg, 2);
-	}
-	if (message)
-	{
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(message, 2);
-	}
-	ft_putstr_fd("\n", 2);
-	return (ret);
-}
-
 int	str_isname(char *str)
 {
 	int	i;

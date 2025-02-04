@@ -1,4 +1,32 @@
 #include "../../includes/minishell.h"
+#include <readline/readline.h>
+
+int	ft_atou(const char *nptr)
+{
+	int		i;
+	long		convnum;
+	unsigned	ret;
+	int		sign;
+
+	i = 0;
+	convnum = 0;
+	sign = 1;
+	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		convnum = convnum * 10 + (nptr[i] - 48);
+		i++;
+	}
+	ret = convnum *sign;
+	return (ret);
+}
 
 int	ft_atou(const char *nptr)
 {
@@ -127,7 +155,14 @@ int	ft_exit(char **args, t_main *main)
 	close(main->fd[1]);
 	free_main(main);
 	free_split(args);
-	exit (nbr);
+	exit(nbr);
+}
+
+int	ft_exit_nbr(int nbr, t_main *main)
+{
+	ft_putstr_fd("exit\n", 1);
+	free_main(main);
+	exit(nbr);
 }
 */
 static int	is_valid_exit_arg(char *arg)

@@ -64,6 +64,7 @@ t_list	*init_cmdlist(char **input)
 	t_list	*cmdlist;
 	t_node	*cmd;
 
+	i = 0;
 	cmdlist = malloc(sizeof(t_list));
 	if (!cmdlist)
 		return (NULL);
