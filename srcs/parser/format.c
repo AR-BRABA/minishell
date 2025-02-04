@@ -41,6 +41,7 @@ int	strlen_unquote(char *quotestr)
 	i = 0;
 	start = 0;
 	quote = 0;
+	//
 	while (quotestr && quotestr[i] != '\0')
 	{
 		if (quotestr[i] == '\'' || quotestr[i] == '"')
@@ -57,56 +58,103 @@ int	strlen_unquote(char *quotestr)
 }
 
 /* tira aspas externas do token->value */
-void	rm_quote(t_node *token)
+// void	rm_quote(t_node *token)
+// {
+// 	int	squote;
+// 	int	dquote;
+// 	int	i;
+// 	int	q;
+// 	int	new_len;
+// 	int	len;
+// 	char	*unquoted;
+//
+// 	squote = 0;
+// 	dquote = 0;
+// 	i = 0;
+// 	q = 0;
+// 	new_len = strlen_unquote(token->value);
+// 	len = ft_strlen(token->value);
+// 	if (len == new_len)
+// 		return ;
+// 	unquoted = malloc((new_len + 1) * sizeof(char));
+// 	while (token->value[i] != '\0')
+// 	{
+// 		if (token->value[i] == '\'')
+// 		{
+// 			if (dquote % 2 != 0)
+// 				unquoted[q++] = token->value[i++];
+// 			else
+// 			{
+// 				squote++;
+// 				i++;
+// 			}
+// 		}
+// 		else if (token->value[i] == '\"')
+// 		{
+// 			if (squote % 2 != 0)
+// 				unquoted[q++] = token->value[i++];
+// 			else
+// 			{
+// 				dquote++;
+// 				i++;
+// 			}
+// 		}
+// 		else
+// 			unquoted[q++] = token->value[i++];
+// 	}
+// 	unquoted[q] = '\0';
+// 	free(token->value);
+// 	token->value = unquoted;
+// }
+/* tira aspas externas do token->value */
+/* tira aspas externas do token->value */
+
+void	build_unquoted(char *quoted, char *unquoted)
 {
-	int		squote;
-	int		dquote;
-	int		i;
-	int		q;
-	int		new_len;
-	int		len;
-	char	*unquoted;
+	int	squote;
+	int	dquote;
+	int	i;
+	int	q;
 
 	squote = 0;
 	dquote = 0;
 	i = 0;
 	q = 0;
+	while (quoted[i] != '\0')
+	{
+		if ((quoted[i] == '\'' && dquote % 2 == 0) || (quoted[i] == '\"'
+				&& squote % 2 == 0))
+		{
+			if (quoted[i] == '\'')
+				squote++;
+			else
+				dquote++;
+			i++;
+		}
+		else
+			unquoted[q++] = quoted[i++];
+	}
+	unquoted[q] = '\0';
+}
+
+/* tira aspas externas do token->value */
+void	rm_quote(t_node *token)
+{
+	int		new_len;
+	int		len;
+	char	*unquoted;
+
 	new_len = strlen_unquote(token->value);
 	len = ft_strlen(token->value);
 	if (len == new_len)
 		return ;
-	unquoted = malloc((new_len + 1) * sizeof(char));
-	while (token->value[i] != '\0')
-	{
-		if (token->value[i] == '\'')
-		{
-			if (dquote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				squote++;
-				i++;
-			}
-		}
-		else if (token->value[i] == '\"')
-		{
-			if (squote % 2 != 0)
-				unquoted[q++] = token->value[i++];
-			else
-			{
-				dquote++;
-				i++;
-			}
-		}
-		else
-			unquoted[q++] = token->value[i++];
-	}
-	unquoted[q] = '\0';
+	unquoted = malloc((len + 1) * sizeof(char));
+	build_unquoted(token->value, unquoted);
 	free(token->value);
 	token->value = unquoted;
 }
 
-/* search key on env list. return an env node with key and value,
+/* search key on env list. returna an env node with key and value,
 	if found. else: NULL. free key*/
 t_envnode	*search_key(t_env *list, char *key)
 {
@@ -193,37 +241,87 @@ char	*ft_strfjoin(char *s1, char *s2)
 	return (s);
 }
 
-/* search for '$' outside single quotes, if whats next is a valid env var name,
-	searchs for it on env list. if found: the key is replaced by its value,
-	else: its expanded to nothing. */
-void	expand(t_node *token, t_env *env)
+char	*get_variable_value(t_env *env, char *var, int varlen)
 {
-	int			varlen;
-	char		*expanded;
+	char		*hold;
 	t_envnode	*node;
-	char		*str;
-	char		*var;
-	int			dol;
 
-	str = token->value;
-	expanded = NULL;
-	while (str)
+	hold = strndup(var + 1, varlen - 1);
+	node = search_key(env, hold);
+	free(hold);
+	if (node)
+		return (node->value);
+	return (NULL);
+}
+
+char	*expand_variable(char *expanded, char *str, t_env *env)
+{
+	int		dol;
+	int		varlen;
+	char	*var;
+	char	*value;
+
+	while (str && (dol = strdol(str)) >= 0)
 	{
-		dol = strdol(str);
-		if (dol < 0)
-			break ;
 		var = str + dol;
 		varlen = strlen_isname(var);
-		expanded = ft_strnjoin(expanded, str, (var - str)); // free on
-		node = search_key(env, strndup(var + 1, varlen - 1)); //free na key on
-		if (node)
-			expanded = ft_strfjoin(expanded, node->value); // free on
+		expanded = ft_strnjoin(expanded, str, (var - str));
+		if (sigint != -24)
+			value = ft_itoa(sigint);
+		else
+			value = get_variable_value(env, var, varlen);
+		if (value)
+			expanded = ft_strfjoin(expanded, value);
+		if (sigint != -24)
+			free(value);
 		str += (var - str) + varlen;
 	}
-	expanded = ft_strfjoin(expanded, str);
+	return (ft_strfjoin(expanded, str));
+}
+
+void	expand(t_node *token, t_env *env)
+{
+	char	*expanded;
+
+	expanded = expand_variable(NULL, token->value, env);
 	free(token->value);
 	token->value = expanded;
 }
+
+/* search for '$' outside single quotes, if whats next is a valid env var name,
+	searchs for it on env list. if found: the key is replaced by its value,
+	else: its expanded to nothing. */
+// void	expand(t_node *token, t_env *env)
+// {
+// 	int	varlen;
+// 	char	*expanded;
+// 	t_envnode	*node;
+// 	char	*str;
+// 	char	*var;
+// 	int	dol;
+// 	char *hold;
+//
+// 	str = token->value;
+// 	expanded = NULL;
+// 	while (str)
+// 	{
+// 		dol = strdol(str);
+// 		if (dol < 0)
+// 			break ;
+// 		var = str + dol;
+// 		varlen = strlen_isname(var);
+// 		expanded = ft_strnjoin(expanded, str, (var - str));
+// 		hold = strndup(var + 1, varlen - 1);
+// 		node = search_key(env, hold);
+// 		free(hold);
+// 		if (node)
+// 			expanded = ft_strfjoin(expanded, node->value);
+// 		str += (var - str) + varlen;
+// 	}
+// 	expanded = ft_strfjoin(expanded, str);
+// 	free(token->value);
+// 	token->value = expanded;
+// }
 
 /* if not a heredoc delimiter, expands all variables that may exist. next,
 	removes outside quotes that may exist */

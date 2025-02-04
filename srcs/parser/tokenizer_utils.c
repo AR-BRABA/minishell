@@ -59,11 +59,10 @@ t_node	*new_node(char *token)
 	return (cmd);
 }
 
-t_list	*new_list(char **input)
+t_list	*init_cmdlist(char **input)
 {
-	int		i;
-	t_node	*cmd;
 	t_list	*cmdlist;
+	t_node	*cmd;
 
 	i = 0;
 	cmdlist = malloc(sizeof(t_list));
@@ -73,7 +72,7 @@ t_list	*new_list(char **input)
 	cmdlist->fd[1] = 1;
 	cmdlist->prev = NULL;
 	cmdlist->next = NULL;
-	cmd = new_node(input[i++]);
+	cmd = new_node(input[0]);
 	if (!cmd)
 	{
 		free_list(cmdlist);
@@ -81,6 +80,19 @@ t_list	*new_list(char **input)
 	}
 	cmdlist->head = cmd;
 	cmdlist->len = 1;
+	return (cmdlist);
+}
+
+t_list	*new_list(char **input)
+{
+	int		i;
+	t_list	*cmdlist;
+	t_node	*cmd;
+
+	cmdlist = init_cmdlist(input);
+	if (!cmdlist)
+		return (NULL);
+	i = 1;
 	while (input[i] != NULL)
 	{
 		cmd = new_node(input[i]);

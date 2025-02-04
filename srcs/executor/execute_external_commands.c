@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 11:39:50 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/04 12:09:41 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,19 @@ char	*build_binary_path(char const *directory, char slash, char const *cmd)
 	return (bin_path);
 }
 
+char	*no_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	free(absolute_path);
+	return (NULL);
+}
+
+char	*found_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	return (absolute_path);
+}
+
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
@@ -53,23 +66,21 @@ char	*find_command_path(char *cmd, char **envp)
 	i = 0;
 	while (paths[i])
 	{
-		absolute_path = build_binary_path(paths[i], '/', cmd);
+		absolute_path = build_binary_path(paths[i++], '/', cmd);
 		if (!absolute_path)
-		{
-			free_split(paths);
-			free(absolute_path);
-			return (NULL);
-		}
+			return (no_path(paths, absolute_path));
 		if (access(absolute_path, X_OK) == 0)
-		{
-			free_split(paths);
-			return (absolute_path);
-		}
+			return (found_path(paths, absolute_path));
 		free(absolute_path);
-		i++;
 	}
 	free_split(paths);
 	return (NULL);
+}
+
+void	*merror(char *msg, void *ret)
+{
+	perror(msg);
+	return (ret);
 }
 
 static char	**create_exec_args(t_node *token)
@@ -87,10 +98,7 @@ static char	**create_exec_args(t_node *token)
 	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!exec_args)
-	{
-		perror("minishell: malloc");
-		return (NULL);
-	}
+		return (merror("malloc:", NULL));
 	count = 0;
 	tmp_token = token;
 	exec_args[count++] = tmp_token->value;
@@ -104,11 +112,21 @@ static char	**create_exec_args(t_node *token)
 	return (exec_args);
 }
 
-void	execute_external_command(t_list *cmdlist, char **envp)
+void	execve_error(t_node *token, t_main *main, char **exec_args,
+		char *cmd_path)
 {
+	perror(token->value);
+	free_main(main);
+	free(exec_args);
+	free(cmd_path);
+	exit(127);
+}
+
+void	execute_external_command(t_list *cmdlist, t_main *main)
+{
+	char	**exec_args;
 	char	*cmd_path;
 	t_node	*token;
-	char **exec_args;
 
 	token = get_cmd(cmdlist);
 	if (!token || !token->value)
@@ -119,18 +137,17 @@ void	execute_external_command(t_list *cmdlist, char **envp)
 	if (access(token->value, X_OK) == 0)
 		cmd_path = ft_strdup(token->value);
 	else
-		cmd_path = find_command_path(token->value, envp);
-	exec_args = create_exec_args(token);
-	if (!exec_args)
-	{
-		free(cmd_path);
-		return ;
-	}
-	if (execve(cmd_path, exec_args, envp) == -1)
+		cmd_path = find_command_path(token->value, main->envp);
+	if (!cmd_path)
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
-		free(exec_args);
 		free(cmd_path);
+		free_main(main);
 		exit(127);
 	}
+	exec_args = create_exec_args(token);
+	if (!exec_args)
+		free(cmd_path);
+	if (execve(cmd_path, exec_args, main->envp) == -1)
+		execve_error(token, main, exec_args, cmd_path);
 }
