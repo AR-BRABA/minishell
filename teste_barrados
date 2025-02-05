@@ -1,0 +1,5 @@
+> file ls
+< file ls
+<< del ls
+ls << del | grep e
+echo "$HOME '$HOME' "$HOME""

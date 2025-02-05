@@ -1,0 +1,15 @@
+ls >> del
+ls > del
+ls < srcs
+ls << del
+ls >> file
+
+ls > del | grep o
+ls < del | grep e
+echo oi >> del | grep e
+cd
+cd -
+cd ~
+cd tests
+cd tests tests
+cd notadir

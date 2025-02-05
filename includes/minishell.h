@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/05 11:09:43 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/05 17:07:39 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_main
 	t_env				*envp_list;
 	char				**envp;
 	t_tab				*cmdtab;
-	int					fd[2];
+	int					fd[3];
 }						t_main;
 
 extern int				tecno_status;
@@ -123,6 +123,7 @@ int						execute_builtins(t_list *cmdlist, t_main *main);
 void					execute_external_command(t_list *cmdlist, t_main *main);
 int						execute_fork_commands(t_main *main);
 t_node					*get_cmd(t_list *cmdlist);
+int						pre_exec(t_list *list);
 
 // PRINT.C ---------------------------------------------------------------------
 void					print_split(char **array);
