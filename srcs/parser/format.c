@@ -175,16 +175,12 @@ t_envnode	*search_key(t_env *list, char *key)
 /* returns $ position if found outside simple quote. else: -1 */
 int	strdol(char *str)
 {
-	int	squote;
 	int	i;
 
-	squote = 0;
 	i = 0;
 	while (str && str[i] != '\0')
 	{
-		if (str[i] == '\'')
-			squote++;
-		else if (str[i] == '$' && squote % 2 == 0)
+		if (str[i] == '$')
 			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i
 						+ 1])))
 				return (i);
@@ -254,14 +250,44 @@ char	*get_variable_value(t_env *env, char *var, int varlen)
 	return (NULL);
 }
 
+int	decide_expansion(char *str, int dol, char *tmp)
+{
+	int	i;
+	int	squote;
+	int	dquote;
+	int	expansion;
+
+	i = 0;
+	squote = 2;
+	dquote = 2;
+	expansion = &str[dol] - tmp;
+	while (tmp && tmp[i] && i <= expansion)
+	{
+		if (tmp[i] == '\"')
+			dquote++;
+		if (tmp[i] == '\'')
+			squote++;
+		else if (tmp[i] == '$')
+			if ((squote % 2 == 0 && dquote % 2 == 0) || dquote % 2 != 0)
+				if (tmp[i + 1] == '?' || (is_name(tmp[i + 1])
+						&& !ft_isdigit(tmp[i + 1])))
+					return (i);
+		i++;
+	}
+	return (-1);
+}
+
 char	*expand_variable(char *expanded, char *str, t_env *env)
 {
+	char	*tmp;
 	int		dol;
 	int		varlen;
 	char	*var;
 	char	*value;
 
-	while (str && (dol = strdol(str)) >= 0)
+	tmp = str;
+	dol = strdol(str);
+	while (str && dol >= 0 && decide_expansion(str, dol, tmp) >= 0)
 	{
 		var = str + dol;
 		varlen = strlen_isname(var);
@@ -275,6 +301,7 @@ char	*expand_variable(char *expanded, char *str, t_env *env)
 		if (tecno_status != -24)
 			free(value);
 		str += (var - str) + varlen;
+		dol = strdol(str);
 	}
 	return (ft_strfjoin(expanded, str));
 }
