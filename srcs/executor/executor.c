@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/05 11:18:27 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/05 12:53:32 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ void	try_exec(t_list *cmdlist, t_main *main)
 {
 	int	ret;
 
-	ret = redirect(cmdlist);
-	if (ret == 1)
-		ft_exit_nbr(ret, main);
+	// ret = redirect(cmdlist);
 	ret = execute_builtins(cmdlist, main);
 	if (ret == -1)
 		execute_external_command(cmdlist, main);
@@ -122,6 +120,7 @@ int	execute_fork_commands(t_main *main)
 		if (cmdlist->next)
 			if (pipe(fd) < 0)
 				exit(1);
+		redirect(cmdlist);
 		pid[++n] = fork();
 		if (pid[n] < 0)
 			return (freeturn(pid, 1));
