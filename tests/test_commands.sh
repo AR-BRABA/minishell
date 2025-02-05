@@ -2,9 +2,9 @@
 
 run_test() {
     command="$1"
-    echo "Running test: $command"
+    # echo "Running test: $command"
 
-    touch bash_output.txt
+    # touch bash_output.txt
     # Run command in minishell
     echo "$command" | ./minishell | tail -n +2 | sed 's/^minishell\$ //' > minishell_output.txt 2>&1
     minishell_status=$?
@@ -18,11 +18,15 @@ run_test() {
         echo "Test passed: $command"
     else
         echo "Test failed: $command"
-        # echo "Expected output:"
-        # cat bash_output.txt
-        # echo "Got:"
-        # cat minishell_output.txt
         echo "Expected status: $bash_status, Got: $minishell_status"
+        echo
+        echo "Expected output:"
+        cat bash_output.txt
+        echo "Got:"
+        cat minishell_output.txt
+        echo "---------------------------------"
+        echo 
+        echo 
     fi
 
     # Clean up

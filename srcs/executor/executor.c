@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:09:49 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/05 11:18:27 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	get_exit_status(t_main *main, int *pid)
 		if (WIFEXITED(status))
 			stat = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			stat = WTERMSIG(status);
+			stat = WTERMSIG(status) + 128;
 		else if (WIFSTOPPED(status))
 			stat = WSTOPSIG(status);
 	}
@@ -159,8 +159,8 @@ void	execute_commands(t_main *main)
 	}
 	else
 		exit = ft_itoa(execute_fork_commands(main));
-	if (sigint != -24)
-		sigint = -24;
+	if (tecno_status != -24)
+		tecno_status = -24;
 	update_env("?", exit, main->envp_list);
 	free(exit);
 }
