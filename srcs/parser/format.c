@@ -315,41 +315,6 @@ void	expand(t_node *token, t_env *env)
 	token->value = expanded;
 }
 
-/* search for '$' outside single quotes, if whats next is a valid env var name,
-	searchs for it on env list. if found: the key is replaced by its value,
-	else: its expanded to nothing. */
-// void	expand(t_node *token, t_env *env)
-// {
-// 	int	varlen;
-// 	char	*expanded;
-// 	t_envnode	*node;
-// 	char	*str;
-// 	char	*var;
-// 	int	dol;
-// 	char *hold;
-//
-// 	str = token->value;
-// 	expanded = NULL;
-// 	while (str)
-// 	{
-// 		dol = strdol(str);
-// 		if (dol < 0)
-// 			break ;
-// 		var = str + dol;
-// 		varlen = strlen_isname(var);
-// 		expanded = ft_strnjoin(expanded, str, (var - str));
-// 		hold = strndup(var + 1, varlen - 1);
-// 		node = search_key(env, hold);
-// 		free(hold);
-// 		if (node)
-// 			expanded = ft_strfjoin(expanded, node->value);
-// 		str += (var - str) + varlen;
-// 	}
-// 	expanded = ft_strfjoin(expanded, str);
-// 	free(token->value);
-// 	token->value = expanded;
-// }
-
 /* if not a heredoc delimiter, expands all variables that may exist. next,
 	removes outside quotes that may exist */
 void	format(t_tab *cmdtable, t_env *env)
