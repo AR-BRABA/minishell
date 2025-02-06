@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/21 11:06:10 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:52:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct s_main
 	int					fd[2];
 }						t_main;
 
+extern int				tecno_status;
+
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char					*read_input(char *user_input);
 
@@ -105,7 +107,7 @@ bool					validate_input(char *input);
 t_envnode				*new_envnode(char *envp);
 void					addback_env(t_envnode *newnode, t_env *list);
 t_env					*get_env_list(char **envp);
-int						ft_env(char **args, t_env *env);
+int						ft_env(t_env *env);
 int						ft_export(char **args, t_env *env);
 int						ft_unset(char **args, t_env *env);
 int						free_env(t_env *env);
@@ -117,10 +119,15 @@ void					update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
 int						execute_builtins(t_list *cmdlist, t_main *main);
+//<<<<<<< HEAD
 void					execute_commands(t_main *main);
-void					execute_external_command(t_list *cmdlist, char **envp);
+//void					execute_external_command(t_list *cmdlist, char **envp);
+//=======
+void					execute_external_command(t_list *cmdlist, t_main *main);
+//>>>>>>> origin/main
 int						execute_fork_commands(t_main *main);
 t_node					*get_cmd(t_list *cmdlist);
+int						pre_exec(t_list *list);
 
 // PRINT.C ---------------------------------------------------------------------
 void					print_split(char **array);
@@ -145,14 +152,15 @@ int						is_metachar(char c);
 /*
  * count the amount of tokens in an input
  */
+int						skip_spacesc(char *input, int count);
 int						count_tokens(char *input);
 char					**metachar_split(char *user_input);
 
 /*
-* splits user_input into an array of tokens.
-* lexical analisis divides tokens by: >, <, |, <<, >>, '...',
-	"..." and SPACE getcwd(buf, 0);
-*/
+ * splits user_input into an array of tokens.
+ * lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
+ * getcwd(buf, 0);
+ */
 char					**get_tokens(char *user_input);
 
 // LEXER_UTILS.C --------------------------------------------------------------
@@ -165,8 +173,8 @@ int						str_isname(char *str);
 int						split_len(char **split);
 
 /*
-* ft_substr but starting by the first index of str
-*/
+ * ft_substr but starting by the first index of str
+ */
 char					*substr_by_address(char *str, int len);
 
 // TOKENIZER.C ----------------------------------------------------------------
@@ -190,17 +198,20 @@ int						strlen_isname(char *str);
 char					*ft_strfjoin(char *s1, char *s2);
 int						is_name(char c);
 
-// ft_echo.C ---------------------------------------------------------------------
+// ft_echo.C
+// ---------------------------------------------------------------------
 int						ft_echo(char **arg);
 
-// ft_cd.C ----------------------------------------------------------------------
+// ft_cd.C
+// ----------------------------------------------------------------------
 char					*get_key_value(t_env *list, char *key);
 void					update_key_value(t_env *list, char *key, char *new_val);
 int						ft_cd(char **args, t_env *env);
 int						ft_error(char *cmd, char *arg, char *message, int ret);
 int						split_len(char **split);
 
-// ft_pwd.C -----------------------------------------------------------------------
+// ft_pwd.C
+// -----------------------------------------------------------------------
 int						ft_pwd(void);
 
 // redirect.c
@@ -209,5 +220,6 @@ int						redirect(t_list *cmdlist);
 // convertions.c
 char					**env_to_char_array(t_env *envp);
 char					**list_to_char_array(t_node *token);
+int						ft_exit_nbr(int nbr, t_main *main);
 
 #endif

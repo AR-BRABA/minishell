@@ -64,19 +64,12 @@ t_env	*get_env_list(char **envp)
 	return (env);
 }
 
-int	ft_env(char **args, t_env *env)
+int	ft_env(t_env *env)
 {
-	int	i = 0;
 	t_envnode	*node;
 
 	if (!env || !env->head)
 		return (1);
-	while (args && args[i] != NULL)
-	{
-		if (ft_strncmp("env", args[i], 4) != 0)
-			return (127);
-		i++;
-	}
 	node = env->head;
 	while (node != NULL)
 	{

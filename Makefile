@@ -23,7 +23,8 @@ VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
 EXECUTOR_FILES	= $(EXECUTOR_DIR)/executor.c \
 				  $(EXECUTOR_DIR)/execute_builtins.c \
 				  $(EXECUTOR_DIR)/execute_external_commands.c \
-					$(EXECUTOR_DIR)/redirect.c
+					$(EXECUTOR_DIR)/redirect.c \
+					$(EXECUTOR_DIR)/pre_exec.c 
 PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
@@ -38,8 +39,7 @@ BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/unset.c \
 					  $(BUILTINS_DIR)/export.c \
 					  $(BUILTINS_DIR)/utils.c
-UTILS_FILES		=	$(UTILS_DIR)/print.c \
-					$(UTILS_DIR)/free.c \
+UTILS_FILES		= $(UTILS_DIR)/free.c \
 				  $(UTILS_DIR)/convertions.c \
 
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \

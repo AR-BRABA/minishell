@@ -6,12 +6,13 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/19 17:53:40 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/05 11:09:23 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <readline/readline.h>
+
+int		tecno_status = -24;
 
 void	sig_handler(int sig)
 {
@@ -22,7 +23,22 @@ void	sig_handler(int sig)
 		rl_replace_line("", 1);
 		if (RL_ISSTATE(RL_STATE_READCMD))
 			rl_redisplay();
+		tecno_status = 128 + SIGINT;
 	}
+}
+
+t_main	*init_main(int argc, char **argv, char **envp)
+{
+	t_main	*main;
+
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+	(void)argc;
+	(void)argv;
+	main = malloc(sizeof(t_main));
+	main->envp_list = get_env_list(envp);
+	main->envp = env_to_char_array(main->envp_list);
+	return (main);
 }
 
 /**
@@ -35,35 +51,23 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	char	**split;
 
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-	(void)argc;
-	(void)argv;
-	main = malloc(sizeof(t_main));
-	main->envp_list = get_env_list(envp);
-	main->envp = env_to_char_array(main->envp_list);
+	main = init_main(argc, argv, envp);
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (!input)
 			break ;
-		else if (input && !check_empty_input(input))
-		{
-			if (validate_input(input))
-			{
-				add_history(input);
-				split = metachar_split(input);
-				free(input);
-				main->cmdtab = get_cmdtable(split, main->envp_list);
-				free(split);
-				execute_commands(main);
-				free_table(main->cmdtab);
-			}
-		}
+		else if (check_empty_input(input) || !validate_input(input))
+			continue ;
+		add_history(input);
+		split = metachar_split(input);
+		free(input);
+		main->cmdtab = get_cmdtable(split, main->envp_list);
+		free(split);
+		execute_commands(main);
+		free_table(main->cmdtab);
+		main->cmdtab = NULL;
 	}
-	rl_clear_history();
-	free_split(main->envp);
-	free_env(main->envp_list);
-	free(main);
+	free_main(main);
 	return (0);
 }
