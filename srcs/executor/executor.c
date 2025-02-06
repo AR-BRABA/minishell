@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 18:58:37 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 20:18:02 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,12 @@ void	parent(t_list *cmdlist, int *fd, int *savefd)
 	}
 }
 
-int	*init_execute_fork_commands(int *savefd, int *n, t_main *main)
+int	*init_execute_fork_commands(int *fd, int *savefd, int *n, t_main *main)
 {
 	int	*pid;
 
+	fd[0] = 0;
+	fd[1] = 1;
 	*n = -1;
 	*savefd = -1;
 	pid = malloc(sizeof(int) * main->cmdtab->len);
@@ -126,7 +128,6 @@ int	freeturn(void *obj, int ret, int *fd, int *cmdfd)
 		close(fd[0]);
 	if (fd[1] > 2)
 		close(fd[1]);
-	fprintf(stderr, "in: %i\nout: %i\n", cmdfd[0], cmdfd[1]);
 	if (cmdfd[0] > 2)
 		close(cmdfd[0]);
 	if (cmdfd[1] > 2)
@@ -144,7 +145,7 @@ int	execute_fork_commands(t_main *main)
 	int		n;
 
 	cmdlist = main->cmdtab->head;
-	pid = init_execute_fork_commands(&savefd, &n, main);
+	pid = init_execute_fork_commands(fd, &savefd, &n, main);
 	while (cmdlist != NULL)
 	{
 		if (cmdlist->next)
