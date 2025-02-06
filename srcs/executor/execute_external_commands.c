@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:09:41 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:56:23 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,7 @@ void	execute_external_command(t_list *cmdlist, t_main *main)
 
 	token = get_cmd(cmdlist);
 	if (!token || !token->value)
-	{
-		perror(token->value);
-		return ;
-	}
+		return (perror(token->value));
 	if (access(token->value, X_OK) == 0)
 		cmd_path = ft_strdup(token->value);
 	else

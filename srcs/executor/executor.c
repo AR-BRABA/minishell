@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 17:20:37 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:58:37 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,14 @@ void	try_exec(t_list *cmdlist, t_main *main)
 	if (cmdlist->fd[0] != 0)
 	{ 
 		if (dup2(cmdlist->fd[0], 0) < 0)
-		{
-			perror("redirect");
-			return;
-		}
+			return(perror("redirect"));
 		close(cmdlist->fd[0]);
 		cmdlist->fd[0] = 0;
 	}
 	if (cmdlist->fd[1] != 1)
 	{
 		if (dup2(cmdlist->fd[1], 1) < 0)
-		{
-			perror("redirect");
-			return;
-		}
+			return (perror("redirect"));
 		close(cmdlist->fd[1]);
 		cmdlist->fd[1] = 1;
 	}
