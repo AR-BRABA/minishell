@@ -34,13 +34,19 @@ bool	check_border_special_chars(char *input)
 	while (*input && ft_isspace(*input))
 		input++;
 	if (*input == '|')
+	{
+		write(STDERR_FILENO, "Syntax error: input start/end with |, < or >\n", 46);
 		return (true);
+	}
 	while (*end) // ir pro fim da str
 		end++;
 	while (end > input && ft_isspace(*(end - 1))) // pular espaços do final
 		end--;
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
+	{
+		write(STDERR_FILENO, "Syntax error: input start/end with |, < or >\n", 46);
 		return (true);
+	}
 	return (false);
 }
 
@@ -62,7 +68,10 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '|')
+			{
+				write(STDERR_FILENO, "Syntax error: \n", 6);
 				return (false);
+			}
 		}
 		else if (*input == '|')
 		{
@@ -70,7 +79,10 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '<' || *input == '>')
+			{
+				write(STDERR_FILENO, "Syntax error: \n", 6);
 				return (false);
+			}
 		}
 		else
 			input++;
