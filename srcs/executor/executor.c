@@ -6,12 +6,11 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/05 18:24:41 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 14:40:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 t_node	*get_cmd(t_list *cmdlist)
 {
@@ -57,7 +56,10 @@ void	try_exec(t_list *cmdlist, t_main *main)
 	// ret = redirect(cmdlist);
 	fprintf(stderr, "fd in: %i\n", cmdlist->fd[0]);
 	fprintf(stderr, "fd out: %i\n", cmdlist->fd[1]);
-	if (cmdlist->fd[0] != 0) { if (dup2(cmdlist->fd[0], 0) < 0) {
+	if (cmdlist->fd[0] != 0)
+	{ 
+		if (dup2(cmdlist->fd[0], 0) < 0)
+		{
 			perror("redirect");
 			return;
 		}
@@ -74,13 +76,15 @@ void	try_exec(t_list *cmdlist, t_main *main)
 		close(cmdlist->fd[1]);
 		cmdlist->fd[1] = 1;
 	}
+
+
+
 	if (cmdlist->fd[0] != 0)
 		close(cmdlist->fd[0]);
 	if (cmdlist->fd[1] != 1)
 		close(cmdlist->fd[1]);
-	fprintf(stderr, "------------ dps:\n");
-	fprintf(stderr, "fd in: %i\n", cmdlist->fd[0]);
-	fprintf(stderr, "fd out: %i\n", cmdlist->fd[1]);
+
+
 	ret = execute_builtins(cmdlist, main);
 	if (ret == -1)
 		execute_external_command(cmdlist, main);
@@ -107,9 +111,9 @@ void	manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
 
 void	parent(t_list *cmdlist, int *fd, int *savefd)
 {
-	if (cmdlist->fd[0])
+	if (cmdlist->fd[0] != 0)
 		close(cmdlist->fd[0]);
-	if (cmdlist->fd[1])
+	if (cmdlist->fd[1] != 1)
 		close(cmdlist->fd[1]);
 	if (cmdlist->prev)
 		close(*savefd);
@@ -151,7 +155,8 @@ int	execute_fork_commands(t_main *main)
 		if (cmdlist->next)
 			if (pipe(fd) < 0)
 				exit(1);
-		pre_exec(cmdlist);
+		if (pre_exec(cmdlist) == 1)
+			return (freeturn(pid, 1));
 		pid[++n] = fork();
 		if (pid[n] < 0)
 			return (freeturn(pid, 1));
