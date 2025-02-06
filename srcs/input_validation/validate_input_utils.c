@@ -23,6 +23,26 @@ void	skip_spaces(char **input)
 		(*input)++;
 }
 
+bool	check_double_quotes(char *s, bool unclosed_double_quotes)
+{
+	while (*s && *s != '\"')
+		s++;
+	if (*s == '\"')
+		unclosed_double_quotes = !unclosed_double_quotes;
+	check_unclosed_quotes(s + 1);
+	return (unclosed_double_quotes);
+}
+
+bool	check_single_quotes(char *s, bool unclosed_single_quotes)
+{
+	while (*s && *s != '\'')
+		s++;
+	if (*s == '\'')
+		unclosed_single_quotes = !unclosed_single_quotes;
+	check_unclosed_quotes(s + 1);
+	return (unclosed_single_quotes);
+}
+
 bool	check_unclosed_quotes(char *s)
 {
 	bool	unclosed_single_quotes;
@@ -33,43 +53,12 @@ bool	check_unclosed_quotes(char *s)
 	while (*s)
 	{
 		if (*s == '\"')
-		{
-			while (*s && *s != '\"')
-				s++;
-			if (*s == '\"')
-				unclosed_double_quotes = !unclosed_double_quotes;
-			check_unclosed_quotes(s + 1);
-		}
+			unclosed_double_quotes =
+				check_double_quotes(s, unclosed_double_quotes);
 		else if (*s == '\'')
-		{
-			while (*s && *s != '\'')
-				s++;
-			if (*s == '\'')
-				unclosed_single_quotes = !unclosed_single_quotes;
-			check_unclosed_quotes(s + 1);
-		}
+				unclosed_single_quotes =
+					check_single_quotes(s, unclosed_single_quotes);
 		s++;
 	}
 	return (unclosed_single_quotes || unclosed_double_quotes);
-}
-
-bool	dollar_within_quotes(char *input, int *pos, char quote_char)
-{
-	while (input[*pos] && input[*pos] == '$')
-	{
-		if (quote_char == '\"' && input[*pos] == '$')
-		{
-			// Handle the dollar sign within double quotes
-		}
-		else
-		{
-			check_unclosed_quotes(input);
-			break ;
-		}
-	}
-	(*pos)++;
-	if (input[*pos] != quote_char)
-		return (false); // Unclosed quotes
-	(*pos)++;
-	return (true);
 }
