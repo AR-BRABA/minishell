@@ -41,7 +41,7 @@ int	strlen_unquote(char *quotestr)
 	i = 0;
 	start = 0;
 	quote = 0;
-	//
+
 	while (quotestr && quotestr[i] != '\0')
 	{
 		if (quotestr[i] == '\'' || quotestr[i] == '"')
@@ -56,58 +56,6 @@ int	strlen_unquote(char *quotestr)
 	}
 	return (i - quote);
 }
-
-/* tira aspas externas do token->value */
-// void	rm_quote(t_node *token)
-// {
-// 	int	squote;
-// 	int	dquote;
-// 	int	i;
-// 	int	q;
-// 	int	new_len;
-// 	int	len;
-// 	char	*unquoted;
-//
-// 	squote = 0;
-// 	dquote = 0;
-// 	i = 0;
-// 	q = 0;
-// 	new_len = strlen_unquote(token->value);
-// 	len = ft_strlen(token->value);
-// 	if (len == new_len)
-// 		return ;
-// 	unquoted = malloc((new_len + 1) * sizeof(char));
-// 	while (token->value[i] != '\0')
-// 	{
-// 		if (token->value[i] == '\'')
-// 		{
-// 			if (dquote % 2 != 0)
-// 				unquoted[q++] = token->value[i++];
-// 			else
-// 			{
-// 				squote++;
-// 				i++;
-// 			}
-// 		}
-// 		else if (token->value[i] == '\"')
-// 		{
-// 			if (squote % 2 != 0)
-// 				unquoted[q++] = token->value[i++];
-// 			else
-// 			{
-// 				dquote++;
-// 				i++;
-// 			}
-// 		}
-// 		else
-// 			unquoted[q++] = token->value[i++];
-// 	}
-// 	unquoted[q] = '\0';
-// 	free(token->value);
-// 	token->value = unquoted;
-// }
-/* tira aspas externas do token->value */
-/* tira aspas externas do token->value */
 
 void	build_unquoted(char *quoted, char *unquoted)
 {
@@ -314,41 +262,6 @@ void	expand(t_node *token, t_env *env)
 	free(token->value);
 	token->value = expanded;
 }
-
-/* search for '$' outside single quotes, if whats next is a valid env var name,
-	searchs for it on env list. if found: the key is replaced by its value,
-	else: its expanded to nothing. */
-// void	expand(t_node *token, t_env *env)
-// {
-// 	int	varlen;
-// 	char	*expanded;
-// 	t_envnode	*node;
-// 	char	*str;
-// 	char	*var;
-// 	int	dol;
-// 	char *hold;
-//
-// 	str = token->value;
-// 	expanded = NULL;
-// 	while (str)
-// 	{
-// 		dol = strdol(str);
-// 		if (dol < 0)
-// 			break ;
-// 		var = str + dol;
-// 		varlen = strlen_isname(var);
-// 		expanded = ft_strnjoin(expanded, str, (var - str));
-// 		hold = strndup(var + 1, varlen - 1);
-// 		node = search_key(env, hold);
-// 		free(hold);
-// 		if (node)
-// 			expanded = ft_strfjoin(expanded, node->value);
-// 		str += (var - str) + varlen;
-// 	}
-// 	expanded = ft_strfjoin(expanded, str);
-// 	free(token->value);
-// 	token->value = expanded;
-// }
 
 /* if not a heredoc delimiter, expands all variables that may exist. next,
 	removes outside quotes that may exist */

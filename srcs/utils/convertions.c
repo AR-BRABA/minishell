@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:12:01 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:12:39 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:55:19 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,6 @@ char	**list_to_char_array(t_node *token)
 	args[i] = NULL;
 	return (args);
 }
-
-// char    **get_args_array(t_list *cmdlist)
-// {
-// 	int     i;
-// 	char    **args;
-// 	t_node  *token;
-//
-// 	args = get_args(cmdlist->head);
-// 	if (!args)
-// 		return (NULL);
-// 	token = cmdlist->head;
-// 	i = 0;
-// 	while(token)
-// 	{
-// 		if(token->type == ARG)
-// 			args[i++] = ft_strdup(token->value);
-// 		token = token->next;
-// 	}
-// 	args[i] = NULL;
-// 	return (args);
-// }
 
 char	**env_to_char_array(t_env *envp)
 {

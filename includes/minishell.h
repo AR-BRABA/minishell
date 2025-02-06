@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/05 17:07:39 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:52:58 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_main
 	t_env				*envp_list;
 	char				**envp;
 	t_tab				*cmdtab;
-	int					fd[3];
+	int					fd[2];
 }						t_main;
 
 extern int				tecno_status;

@@ -18,13 +18,12 @@ int	pre_redirect_out(t_node *token, int *fd)
 
 int	pre_heredoc(t_node *token, int *fd)
 {
+	int	fdh[2];
 	char	*input;
 
 	if (fd[0] != 0)
 		close(fd[0]);
-	if (fd[1] != 1)
-		close(fd[1]);
-	if (pipe(fd) < 0)
+	if (pipe(fdh) < 0)
 	{
 		perror(token->next->value);
 		return (1);
@@ -33,11 +32,13 @@ int	pre_heredoc(t_node *token, int *fd)
 	while (ft_strncmp(input, token->next->value, ft_strlen(token->next->value)
 			+ 1) != 0)
 	{
-		write(fd[1], input, ft_strlen(input));
-		write(fd[1], "\n", 1);
+		write(fdh[1], input, ft_strlen(input));
+		write(fdh[1], "\n", 1);
 		free(input);
 		input = readline("> ");
 	}
+	close(fdh[1]);
+	fd[0] = fdh[0];
 	return (0);
 }
 
@@ -61,25 +62,21 @@ int	pre_exec(t_list *list)
 
 	list->fd[0] = 0;
 	list->fd[1] = 1;
-	list->fd[2] = -1;
 	token = list->head;
 	while (token != NULL && token->next != NULL)
 	{
 		if (token->type == REDIRECT_IN)
 		{
-			list->fd[2] = 0;
 			if (pre_redirect_in(token, list->fd) == 1)
 				return (1);
 		}
 		else if (token->type == HEREDOC)
 		{
-			list->fd[2] = 1;
 			if (pre_heredoc(token, list->fd) == 1)
 				return (1);
 		}
 		else if (token->type == REDIRECT_OUT || token->type == APPEND)
 		{
-			list->fd[2] = 0;
 			if (pre_redirect_out(token, list->fd) == 1)
 				return (1);
 		}
