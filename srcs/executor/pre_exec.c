@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pre_exec.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 09:43:40 by tsoares-          #+#    #+#             */
+/*   Updated: 2025/02/07 09:44:04 by tsoares-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	pre_redirect_out(t_node *token, int *fd)
@@ -18,7 +30,7 @@ int	pre_redirect_out(t_node *token, int *fd)
 
 int	pre_heredoc(t_node *token, int *fd)
 {
-	int	fdh[2];
+	int		fdh[2];
 	char	*input;
 
 	if (fd[0] != 0)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   format.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 22:01:10 by tsoares-          #+#    #+#             */
+/*   Updated: 2025/02/07 10:32:12 by tsoares-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 /* strlen while is a valid name for an enviroment variable ([a-z], [A-Z], '_',
@@ -31,7 +43,9 @@ int	strquote(char *str, int start)
 	return (-1);
 }
 
-/* takes a quoted str as parameter and returns it's len without outside quotes */
+/* takes a quoted str as parameter and returns it's len without
+ * outside quotes
+ */
 int	strlen_unquote(char *quotestr)
 {
 	int	i;
@@ -41,7 +55,6 @@ int	strlen_unquote(char *quotestr)
 	i = 0;
 	start = 0;
 	quote = 0;
-
 	while (quotestr && quotestr[i] != '\0')
 	{
 		if (quotestr[i] == '\'' || quotestr[i] == '"')
@@ -129,8 +142,8 @@ int	strdol(char *str)
 	while (str && str[i] != '\0')
 	{
 		if (str[i] == '$')
-			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i
-						+ 1])))
+			if (str[i + 1] == '?' || (is_name(str[i + 1])
+					&& !ft_isdigit(str[i + 1])))
 				return (i);
 		i++;
 	}
@@ -240,13 +253,13 @@ char	*expand_variable(char *expanded, char *str, t_env *env)
 		var = str + dol;
 		varlen = strlen_isname(var);
 		expanded = ft_strnjoin(expanded, str, (var - str));
-		if (tecno_status != -24)
-			value = ft_itoa(tecno_status);
+		if (g_tecno_status != -24)
+			value = ft_itoa(g_tecno_status);
 		else
 			value = get_variable_value(env, var, varlen);
 		if (value)
 			expanded = ft_strfjoin(expanded, value);
-		if (tecno_status != -24)
+		if (g_tecno_status != -24)
 			free(value);
 		str += (var - str) + varlen;
 		dol = strdol(str);

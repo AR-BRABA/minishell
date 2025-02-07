@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 18:58:37 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/07 09:43:15 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	try_exec(t_list *cmdlist, t_main *main)
 	int	ret;
 
 	if (cmdlist->fd[0] != 0)
-	{ 
+	{
 		if (dup2(cmdlist->fd[0], 0) < 0)
-			return(perror("redirect"));
+			return (perror("redirect"));
 		close(cmdlist->fd[0]);
 		cmdlist->fd[0] = 0;
 	}
@@ -172,11 +172,11 @@ void	execute_commands(t_main *main)
 	t_list	*cmdlist;
 
 	cmdlist = main->cmdtab->head;
-	if ((main->cmdtab->len == 1) &&
-		(ft_strncmp(cmdlist->head->value, "cd", 3) == 0 ||
-			ft_strncmp(cmdlist->head->value, "export", 7) == 0 ||
-			ft_strncmp(cmdlist->head->value, "exit", 5) == 0 ||
-			ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
+	if ((main->cmdtab->len == 1)
+		&& (ft_strncmp(cmdlist->head->value, "cd", 3) == 0
+			|| ft_strncmp(cmdlist->head->value, "export", 7) == 0
+			|| ft_strncmp(cmdlist->head->value, "exit", 5) == 0
+			|| ft_strncmp(cmdlist->head->value, "unset", 6) == 0))
 	{
 		main->fd[0] = dup(0);
 		main->fd[1] = dup(1);
@@ -189,8 +189,8 @@ void	execute_commands(t_main *main)
 	}
 	else
 		exit = ft_itoa(execute_fork_commands(main));
-	if (tecno_status != -24)
-		tecno_status = -24;
+	if (g_tecno_status != -24)
+		g_tecno_status = -24;
 	update_env("?", exit, main->envp_list);
 	free(exit);
 }

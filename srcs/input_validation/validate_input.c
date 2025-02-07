@@ -59,7 +59,7 @@ bool	validate_input(char *input)
 		|| !check_invalid_sequences(input)
 		|| !check_pipe_redirect_sequences(input))
 	{
-		tecno_status = 2;
+		g_tecno_status = 2;
 		return (false);
 	}
 	return (true);

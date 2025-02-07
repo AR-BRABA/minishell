@@ -38,9 +38,9 @@ bool	check_border_special_chars(char *input)
 		error("Syntax error: unexpected '|'\n", 28);
 		return (true);
 	}
-	while (*end) // ir pro fim da str
+	while (*end)
 		end++;
-	while (end > input && ft_isspace(*(end - 1))) // pular espaços do final
+	while (end > input && ft_isspace(*(end - 1)))
 		end--;
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
 	{
@@ -110,30 +110,13 @@ bool	check_invalid_sequences(char *input)
  */
 bool	check_pipe_redirect_sequences(char *input)
 {
-	//printf("\n\n\nDEBUG: Iniciando validação para input: '%s'\n", input); // DEBUG
 	if (!redirects_followed_by_pipe(input))
-	{
-		//printf("DEBUG: redirects_followed_by_pipe falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: redirects_followed_by_pipe passou!\n"); // DEBUG
 	if (!consecutive_pipes(input))
-	{
-		//printf("DEBUG: consecutive_pipes falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: consecutive_pipes passou!\n"); // DEBUG
 	if (!pipe_followed_by_redirects(input))
-	{
-		//printf("DEBUG: pipe_followed_by_redirects falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: pipe_followed_by_redirects passou!\n"); // DEBUG
 	if (!consecutive_redirects(input))
-	{
-		//printf("DEBUG: consecutive_redirects falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: consecutive_redirects passou!\n"); // DEBUG
 	return (true);
 }

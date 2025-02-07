@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 09:46:27 by tsoares-          #+#    #+#             */
+/*   Updated: 2025/02/07 09:47:48 by tsoares-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	ft_atou(const char *nptr)
@@ -130,6 +142,7 @@ int	ft_exit(char **args, t_main *main)
 	exit (nbr);
 }
 */
+
 static int	is_valid_exit_arg(char *arg)
 {
 	int	i;
@@ -168,8 +181,8 @@ int	ft_exit(char **args, t_main *main)
 
 	nbr = 1;
 	ft_putstr_fd("exit\n", 1);
-	if (tecno_status != -24)
-		nbr = tecno_status;
+	if (g_tecno_status != -24)
+		nbr = g_tecno_status;
 	else if (args && split_len(args) > 0 && !is_valid_exit_arg(args[0]))
 	{
 		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);

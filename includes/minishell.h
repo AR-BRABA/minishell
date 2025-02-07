@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 18:52:58 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/07 10:27:45 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_main
 	int					fd[2];
 }						t_main;
 
-extern int				tecno_status;
+extern int				g_tecno_status;
 
 // DISPLAY_PROMPT.C -----------------------------------------------------------
 char					*read_input(char *user_input);
