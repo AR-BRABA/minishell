@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:59:21 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/24 16:52:00 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:24:37 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,30 @@ bool	redirects_followed_by_pipe(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|')
-				return(error("Syntax error: '|' after redirection\n", 36, false));
+				return (error(
+						"Syntax error: '|' after redirection\n", 36, false
+					));
 		}
 		else
 			input++;
+	}
+	return (true);
+}
+
+bool	check_redirect_count(char **input, char current_char)
+{
+	int	count;
+
+	count = 0;
+	while (**input == current_char)
+	{
+		count++;
+		(*input)++;
+	}
+	if (count > 2)
+	{
+		return (error("Syntax error: too many redirections after '|'\n",
+				46, false));
 	}
 	return (true);
 }
@@ -57,32 +77,16 @@ bool	redirects_followed_by_pipe(char *input)
 bool	pipe_followed_by_redirects(char *input)
 {
 	char	current_char;
-	int		count;
 
 	current_char = '\0';
-	count = 0;
 	while (*input)
 	{
 		if (*input == '|')
 		{
 			input++;
 			skip_spaces(&input);
-			if (*input == '>' || *input == '<')
-			{
-				current_char = *input;
-				count = 0;
-				while (*input == current_char)
-				{
-					count++;
-					input++;
-				}
-				if (count > 2)
-				{
-					return(error(
-						"Syntax error: too many redirections after '|'\n", 46,
-						false));
-				}
-			}
+			if (!check_redirect_count(&input, current_char))
+				return (false);
 		}
 		else
 			input++;
