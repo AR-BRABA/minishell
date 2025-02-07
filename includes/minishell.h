@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 10:27:45 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:15:19 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void					parent(t_list *cmdlist, int *fd, int *savefd);
 // PROCESS_CONTROL.C ------------------------------------------------------------------
 int						freeturn(void *obj, int ret, int *fd, int *cmdfd);
 int						pc_get_exit_status(t_main *main, int *pid);
-int						*init_execute_fork_commands(int *savefd, int *n, t_main *main);
+int						*init_execute_fork_commands(int *savefd, int *fd, int *n, t_main *main);
 
 // PRINT.C ---------------------------------------------------------------------
 void					print_split(char **array);
