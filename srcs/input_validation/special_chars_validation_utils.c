@@ -95,7 +95,7 @@ bool	consecutive_pipes(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|')
-				return (error("Syntax error: consecutive pipes\n", 32, false));
+				return (error_return("Syntax error: consecutive pipes\n", 32, false));
 		}
 		else
 			input++;

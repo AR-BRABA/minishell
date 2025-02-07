@@ -24,7 +24,7 @@ bool	check_redirect_count(char **input, char current_char)
 	}
 	if (count > 2)
 	{
-		return (error("Syntax error: too many redirections after '|'\n",
+		return (error_return("Syntax error: too many redirections after '|'\n",
 				46, false));
 	}
 	return (true);
@@ -42,7 +42,7 @@ bool	check_consecutive_redirects(char **input, char current_char)
 	}
 	if (count > 2)
 	{
-		return (error("Syntax error: more than two consecutive redirections\n",
+		return (error_return("Syntax error: more than two consecutive redirections\n",
 				53, false
 			));
 	}
@@ -54,7 +54,7 @@ bool	check_invalid_redirect_sequence(char **input)
 	skip_spaces(input);
 	if (**input == '>' || **input == '<')
 	{
-		return (error("Syntax error: invalid redirection sequence\n",
+		return (error_return("Syntax error: invalid redirection sequence\n",
 				43, false
 			));
 	}
