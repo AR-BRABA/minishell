@@ -30,9 +30,10 @@ bool	check_empty_input(char *input)
 	return (true);
 }
 
-void	error(char *error_msg, int n_chars)
+bool	error(char *error_msg, int n_chars, bool return_value)
 {
 	write(STDERR_FILENO, error_msg, n_chars);
+	return (return_value);
 }
 
 /**
