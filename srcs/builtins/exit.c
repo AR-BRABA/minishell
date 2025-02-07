@@ -14,10 +14,10 @@
 
 int	ft_atou(const char *nptr)
 {
-	int			i;
-	long		convnum;
-	unsigned	ret;
-	int			sign;
+	int				i;
+	long			convnum;
+	unsigned int	ret;
+	int				sign;
 
 	i = 0;
 	convnum = 0;

@@ -92,7 +92,8 @@ char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C ------------------------------------------------------------
 bool					check_border_special_chars(char *input);
-bool					check_consecutive_redirects(char **input, char current_char);
+bool					check_consecutive_redirects(char **input,
+							char current_char);
 bool					check_empty_input(char *input);
 bool					check_invalid_sequences(char *input);
 bool					check_invalid_redirect_sequence(char **input);

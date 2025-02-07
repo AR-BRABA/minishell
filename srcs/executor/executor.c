@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 16:14:03 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/07 18:36:21 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ int	execute_fork_commands(t_main *main)
 
 void	restore_fd(int *fd, char *exit, t_main *main)
 {
-		if (dup2(fd[0], 0) < 0)
-			perror("redirect");
-		if (dup2(fd[1], 1) < 0)
-			perror("redirect");
-		if (fd[0])
-			close(fd[0]);
-		if (fd[1])
-			close(fd[1]);
-		free(exit);
-		ft_exit_nbr(2, main);
+	if (dup2(fd[0], 0) < 0)
+		perror("redirect");
+	if (dup2(fd[1], 1) < 0)
+		perror("redirect");
+	if (fd[0])
+		close(fd[0]);
+	if (fd[1])
+		close(fd[1]);
+	free(exit);
+	ft_exit_nbr(2, main);
 }
 
 void	execute_commands(t_main *main)
