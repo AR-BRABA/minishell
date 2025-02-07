@@ -70,6 +70,6 @@ bool	check_unclosed_quotes(char *s)
 			s++;
 	}
 	if (unclosed_single_quotes || unclosed_double_quotes)
-		write(STDERR_FILENO,"Syntax error: unclosed quotes\n", 30);
+		write(STDERR_FILENO, "Syntax error: unclosed quotes\n", 30);
 	return (unclosed_single_quotes || unclosed_double_quotes);
 }
