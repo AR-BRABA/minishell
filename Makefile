@@ -50,6 +50,7 @@ BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/export.c \
 					  $(BUILTINS_DIR)/utils.c
 UTILS_FILES		= $(UTILS_DIR)/free.c \
+				  $(UTILS_DIR)/free_utils.c \
 				  $(UTILS_DIR)/convertions.c \
 
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \

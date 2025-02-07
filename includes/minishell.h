@@ -144,12 +144,14 @@ void					print_list(t_list *list);
 void					print_tab(t_tab *table);
 
 // FREE.C ----------------------------------------------------------------------
-void					free_split(char **array);
-void					free_table(t_tab *cmdtable);
 int						free_env(t_env *env);
 void					free_list(t_list *cmdline);
 void					free_envnode(t_envnode *node);
+
+// FREE_UTILS.C ----------------------------------------------------------------
 void					free_main(t_main *main);
+void					free_table(t_tab *cmdtable);
+void					free_split(char **array);
 
 // IDENTIFY_CHAR.C -------------------------------------------------------------
 int						is_operator(char c);
