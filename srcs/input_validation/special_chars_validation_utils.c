@@ -32,7 +32,10 @@ bool	redirects_followed_by_pipe(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|') // > ou < seguido de |
+			{
+				error("Syntax error: '|' after redirection\n", 36);
 				return (false);
+			}
 		}
 		else
 			input++;
@@ -77,7 +80,10 @@ bool	pipe_followed_by_redirects(char *input)
 					input++;
 				}
 				if (count > 2) // + de dois > ou < consecutivos
+				{
+					error("Syntax error: too many redirections after '|'\n", 46);
 					return (false);
+				}
 			}
 		}
 		else
@@ -105,7 +111,10 @@ bool	consecutive_pipes(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|')
+			{
+				error("Syntax error: consecutive pipes\n", 32);
 				return (false);
+			}
 		}
 		else
 			input++;
@@ -146,10 +155,20 @@ bool	consecutive_redirects(char *input)
 				input++;
 			}
 			if (count > 2) // + de 2 > ou < consecutivos
+			{
+				error(
+					"Syntax error: more than 2 consecutive redirections\n", 51
+				);
 				return (false);
+			}
 			skip_spaces(&input);
 			if (*input == '>' || *input == '<')
+			{
+				error(
+					"Syntax error: invalid redirection sequence\n", 43
+				);
 				return (false);
+			}
 		}
 		else
 			input++;

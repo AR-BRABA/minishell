@@ -35,7 +35,7 @@ bool	check_border_special_chars(char *input)
 		input++;
 	if (*input == '|')
 	{
-		write(STDERR_FILENO, "Syntax error: input start/end with |, < or >\n", 46);
+		error("Syntax error: unexpected '|'\n", 28);
 		return (true);
 	}
 	while (*end) // ir pro fim da str
@@ -44,7 +44,7 @@ bool	check_border_special_chars(char *input)
 		end--;
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
 	{
-		write(STDERR_FILENO, "Syntax error: input start/end with |, < or >\n", 46);
+		error("Syntax error: input start/end with '|', '<' or '>'\n", 51);
 		return (true);
 	}
 	return (false);
@@ -69,7 +69,7 @@ bool	check_invalid_sequences(char *input)
 				input++;
 			if (*input == '|')
 			{
-				write(STDERR_FILENO, "Syntax error: \n", 6);
+				error("Syntax error: unexpected '|'\n", 29);
 				return (false);
 			}
 		}
@@ -80,7 +80,7 @@ bool	check_invalid_sequences(char *input)
 				input++;
 			if (*input == '<' || *input == '>')
 			{
-				write(STDERR_FILENO, "Syntax error: \n", 6);
+				error("Syntax error: '<' or '>' after '|'\n", 36);
 				return (false);
 			}
 		}

@@ -98,6 +98,7 @@ bool					check_pipe_redirect_sequences(char *input);
 bool					check_unclosed_quotes(char *s);
 bool					consecutive_pipes(char *input);
 bool					consecutive_redirects(char *input);
+void					error(char *error_msg, int n_chars);
 bool					pipe_followed_by_redirects(char *input);
 bool					redirects_followed_by_pipe(char *input);
 void					skip_spaces(char **input);
