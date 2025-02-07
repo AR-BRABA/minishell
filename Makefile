@@ -32,6 +32,7 @@ EXECUTOR_FILES	= $(EXECUTOR_DIR)/command_path_utils.c \
 PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
+				  $(PARSER_DIR)/token_split_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
 				  $(PARSER_DIR)/format.c

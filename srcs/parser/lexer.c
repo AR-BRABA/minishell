@@ -12,41 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-int	handle_operator(char *input, int count)
-{
-	if (is_operator(input[count]))
-	{
-		count++;
-		if (is_operator(input[count]) && input[count] == input[count - 1])
-			count++;
-	}
-	return (count);
-}
-
-int	handle_non_metachar(char *input, int count)
-{
-	int	quote;
-
-	while (input[count] != '\0' && !is_metachar(input[count]))
-	{
-		if (is_quote(input[count]))
-		{
-			quote = count++;
-			while (input[count] != input[quote])
-				count++;
-		}
-		count++;
-	}
-	return (count);
-}
-
-int	skip_spacesc(char *input, int count)
-{
-	while (is_space(input[count]))
-		count++;
-	return (count);
-}
-
 int	count_tokens(char *user_input)
 {
 	int		count;
@@ -68,13 +33,6 @@ int	count_tokens(char *user_input)
 	return (tokens);
 }
 
-int	handle_non_space_split(char *input, int count)
-{
-	while (input[count] != '\0' && !is_metachar(input[count])
-		&& !is_quote(input[count]))
-		count++;
-	return (count);
-}
 
 char	**metachar_split(char *user_input)
 {

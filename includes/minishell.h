@@ -163,6 +163,12 @@ int						skip_spacesc(char *input, int count);
 int						count_tokens(char *input);
 char					**metachar_split(char *user_input);
 
+// TOKEN_SPLIT_UTILS.C --------------------------------------------------------------------
+int						handle_non_metachar(char *input, int count);
+int						handle_non_space_split(char *input, int count);
+int						handle_operator(char *input, int count);
+int						skip_spacesc(char *input, int count);
+
 /*
  * splits user_input into an array of tokens.
  * lexical analisis divides tokens by: >, <, |, <<, >>, '...', "..." and SPACE
