@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 18:56:23 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/07 15:14:24 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*merror(char *msg, void *ret)
 	return (ret);
 }
 
-static char	**create_exec_args(t_node *token)
+char	**init_exec_args(t_node *token)
 {
 	char	**exec_args;
 	int		count;
@@ -32,6 +32,16 @@ static char	**create_exec_args(t_node *token)
 		tmp_token = tmp_token->next;
 	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
+	return (exec_args);
+}
+
+static char	**create_exec_args(t_node *token)
+{
+	char	**exec_args;
+	int		count;
+	t_node	*tmp_token;
+
+	exec_args = init_exec_args(token);
 	if (!exec_args)
 		return (merror("malloc:", NULL));
 	count = 0;

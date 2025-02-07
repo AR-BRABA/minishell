@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:42:28 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 09:43:15 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:14:03 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,35 @@ void	try_exec(t_list *cmdlist, t_main *main)
 {
 	int	ret;
 
-	if (cmdlist->fd[0] != 0)
+	if (cmdlist->fd[0] > 2)
 	{
 		if (dup2(cmdlist->fd[0], 0) < 0)
 			return (perror("redirect"));
 		close(cmdlist->fd[0]);
 		cmdlist->fd[0] = 0;
 	}
-	if (cmdlist->fd[1] != 1)
+	if (cmdlist->fd[1] > 2)
 	{
 		if (dup2(cmdlist->fd[1], 1) < 0)
 			return (perror("redirect"));
 		close(cmdlist->fd[1]);
 		cmdlist->fd[1] = 1;
 	}
-	if (cmdlist->fd[0] != 0)
+	if (cmdlist->fd[0] > 2)
 		close(cmdlist->fd[0]);
-	if (cmdlist->fd[1] != 1)
+	if (cmdlist->fd[1] > 2)
 		close(cmdlist->fd[1]);
 	ret = execute_builtins(cmdlist, main);
 	if (ret == -1)
 		execute_external_command(cmdlist, main);
 	ft_exit_nbr(ret, main);
+}
+
+void	decide_pipe(t_main *main, t_list *cmdlist, int *fd)
+{
+	if (cmdlist->next)
+		if (pipe(fd) < 0)
+			ft_exit_nbr(1, main);
 }
 
 int	execute_fork_commands(t_main *main)
@@ -49,12 +56,10 @@ int	execute_fork_commands(t_main *main)
 	int		n;
 
 	cmdlist = main->cmdtab->head;
-	pid = init_execute_fork_commands(&savefd, &n, main);
+	pid = init_execute_fork_commands(&savefd, fd, &n, main);
 	while (cmdlist != NULL)
 	{
-		if (cmdlist->next)
-			if (pipe(fd) < 0)
-				exit(1);
+		decide_pipe(main, cmdlist, fd);
 		if (pre_exec(cmdlist) == 1)
 			return (freeturn(pid, 1, fd, cmdlist->fd));
 		pid[++n] = fork();
@@ -69,6 +74,20 @@ int	execute_fork_commands(t_main *main)
 		cmdlist = cmdlist->next;
 	}
 	return (pc_get_exit_status(main, pid));
+}
+
+void	restore_fd(int *fd, char *exit, t_main *main)
+{
+		if (dup2(fd[0], 0) < 0)
+			perror("redirect");
+		if (dup2(fd[1], 1) < 0)
+			perror("redirect");
+		if (fd[0])
+			close(fd[0]);
+		if (fd[1])
+			close(fd[1]);
+		free(exit);
+		ft_exit_nbr(2, main);
 }
 
 void	execute_commands(t_main *main)
@@ -87,10 +106,7 @@ void	execute_commands(t_main *main)
 		main->fd[1] = dup(1);
 		redirect(cmdlist);
 		exit = ft_itoa(execute_builtins(cmdlist, main));
-		dup2(main->fd[0], 0);
-		dup2(main->fd[1], 1);
-		close(main->fd[0]);
-		close(main->fd[1]);
+		restore_fd(main->fd, exit, main);
 	}
 	else
 		exit = ft_itoa(execute_fork_commands(main));

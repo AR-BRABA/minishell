@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:10:26 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 13:10:28 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:14:41 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,28 @@ int	pc_get_exit_status(t_main *main, int *pid)
 	return (stat);
 }
 
-int	*init_execute_fork_commands(int *savefd, int *n, t_main *main)
+int	*init_execute_fork_commands(int *savefd, int *fd, int *n, t_main *main)
 {
 	int	*pid;
 
+	fd[0] = 0;
+	fd[1] = 1;
 	*n = -1;
 	*savefd = -1;
 	pid = malloc(sizeof(int) * main->cmdtab->len);
 	return (pid);
 }
 
-int	freeturn(void *obj, int ret, int *fd, int *cmdfd)
+int	freeturn(void *pid, int ret, int *fd, int *cmdfd)
 {
 	if (fd[0] > 2)
 		close(fd[0]);
 	if (fd[1] > 2)
 		close(fd[1]);
-	fprintf(stderr, "in: %i\nout: %i\n", cmdfd[0], cmdfd[1]);
 	if (cmdfd[0] > 2)
 		close(cmdfd[0]);
 	if (cmdfd[1] > 2)
 		close(cmdfd[1]);
-	free(obj);
+	free(pid);
 	return (ret);
 }
