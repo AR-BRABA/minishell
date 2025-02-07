@@ -39,6 +39,7 @@ PARSER_FILES	= $(PARSER_DIR)/env_search.c \
 				  $(PARSER_DIR)/token_split_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
+				  $(PARSER_DIR)/tokenizer_list_utils.c \
 				  
 BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/env.c \
@@ -49,6 +50,7 @@ BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/export.c \
 					  $(BUILTINS_DIR)/utils.c
 UTILS_FILES		= $(UTILS_DIR)/free.c \
+				  $(UTILS_DIR)/free_utils.c \
 				  $(UTILS_DIR)/convertions.c \
 
 OBJS			= $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:.c=.o))) \
