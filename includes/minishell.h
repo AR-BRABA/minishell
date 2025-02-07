@@ -92,15 +92,19 @@ char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C ------------------------------------------------------------
 bool					check_border_special_chars(char *input);
+bool					check_consecutive_redirects(char **input, char current_char);
 bool					check_empty_input(char *input);
 bool					check_invalid_sequences(char *input);
+bool					check_invalid_redirect_sequence(char **input);
 bool					check_pipe_redirect_sequences(char *input);
+bool					check_redirect_count(char **input, char current_char);
 bool					check_unclosed_quotes(char *s);
 bool					consecutive_pipes(char *input);
 bool					consecutive_redirects(char *input);
 bool					error(char *error_msg, int n_chars, bool return_value);
 bool					pipe_followed_by_redirects(char *input);
 bool					redirects_followed_by_pipe(char *input);
+
 void					skip_spaces(char **input);
 bool					validate_input(char *input);
 

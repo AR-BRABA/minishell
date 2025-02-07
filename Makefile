@@ -16,7 +16,8 @@ INCLUDE_DIR		= includes
 OBJ_DIR			= objs
 
 SRC_FILES		= $(SRC_DIR)/init_minishell.c
-VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
+VALIDATION_FILES	= $(VALIDATION_DIR)/redirect_validaton_utils.c \
+					  $(VALIDATION_DIR)/validate_input.c \
 					  $(VALIDATION_DIR)/validate_input_utils.c \
 					  $(VALIDATION_DIR)/special_chars_validation.c \
 					  $(VALIDATION_DIR)/special_chars_validation_utils.c 
