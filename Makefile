@@ -20,7 +20,8 @@ VALIDATION_FILES	= $(VALIDATION_DIR)/validate_input.c \
 					  $(VALIDATION_DIR)/validate_input_utils.c \
 					  $(VALIDATION_DIR)/special_chars_validation.c \
 					  $(VALIDATION_DIR)/special_chars_validation_utils.c 
-EXECUTOR_FILES	= $(EXECUTOR_DIR)/executor.c \
+EXECUTOR_FILES	= $(EXECUTOR_DIR)/command_path_utils.c \
+				  $(EXECUTOR_DIR)/executor.c \
 				  $(EXECUTOR_DIR)/execute_builtins.c \
 				  $(EXECUTOR_DIR)/execute_external_commands.c \
 					$(EXECUTOR_DIR)/redirect.c \

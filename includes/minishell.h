@@ -120,13 +120,10 @@ void					update_envnode(char *value, t_envnode *node);
 
 // EXECUTOR.C ------------------------------------------------------------------
 int						execute_builtins(t_list *cmdlist, t_main *main);
-//<<<<<<< HEAD
 void					execute_commands(t_main *main);
-//void					execute_external_command(t_list *cmdlist, char **envp);
-//=======
 void					execute_external_command(t_list *cmdlist, t_main *main);
-//>>>>>>> origin/main
 int						execute_fork_commands(t_main *main);
+char					*find_command_path(char *cmd, char **envp);
 t_node					*get_cmd(t_list *cmdlist);
 int						pre_exec(t_list *list);
 
