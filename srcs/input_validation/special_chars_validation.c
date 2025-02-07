@@ -73,7 +73,7 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '<' || *input == '>')
-				return (error(
+				return (error_return(
 						"Syntax error: '<' or '>' after '|'\n",
 						36, false
 					));
