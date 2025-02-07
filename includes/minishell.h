@@ -200,6 +200,9 @@ void					get_redirect_type(t_node *token);
 
 // TOKENIZER_UTILS.C -----------------------------------------------------------
 int						cmdlen(char **input);
+t_list					*init_cmdlist(char **input);
+
+// TOKENIZER_UTILS.C -----------------------------------------------------------
 void					add_node(t_node *newnode, t_list *list);
 void					add_list(t_list *newnode, t_tab *cmdtable);
 t_node					*new_node(char *token);

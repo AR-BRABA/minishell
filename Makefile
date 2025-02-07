@@ -39,6 +39,7 @@ PARSER_FILES	= $(PARSER_DIR)/env_search.c \
 				  $(PARSER_DIR)/token_split_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
+				  $(PARSER_DIR)/tokenizer_list_utils.c \
 				  
 BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/env.c \
