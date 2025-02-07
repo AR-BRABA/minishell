@@ -127,6 +127,15 @@ char					*find_command_path(char *cmd, char **envp);
 t_node					*get_cmd(t_list *cmdlist);
 int						pre_exec(t_list *list);
 
+// FD_MANAGEMENT.C ------------------------------------------------------------------
+void					manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid);
+void					parent(t_list *cmdlist, int *fd, int *savefd);
+
+// PROCESS_CONTROL.C ------------------------------------------------------------------
+int						freeturn(void *obj, int ret, int *fd, int *cmdfd);
+int						pc_get_exit_status(t_main *main, int *pid);
+int						*init_execute_fork_commands(int *savefd, int *n, t_main *main);
+
 // PRINT.C ---------------------------------------------------------------------
 void					print_split(char **array);
 void					print_list(t_list *list);

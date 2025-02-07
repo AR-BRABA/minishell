@@ -12,43 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-t_node	*get_cmd(t_list *cmdlist)
-{
-	t_node	*token;
-
-	token = cmdlist->head;
-	while (token != NULL)
-	{
-		if (token->type == COMMAND)
-			return (token);
-		token = token->next;
-	}
-	return (NULL);
-}
-
-int	get_exit_status(t_main *main, int *pid)
-{
-	int	status;
-	int	stat;
-	int	n;
-
-	n = 0;
-	status = 0;
-	stat = 0;
-	while (n < main->cmdtab->len)
-	{
-		waitpid(pid[n++], &status, 0);
-		if (WIFEXITED(status))
-			stat = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			stat = WTERMSIG(status) + 128;
-		else if (WIFSTOPPED(status))
-			stat = WSTOPSIG(status);
-	}
-	free(pid);
-	return (stat);
-}
-
 void	try_exec(t_list *cmdlist, t_main *main)
 {
 	int	ret;
@@ -75,64 +38,6 @@ void	try_exec(t_list *cmdlist, t_main *main)
 	if (ret == -1)
 		execute_external_command(cmdlist, main);
 	ft_exit_nbr(ret, main);
-}
-
-void	manipulate_fd(t_list *cmdlist, int *fd, int *savefd, int *pid)
-{
-	free(pid);
-	if (cmdlist->next)
-	{
-		if (dup2(fd[1], 1) < 0)
-			exit(1);
-		close(fd[0]);
-		close(fd[1]);
-	}
-	if (cmdlist->prev)
-	{
-		if (dup2(*savefd, 0) < 0)
-			exit(1);
-		close(*savefd);
-	}
-}
-
-void	parent(t_list *cmdlist, int *fd, int *savefd)
-{
-	if (cmdlist->fd[0] != 0)
-		close(cmdlist->fd[0]);
-	if (cmdlist->fd[1] != 1)
-		close(cmdlist->fd[1]);
-	if (cmdlist->prev)
-		close(*savefd);
-	if (cmdlist->next)
-	{
-		close(fd[1]);
-		*savefd = fd[0];
-	}
-}
-
-int	*init_execute_fork_commands(int *savefd, int *n, t_main *main)
-{
-	int	*pid;
-
-	*n = -1;
-	*savefd = -1;
-	pid = malloc(sizeof(int) * main->cmdtab->len);
-	return (pid);
-}
-
-int	freeturn(void *obj, int ret, int *fd, int *cmdfd)
-{
-	if (fd[0] > 2)
-		close(fd[0]);
-	if (fd[1] > 2)
-		close(fd[1]);
-	fprintf(stderr, "in: %i\nout: %i\n", cmdfd[0], cmdfd[1]);
-	if (cmdfd[0] > 2)
-		close(cmdfd[0]);
-	if (cmdfd[1] > 2)
-		close(cmdfd[1]);
-	free(obj);
-	return (ret);
 }
 
 int	execute_fork_commands(t_main *main)
@@ -163,7 +68,7 @@ int	execute_fork_commands(t_main *main)
 		parent(cmdlist, fd, &savefd);
 		cmdlist = cmdlist->next;
 	}
-	return (get_exit_status(main, pid));
+	return (pc_get_exit_status(main, pid));
 }
 
 void	execute_commands(t_main *main)
