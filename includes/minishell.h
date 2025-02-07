@@ -154,12 +154,12 @@ int						is_operator(char c);
 int						is_quote(char c);
 int						is_space(char c);
 int						is_metachar(char c);
+int						is_name(char c);
 
 // LEXER.C --------------------------------------------------------------------
 /*
  * count the amount of tokens in an input
  */
-int						skip_spacesc(char *input, int count);
 int						count_tokens(char *input);
 char					**metachar_split(char *user_input);
 
@@ -203,13 +203,26 @@ void					add_list(t_list *newnode, t_tab *cmdtable);
 t_node					*new_node(char *token);
 t_list					*new_list(char **input);
 
-// TOKEN_FORMAT.C ------------------------------------------------------------
-void					rm_quote(t_node *token);
+// FORMAT.C ------------------------------------------------------------
 void					format(t_tab *cmdtable, t_env *env);
-t_envnode				*search_key(t_env *list, char *key);
 int						strlen_isname(char *str);
 char					*ft_strfjoin(char *s1, char *s2);
-int						is_name(char c);
+char					*ft_strnjoin(char *s1, char *s2, int n);
+
+// ENV_SEARCH.C ------------------------------------------------------------
+char					*get_variable_value(t_env *env, char *var, int varlen);
+t_envnode				*search_key(t_env *list, char *key);
+
+// EXPANSION_UTILS.C ------------------------------------------------------------
+int						decide_expansion(char *str, int dol, char *tmp);
+void					expand(t_node *token, t_env *env);
+char					*expand_variable(char *expanded, char *str, t_env *env);
+int						strdol(char *str);
+
+// QUOTE_UTILS.C ------------------------------------------------------------
+void					build_unquoted(char *quoted, char *unquoted);
+void					rm_quote(t_node *token);
+int						strlen_unquote(char *quotestr);
 
 // ft_echo.C
 // ---------------------------------------------------------------------

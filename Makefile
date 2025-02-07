@@ -29,13 +29,17 @@ EXECUTOR_FILES	= $(EXECUTOR_DIR)/command_path_utils.c \
 				  $(EXECUTOR_DIR)/process_control.c \
 					$(EXECUTOR_DIR)/redirect.c \
 					$(EXECUTOR_DIR)/pre_exec.c 
-PARSER_FILES	= $(PARSER_DIR)/identify_char.c \
+PARSER_FILES	= $(PARSER_DIR)/env_search.c \
+				  $(PARSER_DIR)/expansion_utils.c \
+				  $(PARSER_DIR)/format.c \
+				  $(PARSER_DIR)/identify_char.c \
 				  $(PARSER_DIR)/lexer.c \
 				  $(PARSER_DIR)/lexer_utils.c \
+				  $(PARSER_DIR)/quote_utils.c \
 				  $(PARSER_DIR)/token_split_utils.c \
 				  $(PARSER_DIR)/tokenizer.c \
 				  $(PARSER_DIR)/tokenizer_utils.c \
-				  $(PARSER_DIR)/format.c
+				  
 BUILTINS_FILES		= $(BUILTINS_DIR)/pwd.c \
 					  $(BUILTINS_DIR)/env.c \
 					  $(BUILTINS_DIR)/cd.c \

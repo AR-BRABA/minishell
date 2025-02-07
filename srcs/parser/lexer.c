@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 22:00:39 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/06 22:00:44 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:03:23 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	count_tokens(char *user_input)
 	free(input);
 	return (tokens);
 }
-
 
 char	**metachar_split(char *user_input)
 {
