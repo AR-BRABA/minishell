@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:03:03 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 14:03:04 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 20:38:52 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	strdol(char *str)
 	while (str && str[i] != '\0')
 	{
 		if (str[i] == '$')
-			if (str[i + 1] == '?' || (is_name(str[i + 1])
-					&& !ft_isdigit(str[i + 1])))
+			if (str[i + 1] == '?' || (is_name(str[i + 1]) && !ft_isdigit(str[i
+						+ 1])))
 				return (i);
 		i++;
 	}
@@ -47,7 +47,8 @@ int	decide_expansion(char *str, int dol, char *tmp)
 		if (tmp[i] == '\'')
 			squote++;
 		else if (tmp[i] == '$')
-			if ((squote % 2 == 0 && dquote % 2 == 0) || dquote % 2 != 0)
+			if ((squote % 2 == 0 && dquote % 2 == 0) || (dquote % 2 != 0
+					&& squote % 2 == 0))
 				if (tmp[i + 1] == '?' || (is_name(tmp[i + 1])
 						&& !ft_isdigit(tmp[i + 1])))
 					return (i);
