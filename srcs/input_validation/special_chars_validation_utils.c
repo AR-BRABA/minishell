@@ -32,7 +32,7 @@ bool	redirects_followed_by_pipe(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|')
-				return (error(
+				return (error_return(
 						"Syntax error: '|' after redirection\n", 36, false
 					));
 		}
