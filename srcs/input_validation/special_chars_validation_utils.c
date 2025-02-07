@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:59:21 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 17:24:37 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:51:13 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,42 @@ bool	consecutive_pipes(char *input)
 			input++;
 			skip_spaces(&input);
 			if (*input == '|')
-				return(error("Syntax error: consecutive pipes\n", 32, false));
+				return (error("Syntax error: consecutive pipes\n", 32, false));
 		}
 		else
 			input++;
+	}
+	return (true);
+}
+
+bool	check_consecutive_redirects(char **input, char current_char)
+{
+	int	count;
+
+	count = 0;
+	while(**input == current_char)
+	{
+		count++;
+		(*input)++;
+
+	}
+	if (count > 2)
+	{
+		return (error("Syntax error: more than two consecutive redirections\n",
+			53, false
+		));
+	}
+	return (true);
+}
+
+bool	check_invalid_redirect_sequence(char **input)
+{
+	skip_spaces(input);
+	if (**input == '>' || **input == '<')
+	{
+		return (error("Syntax error: invalid redirection sequence\n",
+			43, false
+		));
 	}
 	return (true);
 }
@@ -138,34 +170,17 @@ bool	consecutive_pipes(char *input)
 bool	consecutive_redirects(char *input)
 {
 	char	current_char;
-	int		count;
 
 	current_char = '\0';
-	count = 0;
 	while (*input)
 	{
 		if (*input == '>' || *input == '<')
 		{
 			current_char = *input;
-			count = 0;
-			while (*input == current_char)
-			{
-				count++;
-				input++;
-			}
-			if (count > 2)
-			{
-				return(error(
-					"Syntax error: more than 2 consecutive redirections\n", 51,
-					false));
-			}
-			skip_spaces(&input);
-			if (*input == '>' || *input == '<')
-			{
-				return(error(
-					"Syntax error: invalid redirection sequence\n", 43,
-					false));
-			}
+			if (!check_consecutive_redirects(&input, current_char))
+				return (false);
+			if (!check_invalid_redirect_sequence(&input))
+				return (false);
 		}
 		else
 			input++;
