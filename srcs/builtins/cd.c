@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 09:48:16 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 09:48:18 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 17:56:32 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_path(char **args, t_env *env)
 	return (path);
 }
 
-int	ft_cd(char **args, t_env *env)
+int	ft_cd(char **args, t_main *main)
 {
 	char	*origin;
 	char	*path;
@@ -63,7 +63,7 @@ int	ft_cd(char **args, t_env *env)
 
 	if (split_len(args) > 1)
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 2);
-	path = get_path(args, env);
+	path = get_path(args, main->envp_list);
 	origin = getcwd(buf, PATH_MAX + 1);
 	if (chdir(path) == -1 || !origin)
 	{
@@ -71,8 +71,10 @@ int	ft_cd(char **args, t_env *env)
 		free(path);
 		return (1);
 	}
-	update_key_value(env, "OLDPWD", origin);
-	update_key_value(env, "PWD", path);
+	update_key_value(main->envp_list, "OLDPWD", origin);
+	update_key_value(main->envp_list, "PWD", path);
+	free_split(main->envp);
+	main->envp = env_to_char_array(main->envp_list);
 	free(path);
 	return (0);
 }

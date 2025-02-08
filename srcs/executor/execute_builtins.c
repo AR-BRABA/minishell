@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 16:22:23 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/04 12:09:36 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/08 18:00:51 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	exec_cmd(t_node *token, char **args, t_main *main)
 {
 	if (ft_strncmp(token->value, "cd", 3) == 0)
-		return (ft_cd(args, main->envp_list));
+		return (ft_cd(args, main));
 	else if (ft_strncmp(token->value, "echo", 5) == 0)
 		return (ft_echo(args));
 	else if (ft_strncmp(token->value, "exit", 5) == 0)
@@ -25,9 +25,9 @@ int	exec_cmd(t_node *token, char **args, t_main *main)
 	else if (ft_strncmp(token->value, "env", 4) == 0)
 		return (ft_env(main->envp_list));
 	else if (ft_strncmp(token->value, "unset", 6) == 0)
-		return (ft_unset(args, main->envp_list));
+		return (ft_unset(args, main));
 	else if (ft_strncmp(token->value, "export", 7) == 0)
-		return (ft_export(args, main->envp_list));
+		return (ft_export(args, main));
 	return (-1);
 }
 
