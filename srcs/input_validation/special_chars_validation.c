@@ -65,7 +65,8 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '|')
-				return (error_return("Syntax error: unexpected '|'\n", 29, false));
+				return (error_return(
+						"Syntax error: unexpected '|'\n", 29, false));
 		}
 		else if (*input == '|')
 		{
@@ -75,8 +76,7 @@ bool	check_invalid_sequences(char *input)
 			if (*input == '<' || *input == '>')
 				return (error_return(
 						"Syntax error: '<' or '>' after '|'\n",
-						36, false
-					));
+						36, false));
 		}
 		else
 			input++;

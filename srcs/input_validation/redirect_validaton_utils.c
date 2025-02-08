@@ -42,7 +42,8 @@ bool	check_consecutive_redirects(char **input, char current_char)
 	}
 	if (count > 2)
 	{
-		return (error_return("Syntax error: more than two consecutive redirections\n",
+		return (error_return(
+				"Syntax error: more than two consecutive redirections\n",
 				53, false
 			));
 	}
