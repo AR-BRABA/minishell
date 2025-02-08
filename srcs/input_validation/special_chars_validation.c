@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:17:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/24 16:35:14 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:23:24 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ bool	check_border_special_chars(char *input)
 	while (*input && ft_isspace(*input))
 		input++;
 	if (*input == '|')
-		return (true);
-	while (*end) // ir pro fim da str
+		return (error_return("Syntax error: unexpected '|'\n", 29, true));
+	while (*end)
 		end++;
-	while (end > input && ft_isspace(*(end - 1))) // pular espaços do final
+	while (end > input && ft_isspace(*(end - 1)))
 		end--;
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
-		return (true);
+		return (
+			error_return("Syntax error: input start/end with '|', '<' or '>'\n",
+				51, true
+			));
 	return (false);
 }
 
@@ -62,7 +65,7 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '|')
-				return (false);
+				return (error_return("Syntax error: unexpected '|'\n", 29, false));
 		}
 		else if (*input == '|')
 		{
@@ -70,7 +73,10 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '<' || *input == '>')
-				return (false);
+				return (error_return(
+						"Syntax error: '<' or '>' after '|'\n",
+						36, false
+					));
 		}
 		else
 			input++;
@@ -98,30 +104,13 @@ bool	check_invalid_sequences(char *input)
  */
 bool	check_pipe_redirect_sequences(char *input)
 {
-	//printf("\n\n\nDEBUG: Iniciando validação para input: '%s'\n", input); // DEBUG
 	if (!redirects_followed_by_pipe(input))
-	{
-		//printf("DEBUG: redirects_followed_by_pipe falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: redirects_followed_by_pipe passou!\n"); // DEBUG
 	if (!consecutive_pipes(input))
-	{
-		//printf("DEBUG: consecutive_pipes falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: consecutive_pipes passou!\n"); // DEBUG
 	if (!pipe_followed_by_redirects(input))
-	{
-		//printf("DEBUG: pipe_followed_by_redirects falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: pipe_followed_by_redirects passou!\n"); // DEBUG
 	if (!consecutive_redirects(input))
-	{
-		//printf("DEBUG: consecutive_redirects falhou!\n"); // DEBUG
 		return (false);
-	}
-	//printf("DEBUG: consecutive_redirects passou!\n"); // DEBUG
 	return (true);
 }

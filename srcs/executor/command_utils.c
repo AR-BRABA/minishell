@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/07 09:48:40 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 09:48:42 by tsoares-         ###   ########.fr       */
+/*   Created: 2025/02/07 13:11:03 by tsoares-          #+#    #+#             */
+/*   Updated: 2025/02/07 13:11:04 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_echo(char **arg)
+t_node	*get_cmd(t_list *cmdlist)
 {
-	int	n;
-	int	i;
+	t_node	*token;
 
-	n = 0;
-	if (arg && arg[0] && ft_strncmp(arg[0], "-n", 2) == 0)
+	token = cmdlist->head;
+	while (token != NULL)
 	{
-		n = 2;
-		while (arg[0][n] == 'n')
-			n++;
-		if (n != (int)ft_strlen(arg[0]))
-			n = 0;
-		else
-			n = 1;
+		if (token->type == COMMAND)
+			return (token);
+		token = token->next;
 	}
-	i = n;
-	while (arg && arg[i])
-	{
-		ft_putstr_fd(arg[i++], 1);
-		if (arg[i])
-			ft_putchar_fd(' ', 1);
-	}
-	if (!n)
-		ft_putchar_fd('\n', 1);
-	return (0);
+	return (NULL);
 }
