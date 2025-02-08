@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/08 00:25:34 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/08 17:59:05 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ t_envnode				*new_envnode(char *envp);
 void					addback_env(t_envnode *newnode, t_env *list);
 t_env					*get_env_list(char **envp);
 int						ft_env(t_env *env);
-int						ft_export(char **args, t_env *env);
-int						ft_unset(char **args, t_env *env);
+int						ft_export(char **args, t_main *main);
+int						ft_unset(char **args, t_main *main);
 int						free_env(t_env *env);
 int						ft_exit(char **args, t_main *main);
 int						ft_exit_nbr(int nbr, t_main *main);
@@ -244,7 +244,7 @@ int						ft_echo(char **arg);
 // -----------------------------------------------------------------------------
 char					*get_key_value(t_env *list, char *key);
 void					update_key_value(t_env *list, char *key, char *new_val);
-int						ft_cd(char **args, t_env *env);
+int						ft_cd(char **args, t_main *main);
 int						ft_error(char *cmd, char *arg, char *message, int ret);
 int						split_len(char **split);
 
