@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 09:46:27 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 09:47:48 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 00:24:13 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,110 +38,6 @@ int	ft_atou(const char *nptr)
 	ret = convnum * sign;
 	return (ret);
 }
-/*
-int	check_digits(char **args)
-{
-	int	i;
-	int	nbr;
-
-	i = 0;
-	nbr = 1;
-	if (args && args[0] && args[0][i] == '-')
-		i++;
-	while (args && args[0] && args[0][i] != '\0')
-	{
-		if (!ft_isdigit(args[0][i]))
-		{
-			nbr = 0;
-			break ;
-		}
-		i++;
-	}
-	if (!nbr || i >= 20)
-		return (2);
-	return (1);
-}
-
-int	ft_exit(char **args, t_main *main)
-{
-	int		nbr;
-	char	*tmp;
-
-	ft_putstr_fd("exit\n", 1);
-	nbr = check_digits(args);
-	if (nbr == 2)
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-	else
-	{
-		if (split_len(args) > 1)
-			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2),
-				1);
-		if (split_len(args) == 1)
-			nbr = ft_atou(args[0]);
-		else
-		{
-			tmp = get_key_value(main->envp_list, "?");
-			nbr = ft_atou(tmp);
-			free(tmp);
-		}
-	}
-	rl_clear_history();
-	close(main->fd[0]);
-	close(main->fd[1]);
-	free_split(args);
-	free_main(main);
-	exit(nbr);
-}
-
-int	ft_exit(char **args, t_main *main)
-{
-	int		len;
-	int		i;
-	int		nbr;
-	char	*tmp;
-
-	len = split_len(args);
-	i = 0;
-	nbr = 1;
-	ft_putstr_fd("exit\n", 1);
-	if (args && args[0] && args[0][i] == '-')
-		i++;
-	while (args && args[0] && args[0][i] != '\0')
-	{
-		if (!ft_isdigit(args[0][i]))
-		{
-			nbr = 0;
-			break ;
-		}
-		i++;
-	}
-	if (!nbr || i >= 20)
-	{
-		ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		nbr = 2;
-	}
-	else
-	{
-		if (len > 1)
-			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2),
-				1);
-		if (len == 1)
-			nbr = ft_atou(args[0]);
-		else
-		{
-			tmp = get_key_value(main->envp_list, "?");
-			nbr = ft_atou(tmp);
-			free(tmp);
-		}
-	}
-	rl_clear_history();
-	close(main->fd[0]);
-	close(main->fd[1]);
-	free_main(main);
-	free_split(args);
-	exit (nbr);
-}
-*/
 
 static int	is_valid_exit_arg(char *arg)
 {
