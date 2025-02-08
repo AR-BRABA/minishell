@@ -30,12 +30,6 @@ bool	check_empty_input(char *input)
 	return (true);
 }
 
-bool	error_return(char *error_msg, int n_chars, bool return_value)
-{
-	write(STDERR_FILENO, error_msg, n_chars);
-	return (return_value);
-}
-
 /**
  * Validates the user's input by checking for syntax issues
  *
@@ -60,7 +54,7 @@ bool	validate_input(char *input)
 		|| !check_invalid_sequences(input)
 		|| !check_pipe_redirect_sequences(input))
 	{
-		g_tecno_status = 2;
+		write(STDERR_FILENO, "Error\n", 6);
 		return (false);
 	}
 	return (true);

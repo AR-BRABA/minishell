@@ -59,17 +59,18 @@ bool	check_unclosed_quotes(char *s)
 		if (*s == '\"')
 		{
 			s++;
-			unclosed_double_quotes = check_double_quotes(&s);
+			unclosed_double_quotes =
+				check_double_quotes(&s);
 		}
 		else if (*s == '\'')
 		{
 			s++;
-			unclosed_single_quotes = check_single_quotes(&s);
+			unclosed_single_quotes =
+				check_single_quotes(&s);
 		}
 		else
 			s++;
 	}
-	if (unclosed_single_quotes || unclosed_double_quotes)
-		write(STDERR_FILENO, "Syntax error: unclosed quotes\n", 30);
 	return (unclosed_single_quotes || unclosed_double_quotes);
 }
+// For each function => Syntax error: <error type> + exit_status = 2

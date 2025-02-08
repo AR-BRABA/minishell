@@ -6,11 +6,76 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 15:14:24 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:56:23 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*build_binary_path(char const *directory, char slash, char const *cmd)
+{
+	char	*bin_path;
+	int		i;
+	int		pos;
+
+	if (!directory || !cmd)
+		return (NULL);
+	i = 0;
+	pos = 0;
+	bin_path = (char *)malloc(((ft_strlen(directory) + ft_strlen(cmd)) + 2)
+			* sizeof(char));
+	if (!bin_path)
+		return (NULL);
+	while (directory[i])
+		bin_path[i++] = directory[pos++];
+	bin_path[i++] = slash;
+	pos = 0;
+	while (cmd[pos])
+		bin_path[i++] = cmd[pos++];
+	bin_path[i] = '\0';
+	return (bin_path);
+}
+
+char	*no_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	free(absolute_path);
+	return (NULL);
+}
+
+char	*found_path(char **paths, char *absolute_path)
+{
+	free_split(paths);
+	return (absolute_path);
+}
+
+char	*find_command_path(char *cmd, char **envp)
+{
+	char	*path_env;
+	char	**paths;
+	char	*absolute_path;
+	int		i;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
+		i++;
+	if (!envp[i])
+		return (NULL);
+	path_env = envp[i] + 5;
+	paths = ft_split(path_env, ':');
+	i = 0;
+	while (paths[i])
+	{
+		absolute_path = build_binary_path(paths[i++], '/', cmd);
+		if (!absolute_path)
+			return (no_path(paths, absolute_path));
+		if (access(absolute_path, X_OK) == 0)
+			return (found_path(paths, absolute_path));
+		free(absolute_path);
+	}
+	free_split(paths);
+	return (NULL);
+}
 
 void	*merror(char *msg, void *ret)
 {
@@ -18,7 +83,7 @@ void	*merror(char *msg, void *ret)
 	return (ret);
 }
 
-char	**init_exec_args(t_node *token)
+static char	**create_exec_args(t_node *token)
 {
 	char	**exec_args;
 	int		count;
@@ -32,16 +97,6 @@ char	**init_exec_args(t_node *token)
 		tmp_token = tmp_token->next;
 	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
-	return (exec_args);
-}
-
-static char	**create_exec_args(t_node *token)
-{
-	char	**exec_args;
-	int		count;
-	t_node	*tmp_token;
-
-	exec_args = init_exec_args(token);
 	if (!exec_args)
 		return (merror("malloc:", NULL));
 	count = 0;
