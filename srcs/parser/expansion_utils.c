@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 14:03:03 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 20:38:52 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/08 17:22:56 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	decide_expansion(char *str, int dol, char *tmp)
 	expansion = &str[dol] - tmp;
 	while (tmp && tmp[i] && i <= expansion)
 	{
-		if (tmp[i] == '\"')
+		if (tmp[i] == '\"' && squote % 2 == 0)
 			dquote++;
-		if (tmp[i] == '\'')
+		if (tmp[i] == '\'' && dquote % 2 == 0)
 			squote++;
 		else if (tmp[i] == '$')
 			if ((squote % 2 == 0 && dquote % 2 == 0) || (dquote % 2 != 0
