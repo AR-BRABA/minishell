@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:38:19 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 13:38:41 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 02:16:29 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,6 @@ int	handle_non_metachar(char *input, int count)
 int	skip_spacesc(char *input, int count)
 {
 	while (is_space(input[count]))
-		count++;
-	return (count);
-}
-
-int	handle_non_space_split(char *input, int count)
-{
-	while (input[count] != '\0' && !is_metachar(input[count])
-		&& !is_quote(input[count]))
 		count++;
 	return (count);
 }
