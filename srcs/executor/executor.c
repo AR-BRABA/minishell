@@ -118,8 +118,6 @@ void	execute_commands(t_main *main)
 		exit = ft_itoa(execute_fork_commands(main));
 	if (g_tecno_status != -24)
 		g_tecno_status = -24;
-	fprintf(stderr, "tecno: %i\n", g_tecno_status);
-	fprintf(stderr, "exit: %s\n", exit);
 	update_env("?", exit, main->envp_list);
 	free(exit);
 }
