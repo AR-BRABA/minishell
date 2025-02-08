@@ -6,13 +6,13 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 05:36:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/05 11:09:23 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/08 17:04:33 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		tecno_status = -24;
+int		g_tecno_status = -24;
 
 void	sig_handler(int sig)
 {
@@ -23,7 +23,7 @@ void	sig_handler(int sig)
 		rl_replace_line("", 1);
 		if (RL_ISSTATE(RL_STATE_READCMD))
 			rl_redisplay();
-		tecno_status = 128 + SIGINT;
+		g_tecno_status = 128 + SIGINT;
 	}
 }
 
