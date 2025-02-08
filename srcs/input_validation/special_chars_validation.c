@@ -34,14 +34,14 @@ bool	check_border_special_chars(char *input)
 	while (*input && ft_isspace(*input))
 		input++;
 	if (*input == '|')
-		return (error("Syntax error: unexpected '|'\n", 29, true));
+		return (error_return("Syntax error: unexpected '|'\n", 29, true));
 	while (*end)
 		end++;
 	while (end > input && ft_isspace(*(end - 1)))
 		end--;
 	if (*(end - 1) == '|' || *(end - 1) == '<' || *(end - 1) == '>')
 		return (
-			error("Syntax error: input start/end with '|', '<' or '>'\n",
+			error_return("Syntax error: input start/end with '|', '<' or '>'\n",
 				51, true
 			));
 	return (false);
@@ -65,7 +65,7 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '|')
-				return (error("Syntax error: unexpected '|'\n", 29, false));
+				return (error_return("Syntax error: unexpected '|'\n", 29, false));
 		}
 		else if (*input == '|')
 		{
@@ -73,7 +73,7 @@ bool	check_invalid_sequences(char *input)
 			while (*input && ft_isspace(*input))
 				input++;
 			if (*input == '<' || *input == '>')
-				return (error(
+				return (error_return(
 						"Syntax error: '<' or '>' after '|'\n",
 						36, false
 					));
