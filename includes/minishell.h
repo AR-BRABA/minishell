@@ -102,7 +102,8 @@ bool					check_redirect_count(char **input, char current_char);
 bool					check_unclosed_quotes(char *s);
 bool					consecutive_pipes(char *input);
 bool					consecutive_redirects(char *input);
-bool					error_return(char *error_msg, int n_chars, bool return_value);
+bool					error_return(char *error_msg, int n_chars,
+							bool return_value);
 bool					pipe_followed_by_redirects(char *input);
 bool					redirects_followed_by_pipe(char *input);
 
