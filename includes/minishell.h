@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 08:11:33 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/08 17:59:05 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/08 21:56:15 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,13 @@ bool					check_empty_input(char *input);
 bool					check_invalid_sequences(char *input);
 bool					check_invalid_redirect_sequence(char **input);
 bool					check_pipe_redirect_sequences(char *input);
-bool					check_redirect_count(char **input, char current_char);
+bool					check_redirect_count(char **input,
+							char current_char);
 bool					check_unclosed_quotes(char *s);
 bool					consecutive_pipes(char *input);
 bool					consecutive_redirects(char *input);
-bool					error_return(char *error_msg, int n_chars, bool return_value);
+bool					error_return(char *error_msg, int n_chars,
+							bool return_value);
 bool					pipe_followed_by_redirects(char *input);
 bool					redirects_followed_by_pipe(char *input);
 
