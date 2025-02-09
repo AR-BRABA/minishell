@@ -88,7 +88,25 @@ bool	pipe_followed_by_redirects(char *input)
  */
 bool	consecutive_pipes(char *input) // chamar is_str
 {
-	while (*input)
+	int	i;
+
+	i = 0;
+	while(input[i])
+	{
+		if(!is_str(input, i) && input[i] == '|')
+		{
+			i++;
+			while(input[i] && ft_isspace(input[i]))
+				i++;
+			if (*input == '|')
+				return (error_return("Syntax error: consecutive pipes\n",
+					32, false));
+		}
+		else
+			i++;
+	}
+	return (true);
+	/*while (*input)
 	{
 		if (*input == '|')
 		{
@@ -100,5 +118,5 @@ bool	consecutive_pipes(char *input) // chamar is_str
 		else
 			input++;
 	}
-	return (true);
+	return (true);*/
 }
