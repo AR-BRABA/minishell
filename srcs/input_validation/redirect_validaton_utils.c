@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 18:34:32 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 18:34:34 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 23:06:26 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ bool	check_consecutive_redirects(char **input, char current_char)
 	}
 	if (count > 2)
 	{
-		return (error_return("Syntax error: more than two consecutive redirections\n",
+		return (error_return(
+				"Syntax error: more than two consecutive redirections\n",
 				53, false
 			));
 	}
@@ -78,20 +79,21 @@ bool	check_invalid_redirect_sequence(char **input)
 bool	consecutive_redirects(char *input)
 {
 	char	current_char;
+	int		i;
 
 	current_char = '\0';
-	while (*input)
+	i = 0;
+	while (input[i])
 	{
-		if (*input == '>' || *input == '<')
+		if (!is_str(input, i) && (input[i] == '>' || input[i] == '<'))
 		{
-			current_char = *input;
+			current_char = input[i];
 			if (!check_consecutive_redirects(&input, current_char))
 				return (false);
 			if (!check_invalid_redirect_sequence(&input))
 				return (false);
 		}
-		else
-			input++;
+		i++;
 	}
 	return (true);
 }

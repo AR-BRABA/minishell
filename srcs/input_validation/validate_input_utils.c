@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 06:03:53 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/01/24 15:49:15 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 23:05:44 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ bool	is_str(char *input, int pos)
 	i = 0;
 	in_single_quotes = false;
 	in_double_quotes = false;
-	while(i < pos && input[i])
+	while (i < pos && input[i])
 	{
 		if (input[i] == '\'' && !in_double_quotes)
 			in_single_quotes = !in_single_quotes;

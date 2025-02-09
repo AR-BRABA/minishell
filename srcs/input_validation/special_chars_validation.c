@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:17:05 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 17:23:24 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 23:03:42 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ bool	is_invalid_pipe(char **input)
 	return (**input == '<' || **input == '>');
 }
 
-
 /**
  * Validates the input to ensure '<' or '>' is not followed by '|'
  * and '|' is not followed by '<' or '>', ignoring spaces in between.
@@ -84,41 +83,16 @@ bool	check_invalid_sequences(char *input)
 			if ((input[i] == '>' || input[i] == '<')
 				&& is_invalid_redirection(&input))
 				return (error_return(
-					"Syntax error: unexpected '|'\n", 29, false
-				));
+						"Syntax error: unexpected '|'\n", 29, false
+					));
 			if (input[i] == '|' && is_invalid_pipe(&input))
 				return (error_return(
-					"Syntax error: '<' or '>' after '|'\n", 36, false
-				));
+						"Syntax error: '<' or '>' after '|'\n", 36, false
+					));
 		}
 		i++;
 	}
 	return (true);
-	/*while (*input)
-	{
-		if (*input == '<' || *input == '>')
-		{
-			input++;
-			while (*input && ft_isspace(*input))
-				input++;
-			if (*input == '|')
-				return (error_return("Syntax error: unexpected '|'\n", 29, false));
-		}
-		else if (*input == '|')
-		{
-			input++;
-			while (*input && ft_isspace(*input))
-				input++;
-			if (*input == '<' || *input == '>')
-				return (error_return(
-						"Syntax error: '<' or '>' after '|'\n",
-						36, false
-					));
-		}
-		else
-			input++;
-	}
-	return (true);*/
 }
 
 /**
@@ -153,14 +127,6 @@ bool	check_pipe_redirect_sequences(char *input)
 				|| !pipe_followed_by_redirects(&input[i])
 				|| !consecutive_redirects(&input[i]))
 				return (false);
-			/*if (!redirects_followed_by_pipe(input))
-				return (false);
-			if (!consecutive_pipes(input))
-				return (false);
-			if (!pipe_followed_by_redirects(input))
-				return (false);
-			if (!consecutive_redirects(input))
-				return (false);*/
 		}
 		i++;
 	}
