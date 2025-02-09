@@ -47,6 +47,23 @@ bool	check_border_special_chars(char *input)
 	return (false);
 }
 
+bool	is_invalid_redirection(char **input)
+{
+	(*input)++;
+	while (**input && ft_isspace(**input))
+		(*input)++;
+	return (**input == '|');
+}
+
+bool	is_invalid_pipe(char **input)
+{
+	(*input)++;
+	while (**input && ft_isspace(**input))
+		(*input)++;
+	return (**input == '<' || **input == '>');
+}
+
+
 /**
  * Validates the input to ensure '<' or '>' is not followed by '|'
  * and '|' is not followed by '<' or '>', ignoring spaces in between.
@@ -57,7 +74,27 @@ bool	check_border_special_chars(char *input)
  */
 bool	check_invalid_sequences(char *input)
 {
-	while (*input)
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (!is_str(input, i))
+		{
+			if ((input[i] == '>' || input[i] == '<')
+				&& is_invalid_redirection(&input))
+				return (error_return(
+					"Syntax error: unexpected '|'\n", 29, false
+				));
+			if (input[i] == '|' && is_invalid_pipe(&input))
+				return (error_return(
+					"Syntax error: '<' or '>' after '|'\n", 36, false
+				));
+		}
+		i++;
+	}
+	return (true);
+	/*while (*input)
 	{
 		if (*input == '<' || *input == '>')
 		{
@@ -81,7 +118,7 @@ bool	check_invalid_sequences(char *input)
 		else
 			input++;
 	}
-	return (true);
+	return (true);*/
 }
 
 /**
@@ -104,13 +141,28 @@ bool	check_invalid_sequences(char *input)
  */
 bool	check_pipe_redirect_sequences(char *input)
 {
-	if (!redirects_followed_by_pipe(input))
-		return (false);
-	if (!consecutive_pipes(input))
-		return (false);
-	if (!pipe_followed_by_redirects(input))
-		return (false);
-	if (!consecutive_redirects(input))
-		return (false);
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (!is_str(input, i))
+		{
+			if (!redirects_followed_by_pipe(&input[i])
+				|| !consecutive_pipes(&input[i])
+				|| !pipe_followed_by_redirects(&input[i])
+				|| !consecutive_redirects(&input[i]))
+				return (false);
+			/*if (!redirects_followed_by_pipe(input))
+				return (false);
+			if (!consecutive_pipes(input))
+				return (false);
+			if (!pipe_followed_by_redirects(input))
+				return (false);
+			if (!consecutive_redirects(input))
+				return (false);*/
+		}
+		i++;
+	}
 	return (true);
 }

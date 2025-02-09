@@ -86,7 +86,7 @@ bool	pipe_followed_by_redirects(char *input)
  * @return true  - If there are no consecutive pipes in the input
  * @return false - If two consecutive pipes or more are detected
  */
-bool	consecutive_pipes(char *input)
+bool	consecutive_pipes(char *input) // chamar is_str
 {
 	while (*input)
 	{

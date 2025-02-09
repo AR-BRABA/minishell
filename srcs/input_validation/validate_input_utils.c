@@ -73,3 +73,23 @@ bool	check_unclosed_quotes(char *s)
 		write(STDERR_FILENO, "Syntax error: unclosed quotes\n", 30);
 	return (unclosed_single_quotes || unclosed_double_quotes);
 }
+
+bool	is_str(char *input, int pos)
+{
+	int		i;
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+
+	i = 0;
+	in_single_quotes = false;
+	in_double_quotes = false;
+	while(i < pos && input[i])
+	{
+		if (input[i] == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (input[i] == '\"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		i++;
+	}
+	return (in_single_quotes || in_double_quotes);
+}
