@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:59:21 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 18:21:58 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/08 23:04:45 by tsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,22 @@
  */
 bool	redirects_followed_by_pipe(char *input)
 {
-	while (*input)
+	int	i;
+
+	i = 0;
+	while (input[i])
 	{
-		if ((*input == '>' || *input == '<'))
+		if (!is_str(input, i) && (input[i] == '>' || input[i] == '<'))
 		{
-			input++;
+			i++;
 			skip_spaces(&input);
-			if (*input == '|')
+			if (input[i] == '|')
 				return (error_return(
 						"Syntax error: '|' after redirection\n", 36, false
 					));
 		}
 		else
-			input++;
+			i++;
 	}
 	return (true);
 }
@@ -86,19 +89,24 @@ bool	pipe_followed_by_redirects(char *input)
  * @return true  - If there are no consecutive pipes in the input
  * @return false - If two consecutive pipes or more are detected
  */
-bool	consecutive_pipes(char *input)
+bool	consecutive_pipes(char *input) // chamar is_str
 {
-	while (*input)
+	int	i;
+
+	i = 0;
+	while (input[i])
 	{
-		if (*input == '|')
+		if (!is_str(input, i) && input[i] == '|')
 		{
-			input++;
-			skip_spaces(&input);
+			i++;
+			while (input[i] && ft_isspace(input[i]))
+				i++;
 			if (*input == '|')
-				return (error_return("Syntax error: consecutive pipes\n", 32, false));
+				return (error_return("Syntax error: consecutive pipes\n",
+						32, false));
 		}
 		else
-			input++;
+			i++;
 	}
 	return (true);
 }
