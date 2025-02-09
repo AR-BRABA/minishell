@@ -6,7 +6,7 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 17:02:18 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 15:14:24 by jgils            ###   ########.fr       */
+/*   Updated: 2025/02/09 05:15:31 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ char	**init_exec_args(t_node *token)
 	t_node	*tmp_token;
 
 	count = 1;
-	tmp_token = token->next;
-	while (tmp_token && tmp_token->type == ARG)
+	tmp_token = token;
+	while (tmp_token)
 	{
-		count++;
+		if (tmp_token->type == ARG)
+			count++;
 		tmp_token = tmp_token->next;
 	}
 	exec_args = (char **)malloc(sizeof(char *) * (count + 1));
@@ -47,10 +48,10 @@ static char	**create_exec_args(t_node *token)
 	count = 0;
 	tmp_token = token;
 	exec_args[count++] = tmp_token->value;
-	tmp_token = tmp_token->next;
-	while (tmp_token && tmp_token->type == ARG)
+	while (tmp_token)
 	{
-		exec_args[count++] = tmp_token->value;
+		if (tmp_token->type == ARG)
+			exec_args[count++] = tmp_token->value;
 		tmp_token = tmp_token->next;
 	}
 	exec_args[count] = NULL;

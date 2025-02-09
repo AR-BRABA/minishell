@@ -6,11 +6,31 @@
 /*   By: tsoares- <tsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:26:02 by tsoares-          #+#    #+#             */
-/*   Updated: 2025/02/07 10:26:04 by tsoares-         ###   ########.fr       */
+/*   Updated: 2025/02/09 05:16:04 by jgils            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	find_command(t_node *token)
+{
+	t_node	*tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->value[0] == '<' || tmp->value[0] == '>')
+		{
+			if (tmp->next && tmp->next->next)
+				tmp = tmp->next->next;
+		}
+		else
+		{
+			tmp->type = COMMAND;
+			return ;
+		}
+	}
+}
 
 void	get_redirect_type(t_node *token)
 {
@@ -23,11 +43,20 @@ void	get_redirect_type(t_node *token)
 	else if (token->value[0] == '>' && token->value[1] == '\0')
 		token->type = REDIRECT_OUT;
 	if (token->type == APPEND || token->type == REDIRECT_OUT)
-		token->next->type = OUT_FILE;
+	{
+		if (token->next->type)
+			token->next->type = OUT_FILE;
+	}
 	else if (token->type == REDIRECT_IN)
-		token->next->type = IN_FILE;
+	{
+		if (token->next->type)
+			token->next->type = IN_FILE;
+	}
 	else if (token->type == HEREDOC)
-		token->next->type = HEREDOC_DELIMITER;
+	{
+		if (token->next->type)
+			token->next->type = HEREDOC_DELIMITER;
+	}
 }
 
 void	get_type(t_node *token)
@@ -36,8 +65,6 @@ void	get_type(t_node *token)
 	{
 		if (token->value[0] == '<' || token->value[0] == '>')
 			get_redirect_type(token);
-		else
-			token->type = COMMAND;
 	}
 	else if (token->value[0] == '|')
 		token->type = PIPE;
@@ -54,6 +81,7 @@ void	identify_tokens(t_tab *cmdtable)
 
 	cmdline = cmdtable->head;
 	token = cmdline->head;
+	find_command(token);
 	while (cmdline != NULL && token != NULL)
 	{
 		if (token->type == -1)
