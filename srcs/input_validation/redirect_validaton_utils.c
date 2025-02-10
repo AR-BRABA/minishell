@@ -30,15 +30,19 @@ bool	check_redirect_count(char **input, char current_char)
 	return (true);
 }
 
-bool	check_consecutive_redirects(char **input, char current_char)
+bool	check_consecutive_redirects(char *input, int i)
 {
-	int	count;
+	int		count;
+	char	current_char;
 
 	count = 0;
-	while (**input == current_char)
+	current_char = '\0';
+	if (input[i] == '>' || input[i] == '<')
+		current_char = input[i];
+	while (input[i] && input[i] == current_char)
 	{
 		count++;
-		(*input)++;
+		i++;
 	}
 	if (count > 2)
 	{
@@ -50,16 +54,21 @@ bool	check_consecutive_redirects(char **input, char current_char)
 	return (true);
 }
 
-bool	check_invalid_redirect_sequence(char **input)
+bool	redir_sep_by_spaces(char *input, int i)
 {
-	skip_spaces(input);
-	if (**input == '>' || **input == '<')
-	{
-		return (error_return("Syntax error: invalid redirection sequence\n",
-				43, false
+	if (ft_isspace(input[i - 1]))
+		return (error_return(
+				"Syntax error: invalid redirection syntax\n",
+				41, false
 			));
-	}
 	return (true);
+}
+
+int	skip_redir_spaces(char *input, int i)
+{
+	while (input[i] && ft_isspace(input[i]))
+		i++;
+	return (i);
 }
 
 /**
@@ -78,22 +87,29 @@ bool	check_invalid_redirect_sequence(char **input)
  */
 bool	consecutive_redirects(char *input)
 {
-	char	current_char;
 	int		i;
+	int		count;
 
-	current_char = '\0';
-	i = 0;
-	while (input[i])
+	i = -1;
+	count = 0;
+	while (input[++i])
 	{
 		if (!is_str(input, i) && (input[i] == '>' || input[i] == '<'))
 		{
-			current_char = input[i];
-			if (!check_consecutive_redirects(&input, current_char))
-				return (false);
-			if (!check_invalid_redirect_sequence(&input))
-				return (false);
+			count++;
+			i++;
+			i = skip_redir_spaces(input, i);
+			if (input[i] && (input[i] == '>' || input[i] == '<'))
+				return (redir_sep_by_spaces(input, i));
+			else if (input[i] && (input[i] == '>' || input[i] == '<'))
+			{
+				i++;
+				count++;
+			}
+			i = skip_redir_spaces(input, i);
+			if (input[i] && (input[i] == '>' || input[i] == '<') && count == 2)
+				return (exceed_redir_msg());
 		}
-		i++;
 	}
 	return (true);
 }

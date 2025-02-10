@@ -89,7 +89,7 @@ bool	pipe_followed_by_redirects(char *input)
  * @return true  - If there are no consecutive pipes in the input
  * @return false - If two consecutive pipes or more are detected
  */
-bool	consecutive_pipes(char *input) // chamar is_str
+bool	consecutive_pipes(char *input)
 {
 	int	i;
 
@@ -99,11 +99,16 @@ bool	consecutive_pipes(char *input) // chamar is_str
 		if (!is_str(input, i) && input[i] == '|')
 		{
 			i++;
-			while (input[i] && ft_isspace(input[i]))
-				i++;
-			if (*input == '|')
-				return (error_return("Syntax error: consecutive pipes\n",
-						32, false));
+			while (input[i])
+			{
+				if (ft_isspace(input[i]))
+					i++;
+				else if (input[i] && input[i] == '|')
+					return (error_return("Syntax error: consecutive pipes\n",
+							32, false));
+				else
+					break ;
+			}
 		}
 		else
 			i++;

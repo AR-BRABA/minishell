@@ -12,26 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	find_command(t_node *token)
-{
-	t_node	*tmp;
-
-	tmp = token;
-	while (tmp)
-	{
-		if (tmp->value[0] == '<' || tmp->value[0] == '>')
-		{
-			if (tmp->next && tmp->next->next)
-				tmp = tmp->next->next;
-		}
-		else
-		{
-			tmp->type = COMMAND;
-			return ;
-		}
-	}
-}
-
 void	get_redirect_type(t_node *token)
 {
 	if (token->value[0] == '<' && token->value[1] == '<')
@@ -88,11 +68,13 @@ void	identify_tokens(t_tab *cmdtable)
 			get_type(token);
 		token = token->next;
 		if (token == NULL)
-		{
+		{	
 			cmdline = cmdline->next;
 			if (cmdline == NULL)
 				break ;
 			token = cmdline->head;
+			if (token)
+				find_command(token);
 		}
 	}
 }

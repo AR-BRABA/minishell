@@ -92,18 +92,18 @@ char					*read_input(char *user_input);
 
 // VALIDATE_INPUT.C ------------------------------------------------------------
 bool					check_border_special_chars(char *input);
-bool					check_consecutive_redirects(char **input,
-							char current_char);
+bool					check_consecutive_redirects(char *input, int i);
 bool					check_empty_input(char *input);
 bool					check_invalid_sequences(char *input);
-bool					check_invalid_redirect_sequence(char **input);
 bool					check_pipe_redirect_sequences(char *input);
 bool					check_redirect_count(char **input,
 							char current_char);
 bool					check_unclosed_quotes(char *s);
 bool					consecutive_pipes(char *input);
 bool					consecutive_redirects(char *input);
-bool					error_return(char *error_msg, int n_chars, bool return_value);
+bool					error_return(char *error_msg, int n_chars,
+							bool return_value);
+bool					exceed_redir_msg(void);
 bool					is_str(char *input, int pos);
 bool					pipe_followed_by_redirects(char *input);
 bool					redirects_followed_by_pipe(char *input);
@@ -210,6 +210,7 @@ void					get_redirect_type(t_node *token);
 // TOKENIZER_UTILS.C -----------------------------------------------------------
 int						cmdlen(char **input);
 t_list					*init_cmdlist(char **input);
+void					find_command(t_node *token);
 
 // TOKENIZER_UTILS.C -----------------------------------------------------------
 void					add_node(t_node *newnode, t_list *list);

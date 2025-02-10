@@ -46,3 +46,23 @@ t_list	*init_cmdlist(char **input)
 	cmdlist->len = 1;
 	return (cmdlist);
 }
+
+void	find_command(t_node *token)
+{
+	t_node	*tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->value[0] == '<' || tmp->value[0] == '>')
+		{
+			if (tmp->next && tmp->next->next)
+				tmp = tmp->next->next;
+		}
+		else
+		{
+			tmp->type = COMMAND;
+			return ;
+		}
+	}
+}

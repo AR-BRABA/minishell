@@ -47,12 +47,11 @@ bool	check_border_special_chars(char *input)
 	return (false);
 }
 
-bool	is_invalid_redirection(char **input)
+bool	is_invalid_redirection(char *input, int i)
 {
-	(*input)++;
-	while (**input && ft_isspace(**input))
-		(*input)++;
-	return (**input == '|');
+	while (input[i] && ft_isspace(input[i]))
+		i++;
+	return (input[i] == '|');
 }
 
 bool	is_invalid_pipe(char **input)
@@ -81,7 +80,7 @@ bool	check_invalid_sequences(char *input)
 		if (!is_str(input, i))
 		{
 			if ((input[i] == '>' || input[i] == '<')
-				&& is_invalid_redirection(&input))
+				&& is_invalid_redirection(input, ++i))
 				return (error_return(
 						"Syntax error: unexpected '|'\n", 29, false
 					));
@@ -125,7 +124,8 @@ bool	check_pipe_redirect_sequences(char *input)
 			if (!redirects_followed_by_pipe(&input[i])
 				|| !consecutive_pipes(&input[i])
 				|| !pipe_followed_by_redirects(&input[i])
-				|| !consecutive_redirects(&input[i]))
+				|| !consecutive_redirects(&input[i])
+				|| !check_consecutive_redirects(input, i))
 				return (false);
 		}
 		i++;

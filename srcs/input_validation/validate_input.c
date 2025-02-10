@@ -36,6 +36,15 @@ bool	error_return(char *error_msg, int n_chars, bool return_value)
 	return (return_value);
 }
 
+bool	exceed_redir_msg(void)
+{
+	return (error_return(
+			"Syntax error: more than two consecutive redirections\n",
+			53, false
+		));
+	return (true);
+}
+
 /**
  * Validates the user's input by checking for syntax issues
  *
